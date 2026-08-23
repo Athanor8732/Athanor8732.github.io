@@ -1,0 +1,14 @@
+{
+  "name": "Marc Cerdà i Domènech · Geociències Marines",
+  "short_name": "Marc Cerdà",
+  "description": "Web personal de Marc Cerdà i Domènech, investigador en geociències marines i professor lector a la UB.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000705",
+  "theme_color": "#000705",
+  "icons": [
+    { "src": "/img/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/img/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -244,7 +244,7 @@ GAUGE_KEYS = ("publications", "citations", "hIndex")
 
 
 def update_gauge_fallbacks(stats):
-    """Actualitza els valors de fallback del gauge a les 3 pàgines principals."""
+    """Actualitza els valors de fallback del gauge i el bloc inline de stats a les 3 pàgines."""
     changed = 0
     for path in GAUGE_HTML:
         if not os.path.exists(path):
@@ -259,6 +259,38 @@ def update_gauge_fallbacks(stats):
 
         new_html, n = re.subn(
             r'data-stat="(publications|citations|hIndex)">([^<]*)<', repl, html)
+
+        # Bloc inline únic: JSON + codi JS en un sol <script>
+        stats_json = json.dumps(stats, ensure_ascii=False)
+        inline_block = (
+            '<script id="stats-inline">\n'
+            '  (function () {\n'
+            '    var stats = ' + stats_json + ';\n'
+            '    document.querySelectorAll("[data-stat]").forEach(function (el) {\n'
+            '      var key = el.getAttribute("data-stat");\n'
+            '      if (stats[key] !== undefined) el.textContent = stats[key];\n'
+            '    });\n'
+            '  })();\n'
+            '</script>\n  '
+        )
+        if '<script id="stats-inline">' in new_html:
+            new_html = re.sub(
+                r'<script id="stats-inline">.*?</script>\s*',
+                inline_block, new_html, flags=re.S)
+        else:
+            # Elimina etiquetes antiques (stats-data blob + stats.js extern)
+            new_html = re.sub(
+                r'<script type="application/json" id="stats-data">.*?</script>\s*', '', new_html, flags=re.S)
+            new_html = re.sub(r'<script src="js/stats\.js"[^>]*></script>\s*', '', new_html)
+            new_html = re.sub(r'<script src="\.\./js/stats\.js"[^>]*></script>\s*', '', new_html)
+            # Insereix el bloc inline abans del primer <script src que quedi (ctd-rig.js, etc.)
+            m2 = re.search(r'<script src="', new_html)
+            if m2:
+                pos = m2.start()
+                new_html = new_html[:pos] + inline_block + new_html[pos:]
+            else:
+                new_html = new_html.replace('</body>', inline_block + '</body>', 1)
+
         if n and new_html != html:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(new_html)
@@ -320,6 +352,8 @@ def main():
             "quartile": "—",   # OpenAlex no aporta quartil: es cura manualment
             "citations": int(w.get("cited_by_count", 0) or 0),
             "openalexId": (w.get("id", "") or "").replace("https://openalex.org/", ""),
+            "scopusId": "",
+            "issn": "",
             "auto": True,
         }
         new_entries.append(entry)

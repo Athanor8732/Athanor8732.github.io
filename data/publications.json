@@ -14,6 +14,8 @@
       "quartile": "Q2",
       "citations": 0,
       "openalexId": "W7161694012",
+      "scopusId": "",
+      "issn": "",
       "auto": false
     },
     {
@@ -29,6 +31,8 @@
       "quartile": "Q1",
       "citations": 0,
       "openalexId": "W4414743374",
+      "scopusId": "",
+      "issn": "",
       "auto": false
     },
     {
@@ -43,7 +47,8 @@
       "jif": "2,0",
       "quartile": "Q2",
       "citations": 0,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -59,7 +64,8 @@
       "jif": "4,2",
       "quartile": "Q1",
       "citations": 0,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -75,7 +81,8 @@
       "jif": "5,1",
       "quartile": "Q1",
       "citations": 8,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -91,7 +98,8 @@
       "jif": "4,9",
       "quartile": "Q1",
       "citations": 2,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -107,7 +115,8 @@
       "jif": "10,0",
       "quartile": "Q1",
       "citations": 0,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -123,7 +132,8 @@
       "jif": "8,0",
       "quartile": "Q1",
       "citations": 6,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -139,7 +149,8 @@
       "jif": "3,6",
       "quartile": "Q1",
       "citations": 4,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -155,7 +166,8 @@
       "jif": "4,08",
       "quartile": "Q1",
       "citations": 5,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -171,7 +183,8 @@
       "jif": "7,3",
       "quartile": "Q1",
       "citations": 57,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -187,7 +200,8 @@
       "jif": "7,96",
       "quartile": "Q1",
       "citations": 8,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -203,7 +217,8 @@
       "jif": "7,96",
       "quartile": "Q1",
       "citations": 14,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -219,7 +234,8 @@
       "jif": "6,55",
       "quartile": "Q1",
       "citations": 45,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -235,7 +251,8 @@
       "jif": "6,4",
       "quartile": "Q1",
       "citations": 52,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     },
@@ -251,7 +268,8 @@
       "jif": "4,6",
       "quartile": "Q1",
       "citations": 72,
-      "scopusId": null,
+      "openalexId": "",
+      "scopusId": "",
       "issn": "",
       "auto": false
     }

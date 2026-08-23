@@ -4,55 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Premsa i divulgació · Marc Cerdà i Domènech</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-<style>
-:root{
-  --bg-deep:#000705; --bg-mid:#04140f;
-  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
-  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176; --coral:#ff7a63;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  background:
-    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
-    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
-  background-attachment:fixed;
-  color:var(--text);
-  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  min-height:100vh;
-}
-.wrap{ max-width:648px; margin:0 auto; padding:0 24px 90px; }
-.topbar{
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:44px;
-position:sticky;top:0;z-index:5;background:radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);background-attachment:fixed;}
-.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
-.topbar svg.mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
-.topbar span{
-  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
-  text-transform:uppercase; font-size:0.78rem; color:var(--muted);
-}
-.topbar strong{ color:var(--text); font-style:normal; }
-.crumbs{ text-align:center; margin-bottom:8px; }
-.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
-h1.page-title{ font-family:Georgia,serif; font-weight:700; font-size:2rem; text-align:center; margin:8px 0 6px; }
-p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 auto 36px; max-width:560px; }
 
+  <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#000705" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
 .column-highlight{
   background:linear-gradient(150deg, rgba(var(--cyan-rgb),0.08), rgba(255,255,255,0.025));
-  border:1px solid var(--panel-border); border-radius:14px; padding:26px 28px; text-align:center; margin-bottom:50px;
+  border:1px solid var(--panel-border); border-radius:14px; padding:26px 28px; text-align:center; margin:0 0 40px;
 }
-.column-highlight h2{ margin:0 0 8px; font-family:Georgia,serif; font-size:1.2rem; }
+.column-highlight h2{ margin:0 0 8px; font-family:var(--serif); font-size:1.2rem; }
 .column-highlight p{ margin:0 0 16px; color:var(--muted); font-size:0.88rem; }
 .column-highlight a.btn{
   display:inline-block; background:var(--cyan); color:#04141d; font-weight:700;
   padding:10px 24px; border-radius:999px; text-decoration:none; font-size:0.86rem;
 }
-
-h2.section{ font-family:Georgia,serif; font-weight:700; font-size:1.4rem; margin:52px 0 24px; text-align:center; }
-
 .press-list{ display:flex; flex-direction:column; gap:10px; }
 .press-item{
   display:flex; justify-content:space-between; align-items:baseline; gap:14px;
@@ -67,171 +38,46 @@ h2.section{ font-family:Georgia,serif; font-weight:700; font-size:1.4rem; margin
 .press-item .year{ flex:0 0 auto; font-size:0.78rem; color:var(--cyan); font-weight:700; }
 .press-item.no-link{ cursor:default; }
 .press-item.no-link:hover{ transform:none; background:var(--panel); }
-
 .talks-list{ display:flex; flex-direction:column; gap:10px; }
 .talk-item{
   background:var(--panel); border:1px solid var(--panel-border); border-radius:8px; padding:13px 18px;
 }
 .talk-item .t{ font-size:0.9rem; color:#fff; margin:0 0 3px; }
 .talk-item .m{ font-size:0.78rem; color:var(--muted); }
-
-footer{ margin-top:56px; text-align:center; color:var(--muted); font-size:0.76rem; }
-footer a{ color:var(--cyan); text-decoration:none; }
-
-  /* ---- CTD rosette scroll illustration ---- */
-  .ctd-rig{
-    position:fixed;
-    left:calc(50% + 306px);
-    top:0;
-    height:100vh;
-    width:56px;
-    pointer-events:none;
-    z-index:3;
-    color:var(--cyan);
-    opacity:0.55;
-  }
-  .ctd-davit{ position:absolute; top:86px; left:0; width:46px; height:24px; }
-  .ctd-cable{
-    position:absolute;
-    top:108px;
-    left:30px;
-    width:1.3px;
-    height:0;
-    background:linear-gradient(180deg, var(--cyan), rgba(var(--cyan-rgb),0.15));
-    box-shadow:0 0 4px rgba(var(--cyan-rgb),0.55);
-  }
-  .ctd-wake{
-    position:absolute;
-    left:28.65px;
-    top:108px;
-    width:4px;
-    height:0;
-    border-radius:3px;
-    background:linear-gradient(180deg, transparent, rgba(var(--cyan-rgb),0.5) 55%, rgba(var(--cyan-rgb),0.1));
-    filter:blur(1.5px);
-    pointer-events:none;
-  }
-  .ctd-rosette{
-    position:absolute;
-    top:108px;
-    left:6px;
-    width:48px;
-    height:75px;
-  }
-  #ctd-sensor{ transform-box:fill-box; transform-origin:center; }
-  .ctd-sensor-flash{ animation:sensor-flash .55s ease-out; }
-  @keyframes sensor-flash{
-    0%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
-    35%{ filter:drop-shadow(0 0 5px var(--cyan)); transform:scale(1.6); }
-    100%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
-  }
-  .ctd-bubbles .bub{
-    opacity:0;
-    transform-box:fill-box;
-    transform-origin:center;
-    animation:bub-rise 3.6s ease-in infinite;
-  }
-  .ctd-bubbles .b1{ animation-delay:0s; }
-  .ctd-bubbles .b2{ animation-delay:1.2s; }
-  .ctd-bubbles .b3{ animation-delay:2.4s; }
-  @keyframes bub-rise{
-    0%{ transform:translateY(0); opacity:0; }
-    12%{ opacity:0.8; }
-    90%{ opacity:0.15; }
-    100%{ transform:translateY(-46px); opacity:0; }
-  }
-  .ctd-sway{
-    transform-box:fill-box;
-    transform-origin:50% 0%;
-    animation:ctd-sway 4.5s ease-in-out infinite;
-  }
-  @keyframes ctd-sway{
-    0%,100%{ transform:rotate(-2.5deg); }
-    50%{ transform:rotate(2.5deg); }
-  }
-  .ctd-depth{
-    position:absolute;
-    top:108px;
-    left:2px;
-    width:55px;
-    text-align:center;
-    font-size:0.86rem;
-    font-weight:600;
-    font-family:Georgia,serif;
-    color:var(--cyan);
-    opacity:0.8;
-    white-space:nowrap;
-  }
-  @media (max-width:880px){ .ctd-rig{ display:none; } }
-  .ctd-depth-mobile{
-    display:none;
-    position:fixed;
-    right:14px;
-    bottom:14px;
-    z-index:4;
-    background:var(--panel);
-    border:1px solid var(--panel-border);
-    border-radius:999px;
-    padding:6px 14px;
-    font-family:Georgia,serif;
-    font-size:0.8rem;
-    font-weight:600;
-    color:var(--cyan);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    pointer-events:none;
-  }
-  @media (max-width:880px){ .ctd-depth-mobile{ display:block; } }
-
-/* ---- side promo: quick link to IMPAS-Garraf ---- */
-.side-promo{
-  position:fixed; left:0; top:50%; transform:translateY(-50%);
-  z-index:6; display:flex; align-items:center; gap:11px;
-  background:var(--panel); border:1px solid var(--panel-border); border-left:none;
-  border-radius:0 16px 16px 0; padding:9px 18px 9px 9px; text-decoration:none;
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  box-shadow:8px 0 26px -10px rgba(0,0,0,0.6);
-  transition:transform .2s ease, box-shadow .2s ease;
-  max-width:190px;
-  animation:side-promo-fade .6s ease .35s backwards;
-}
-.side-promo:hover{ transform:translateY(-50%) translateX(5px); box-shadow:10px 0 30px -8px rgba(var(--cyan-rgb),0.35); }
-.side-promo-thumb{
-  position:relative; flex:0 0 auto; width:46px; height:46px; border-radius:50%; overflow:hidden;
-  border:1.5px solid rgba(var(--cyan-rgb),0.55); box-shadow:0 0 0 3px rgba(0,7,5,0.9), 0 4px 12px rgba(0,0,0,0.5);
-}
-.side-promo-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-.side-promo-ring{
-  position:absolute; inset:-5px; border-radius:50%; border:1px solid rgba(var(--cyan-rgb),0.45);
-  opacity:0; animation:side-promo-ping 3.2s cubic-bezier(0.2,0.6,0.35,1) infinite;
-}
 @keyframes side-promo-ping{ 0%{ transform:scale(0.82); opacity:0.55; } 70%{ opacity:0.12; } 100%{ transform:scale(1.28); opacity:0; } }
 @keyframes side-promo-fade{ from{ opacity:0; } to{ opacity:1; } }
-.side-promo-text{ display:flex; flex-direction:column; gap:1px; }
-.side-promo-tag{ font-size:0.58rem; text-transform:uppercase; letter-spacing:0.09em; color:#d9a441; font-weight:700; }
-.side-promo-title{ font-family:Georgia,serif; font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
-@media (max-width:640px){
-  .side-promo{ top:auto; bottom:14px; left:14px; transform:none; padding:0; width:52px; height:52px; border-radius:50%; justify-content:center; max-width:none; }
-  .side-promo:hover{ transform:scale(1.06); }
-  .side-promo-thumb{ width:100%; height:100%; }
-  .side-promo-text{ display:none; }
-}
-</style>
-</head>
+  </style>
+
+  <meta name="description" content="Articles d'opinió, entrevistes i xerrades sobre ciència, clima i polítiques ambientals. Columna a Línia Xarxa des de 2019." />
+  <link rel="canonical" href="https://athanor8732.github.io/premsa/index.html" />
+  <meta property="og:site_name" content="Marc Cerdà i Domènech" />
+  <meta property="og:title" content="Premsa i divulgació · Marc Cerdà i Domènech" />
+  <meta property="og:description" content="Articles d'opinió, entrevistes i xerrades sobre ciència, clima i polítiques ambientals. Columna a Línia Xarxa des de 2019." />
+  <meta property="og:url" content="https://athanor8732.github.io/premsa/index.html" />
+  <meta property="og:image" content="https://athanor8732.github.io/img/marc.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ca_ES" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Premsa i divulgació · Marc Cerdà i Domènech" />
+  <meta name="twitter:description" content="Articles d'opinió, entrevistes i xerrades sobre ciència, clima i polítiques ambientals. Columna a Línia Xarxa des de 2019." />
+  <meta name="twitter:image" content="https://athanor8732.github.io/img/marc.png" />
+  </head>
 <body>
-  <a class="side-promo" href="../impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
-    <span class="side-promo-thumb">
-      <span class="side-promo-ring"></span>
-      <img src="../img/impas/thumb-impas.jpg" alt="" />
-    </span>
-    <span class="side-promo-text">
-      <span class="side-promo-tag">Projecte actiu</span>
-      <span class="side-promo-title">IMPAS-Garraf</span>
-    </span>
-  </a>
+  <a class="skip-link" href="#main">Salta al contingut</a>
+<div class="side-promos">
+      <a class="side-promo" href="../impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
+      <span class="side-promo-thumb">
+        <span class="side-promo-ring"></span>
+        <img src="../img/impas/thumb-impas.jpg" alt="" />
+      </span>
+      <span class="side-promo-text">
+        <span class="side-promo-tag">Projecte actiu</span>
+        <span class="side-promo-title">IMPAS-Garraf</span>
+      </span>
+    </a>
+</div>
 
-
-  <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
+    <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
 
   <div class="ctd-rig" aria-hidden="true">
     <svg class="ctd-davit" viewBox="0 0 46 24" fill="none" stroke="currentColor">
@@ -274,9 +120,13 @@ footer a{ color:var(--cyan); text-decoration:none; }
     <div class="ctd-depth" id="ctd-depth">0 m</div>
   </div>
 
-  <div class="wrap">
-    <div class="topbar">
-      <a class="brand" href="../index.html">
+  
+
+  <div class="wrap" id="main">
+      <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand-row">
+          <a class="brand" href="../index.html">
         <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
           <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
           <g stroke-width="1.1" opacity="0.5">
@@ -296,9 +146,22 @@ footer a{ color:var(--cyan); text-decoration:none; }
           <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
         </svg>
-        <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+        <span class="brand-text"><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
       </a>
+      <button class="topbar-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="topbar-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+        </div>
+        <nav class="topbar-nav" id="topbar-nav">
+        <a href="../recerca/index.html" data-nav="recerca">Recerca</a>
+        <a href="../publicacions/index.html" data-nav="publicacions">Publicacions</a>
+        <a href="../docencia/index.html" data-nav="docencia">Docència</a>
+        <a href="../premsa/index.html" data-nav="premsa" aria-current="page">Premsa</a>
+        <a href="../blog/index.html" data-nav="blog">Bloc</a>
+        <a href="../contacte/index.html" data-nav="contacte">Contacte</a>
+      </nav>
     </div>
+  </div>
 
     <p class="crumbs"><a href="../index.html">← Torna al perfil</a></p>
     <h1 class="page-title">Premsa i divulgació</h1>
@@ -306,7 +169,7 @@ footer a{ color:var(--cyan); text-decoration:none; }
 
     <div class="column-highlight">
       <h2>Columna a Línia Xarxa</h2>
-      <p>34 articles publicats des de 2019 fins avui, en el diari digital d'àmbit metropolità</p>
+      <p>34 articles publicats des del 2019 al diari digital d'àmbit metropolità</p>
       <a class="btn" href="https://liniaxarxa.cat/author/marccerdalinia/" target="_blank" rel="noopener">Veure tots els articles →</a>
     </div>
 
@@ -446,66 +309,33 @@ footer a{ color:var(--cyan); text-decoration:none; }
       </div>
     </div>
 
+    <div class="cta-row">
+      <a href="../recerca/index.html">Recerca →</a>
+      <a href="../publicacions/index.html">Publicacions →</a>
+      <a href="../contacte/index.html">Contacte →</a>
+    </div>
+
     <footer>
-      <a href="../index.html">← Torna al perfil</a> · Font: Curriculum Vitae presentat al concurs de la plaça 00049621, gener 2025
+      <div class="affil">
+        <a href="https://www.ub.edu/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="../img/ub-logo-white.png" alt="Universitat de Barcelona" /></a>
+        <a href="https://www.ub.edu/geomarines/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="../img/gmar-logo-white.png" alt="Gmar · Grup de Recerca en Geociències Marines" /></a>
+      </div>
+      <a href="../index.html">← Torna al perfil</a>
+      <p class="cc-notice">Aquest contingut es distribueix sota llicència <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="noopener">Creative Commons Reconeixement-NoComercial-CompartirIgual 4.0</a></p>
     </footer>
   </div>
 
-  <script>
-    (function () {
-      var rosette = document.getElementById('ctd-rosette');
-      var cable = document.getElementById('ctd-cable');
-      var wake = document.getElementById('ctd-wake');
-      var depth = document.getElementById('ctd-depth');
-      var depthMobile = document.getElementById('ctd-depth-mobile');
-      var sensor = document.getElementById('ctd-sensor');
-      if (!rosette || !cable) return;
-
-      var targetY = 0, currentY = 0;
-
-      function computeTarget() {
-        var scrollTop = window.scrollY || document.documentElement.scrollTop;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var frac = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
-        var maxDrop = window.innerHeight - 187;
-        targetY = frac * maxDrop;
-        var depthText = Math.round(frac * 1200) + ' m';
-        if (depth) depth.textContent = depthText;
-        if (depthMobile) depthMobile.textContent = depthText;
-      }
-
-      function render() {
-        currentY += (targetY - currentY) * 0.08;
-        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
-        rosette.style.transform = 'translateY(' + currentY + 'px)';
-        cable.style.height = currentY + 'px';
-        if (wake) {
-          var wakeH = Math.min(40, currentY);
-          wake.style.height = wakeH + 'px';
-          wake.style.top = (108 + currentY - wakeH) + 'px';
-        }
-        if (depth) depth.style.transform = 'translateY(' + (currentY + 79) + 'px)';
-        requestAnimationFrame(render);
-      }
-
-      window.addEventListener('scroll', computeTarget, { passive: true });
-      window.addEventListener('resize', computeTarget);
-      computeTarget();
-      requestAnimationFrame(render);
-
-      if (sensor && 'IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) {
-              sensor.classList.remove('ctd-sensor-flash');
-              void sensor.getBoundingClientRect();
-              sensor.classList.add('ctd-sensor-flash');
-            }
-          });
-        }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
-        document.querySelectorAll('h2.section').forEach(function (h) { io.observe(h); });
-      }
+  
+<script src="../js/ctd-rig.js" defer></script>
+  <script id="hamburger-init">
+    (function(){
+      var btn=document.querySelector('.topbar-toggle');if(!btn)return;
+      var nav=document.getElementById('topbar-nav');if(!nav)return;
+      btn.addEventListener('click',function(){
+        var open=nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded',open);
+      });
     })();
   </script>
-</body>
+  </body>
 </html>

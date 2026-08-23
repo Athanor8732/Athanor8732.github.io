@@ -20,56 +20,19 @@ BLOG_DIR = ROOT / "blog"
 
 CYAN = "#39ffb0"
 
-FAVICON = ("<link rel=\"icon\" type=\"image/svg+xml\" href=\"data:image/svg+xml,"
-           "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E"
-           "%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E"
-           "%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E"
-           "%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' "
-           "stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\" />")
+def favicon_tags(depth):
+    """Genera els tags de favicon amb ruta relativa segons la profunditat."""
+    p = "../" * depth
+    return (
+        f'<link rel="icon" type="image/svg+xml" href="{p}img/favicon.svg" />\n'
+        f'<link rel="icon" type="image/png" sizes="32x32" href="{p}img/favicon-32x32.png" />\n'
+        f'<link rel="apple-touch-icon" sizes="180x180" href="{p}img/apple-touch-icon.png" />\n'
+        f'<link rel="manifest" href="{p}manifest.json" />\n'
+        f'<meta name="theme-color" content="#000705" />'
+    )
 
+# CSS específic del bloc (el CSS base va a css/styles.css)
 CSS = """
-:root{
-  --bg-deep:#000705; --bg-mid:#04140f;
-  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
-  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  background:
-    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
-    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
-  background-attachment:fixed;
-  color:var(--text);
-  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  min-height:100vh;
-}
-.wrap{ max-width:648px; margin:0 auto; padding:0 24px 90px; }
-.topbar{
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:44px;
-  position:sticky; top:0; z-index:5;
-  background:
-    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
-    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
-  background-attachment:fixed;
-}
-.topbar .mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
-.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
-.topbar span{
-  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
-  text-transform:uppercase; font-size:0.76rem; color:var(--muted);
-}
-.topbar strong{ color:var(--text); font-style:normal; }
-.crumbs{ text-align:center; margin-bottom:8px; }
-.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
-h1.page-title{
-  font-family:Georgia,serif; font-weight:700; font-size:2rem; text-align:center;
-  margin:8px 0 6px;
-}
-p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 0 40px; }
 .posts{ display:flex; flex-direction:column; gap:16px; }
 .post-card{
   display:flex; gap:18px; text-decoration:none; color:inherit;
@@ -79,22 +42,20 @@ p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 0
 .post-card:hover{ transform:translateY(-2px); box-shadow:0 10px 26px -10px var(--cyan); }
 .post-card img{ width:110px; height:110px; object-fit:cover; border-radius:8px; flex:0 0 auto; }
 .post-card .meta{ text-transform:uppercase; letter-spacing:0.08em; font-size:0.66rem; color:var(--cyan); font-weight:700; margin:0 0 6px; }
-.post-card h2{ font-family:Georgia,serif; font-size:1.1rem; margin:0 0 6px; color:#fff; }
+.post-card h2{ font-family:var(--serif); font-size:1.1rem; margin:0 0 6px; color:#fff; }
 .post-card p.excerpt{ margin:0; color:var(--muted); font-size:0.85rem; line-height:1.5; }
 .article-hero{ width:100%; max-height:340px; object-fit:cover; border-radius:12px; margin-bottom:26px; }
 .article-meta{ text-align:center; color:var(--muted); font-size:0.8rem; margin:0 0 34px; text-transform:uppercase; letter-spacing:0.06em; }
 .article-body p{ font-size:1.02rem; line-height:1.75; color:#dbe6e8; margin:0 0 22px; }
 .article-body blockquote{
   margin:32px 0; padding:4px 0 4px 22px; border-left:3px solid var(--cyan);
-  font-family:Georgia,serif; font-style:italic; font-size:1.2rem; color:#fff;
+  font-family:var(--serif); font-style:italic; font-size:1.2rem; color:#fff;
 }
 .source-note{
   margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border);
   color:var(--muted); font-size:0.82rem; text-align:center;
 }
 .source-note a{ color:var(--cyan); text-decoration:none; }
-footer{ margin-top:56px; text-align:center; color:var(--muted); font-size:0.76rem; }
-footer a{ color:var(--cyan); text-decoration:none; }
 """
 
 LOGO_SVG = """<svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
@@ -119,13 +80,40 @@ LOGO_SVG = """<svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentC
 
 
 def topbar(depth):
-    home = "../" * depth + "index.html"
+    prefix = "../" * depth
     return f"""<div class="topbar">
-  <a class="brand" href="{home}">
-    {LOGO_SVG}
-    <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
-  </a>
-</div>"""
+    <div class="topbar-inner">
+      <a class="brand" href="{prefix}index.html">
+        {LOGO_SVG}
+        <span class="brand-text"><strong>Marc Cerdà i Domènech</strong><br>Geociències Marines</span>
+      </a>
+      <button class="topbar-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="topbar-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <nav class="topbar-nav" id="topbar-nav">
+        <a href="{prefix}recerca/index.html" data-nav="recerca">Recerca</a>
+        <a href="{prefix}publicacions/index.html" data-nav="publicacions">Publicacions</a>
+        <a href="{prefix}docencia/index.html" data-nav="docencia">Docència</a>
+        <a href="{prefix}premsa/index.html" data-nav="premsa">Premsa</a>
+        <a href="{prefix}blog/index.html" data-nav="blog" aria-current="page">Bloc</a>
+        <a href="{prefix}contacte/index.html" data-nav="contacte">Contacte</a>
+      </nav>
+    </div>
+  </div>"""
+
+
+HEAD_LINKS = '<link rel="stylesheet" href="{prefix}css/fonts.css" />\n<link rel="stylesheet" href="{prefix}css/styles.css" />'
+
+HAMBURGER_SCRIPT = """<script id="hamburger-init">
+    (function(){
+      var btn=document.querySelector('.topbar-toggle');if(!btn)return;
+      var nav=document.getElementById('topbar-nav');if(!nav)return;
+      btn.addEventListener('click',function(){
+        var open=nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded',open);
+      });
+    })();
+  </script>"""
 
 
 def parse_post(path):
@@ -155,12 +143,12 @@ def render_index(posts):
     cards = []
     for p in posts:
         cards.append(f"""      <a class="post-card" href="{p['slug']}/index.html">
-        <img src="../{p['image']}" alt="{html.escape(p['image_alt'])}" />
-        <span>
+        <img src="../{p['image']}" alt="{html.escape(p['image_alt'])}" width="110" height="110" loading="lazy" />
+        <div>
           <p class="meta">{p['date_display']}</p>
           <h2>{html.escape(p['title'])}</h2>
           <p class="excerpt">{html.escape(p['excerpt'])}</p>
-        </span>
+        </div>
       </a>""")
     return f"""<!DOCTYPE html>
 <html lang="ca">
@@ -168,11 +156,13 @@ def render_index(posts):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bloc · Marc Cerdà i Domènech</title>
-{FAVICON}
+{favicon_tags(1)}
+{HEAD_LINKS.format(prefix='../')}
 <style>{CSS}</style>
 </head>
 <body>
-  <div class="wrap">
+  <a class="skip-link" href="#main">Salta al contingut</a>
+  <div class="wrap" id="main">
     {topbar(1)}
     <h1 class="page-title">Bloc</h1>
     <p class="page-sub">Reflexions sobre ciència marina, clima i polítiques ambientals</p>
@@ -183,6 +173,7 @@ def render_index(posts):
       <a href="../index.html">← Torna al perfil</a> · Basat en <a href="https://cerdadomenech.blog/bloc/" target="_blank" rel="noopener">cerdadomenech.blog</a>
     </footer>
   </div>
+  {HAMBURGER_SCRIPT}
 </body>
 </html>
 """
@@ -199,16 +190,18 @@ def render_post(p):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{html.escape(p['title'])} · Marc Cerdà i Domènech</title>
-{FAVICON}
+{favicon_tags(2)}
+{HEAD_LINKS.format(prefix='../../')}
 <style>{CSS}</style>
 </head>
 <body>
-  <div class="wrap">
+  <a class="skip-link" href="#main">Salta al contingut</a>
+  <div class="wrap" id="main">
     {topbar(2)}
     <p class="crumbs"><a href="../index.html">← Tots els articles</a></p>
     <h1 class="page-title">{html.escape(p['title'])}</h1>
     <p class="article-meta">{p['date_display']}</p>
-    <img class="article-hero" src="../../{p['image']}" alt="{html.escape(p['image_alt'])}" />
+    <img class="article-hero" src="../../{p['image']}" alt="{html.escape(p['image_alt'])}" decoding="async" />
     <div class="article-body">
 {p['body_html']}
     </div>
@@ -217,6 +210,7 @@ def render_post(p):
       <a href="../../index.html">← Torna al perfil</a> · Basat en <a href="https://cerdadomenech.blog/" target="_blank" rel="noopener">cerdadomenech.blog</a>
     </footer>
   </div>
+  {HAMBURGER_SCRIPT}
 </body>
 </html>
 """

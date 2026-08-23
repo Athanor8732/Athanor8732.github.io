@@ -4,88 +4,35 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recerca · Marc Cerdà i Domènech</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<style>
-:root{
-  --bg-deep:#000705; --bg-mid:#04140f;
-  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
-  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176;
-  --coral:#ff7a63; --sand:#d9a441; --indigo:#5b8cff; --seafoam:#39c98f; --gold:#f2c14e;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  background:
-    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
-    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
-  background-attachment:fixed;
-  color:var(--text);
-  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  min-height:100vh;
-}
-.wrap{ max-width:648px; margin:0 auto; padding:0 24px 90px; }
-.topbar{
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:44px;
-position:sticky;top:0;z-index:5;background:radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);background-attachment:fixed;}
-.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
-.topbar svg.mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
-.topbar span{
-  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
-  text-transform:uppercase; font-size:0.78rem; color:var(--muted);
-}
-.topbar strong{ color:var(--text); font-style:normal; }
-.crumbs{ text-align:center; margin-bottom:8px; }
-.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
-h1.page-title{ font-family:Georgia,serif; font-weight:700; font-size:2rem; text-align:center; margin:8px 0 6px; }
-p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 auto 36px; max-width:560px; }
 
-.award{
-  display:flex; align-items:center; gap:14px; justify-content:center;
-  background:linear-gradient(150deg, rgba(242,193,78,0.12), rgba(255,255,255,0.025));
-  border:1px solid rgba(242,193,78,0.35); border-radius:999px;
-  padding:11px 22px; margin:0 auto 40px; max-width:fit-content;
-}
-.award svg{ width:22px; height:22px; color:var(--gold); flex:0 0 auto; }
-.award p{ margin:0; font-size:0.86rem; color:#f4e4b8; }
-.award b{ color:var(--gold); }
-
-.gauge{ display:flex; justify-content:center; gap:0; margin:0 0 40px; flex-wrap:wrap; }
-.gauge .stat{ padding:0 22px; text-align:center; border-left:1px solid var(--panel-border); }
-.gauge .stat:first-child{ border-left:none; }
-.gauge .stat b{ display:block; color:var(--cyan); font-family:Georgia,serif; font-size:1.25rem; }
-.gauge .stat span{ display:block; color:var(--muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.07em; margin-top:2px; }
-.gauge-note{ text-align:center; color:var(--muted); font-size:0.78rem; margin:0 0 50px; }
-
-.prose{ background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:26px 28px; margin-bottom:16px; }
-.prose p{ font-size:0.96rem; line-height:1.75; color:#dbe6e8; margin:0 0 16px; }
-.prose p:last-child{ margin-bottom:0; }
-.prose strong{ color:#fff; }
-
-h2.section{ font-family:Georgia,serif; font-weight:700; font-size:1.4rem; margin:52px 0 6px; text-align:center; }
-p.section-sub{ text-align:center; color:var(--muted); font-size:0.85rem; margin:0 0 26px; }
-
+  <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#000705" />
+  <link rel="stylesheet" href="../vendor/leaflet/leaflet.css" />
+<link rel="stylesheet" href="../css/fonts.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
 .lines{ display:flex; flex-direction:column; gap:18px; margin-bottom:8px; }
 .line-card{ background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--accent); border-radius:12px; overflow:hidden; display:flex; flex-wrap:wrap; }
 .line-card .line-img{ flex:0 0 100%; height:190px; overflow:hidden; background:#04141d; }
 .line-card .line-img img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.03); }
 .line-card .line-body{ padding:20px 22px; flex:1 1 auto; }
-.line-card .n{ display:block; color:var(--accent); font-family:Georgia,serif; font-size:0.72rem; margin-bottom:6px; letter-spacing:0.06em; }
-.line-card h3{ margin:0 0 10px; font-family:Georgia,serif; font-size:1.15rem; color:#fff; line-height:1.3; }
+.line-card .n{ display:block; color:var(--accent); font-family:var(--serif); font-size:0.72rem; margin-bottom:6px; letter-spacing:0.06em; }
+.line-card h3{ margin:0 0 10px; font-family:var(--serif); font-size:1.15rem; color:#fff; line-height:1.3; }
 .line-card p{ margin:0; color:var(--muted); font-size:0.88rem; line-height:1.7; }
 .line-card p + p{ margin-top:10px; }
 .line-card.c1{ --accent:var(--coral); }
 .line-card.c2{ --accent:var(--cyan); }
 .line-card.c3{ --accent:var(--sand); }
 .line-card.c4{ --accent:var(--seafoam); }
-
 .mct-card{ background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--indigo); border-radius:12px; overflow:hidden; margin-top:18px; }
 .mct-card .line-img{ height:220px; overflow:hidden; background:#04141d; }
 .mct-card .line-img img{ width:100%; height:100%; object-fit:cover; display:block; }
 .mct-card .line-body{ padding:20px 22px; }
-.mct-card h3{ margin:0 0 10px; font-family:Georgia,serif; font-size:1.15rem; color:#fff; }
+.mct-card h3{ margin:0 0 10px; font-family:var(--serif); font-size:1.15rem; color:#fff; }
 .mct-card p{ margin:0 0 10px; color:var(--muted); font-size:0.88rem; line-height:1.7; }
 .video-note{
   display:flex; align-items:center; gap:10px; margin-top:14px; padding:12px 16px;
@@ -93,195 +40,57 @@ p.section-sub{ text-align:center; color:var(--muted); font-size:0.85rem; margin:
   color:var(--indigo); font-size:0.82rem;
 }
 .video-note svg{ width:20px; height:20px; flex:0 0 auto; }
-
 .map-panel{ background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:20px; margin-bottom:18px; }
-.map-panel h3{ margin:0 0 4px; font-family:Georgia,serif; font-size:1rem; color:#fff; text-align:center; }
+.map-panel h3{ margin:0 0 4px; font-family:var(--serif); font-size:1rem; color:#fff; text-align:center; }
 .map-panel .map-note{ text-align:center; color:var(--muted); font-size:0.72rem; margin:0 0 14px; }
 #campaign-map{ width:100%; height:440px; border-radius:8px; background:#05141e; }
-.leaflet-popup-content-wrapper{ background:#0b1e2b; color:#eaf2f4; border-radius:8px; }
-.leaflet-popup-content b{ color:var(--cyan); }
-.leaflet-popup-tip{ background:#0b1e2b; }
-.leaflet-container a.leaflet-popup-close-button{ color:#8fa5ac; }
-
 .campaign-table{ width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px; }
 .campaign-table th{ text-align:left; color:var(--cyan); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px; border-bottom:1px solid var(--panel-border); }
 .campaign-table td{ padding:9px 10px; border-bottom:1px solid var(--panel-border); color:#dbe6e8; }
 .campaign-table td.muted{ color:var(--muted); }
 .table-wrap{ overflow-x:auto; border-radius:10px; background:var(--panel); border:1px solid var(--panel-border); }
 p.table-footnote{ color:var(--muted); font-size:0.76rem; text-align:center; margin:12px 0 0; }
-
 .proj-card{ background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:18px 20px; margin-bottom:12px; }
 .proj-card .proj-title{ font-weight:700; color:#fff; font-size:0.96rem; margin:0 0 6px; }
 .proj-card .proj-meta{ color:var(--muted); font-size:0.82rem; margin:2px 0; }
 .proj-card .pi-badge{ display:inline-block; background:rgba(var(--cyan-rgb),0.15); color:var(--cyan); font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:3px 9px; border-radius:999px; margin-top:8px; }
 .proj-group-label{ color:var(--muted); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.09em; margin:26px 0 10px; }
 .proj-group-label:first-child{ margin-top:0; }
-
-.cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:40px; }
-.cta-row a{
-  display:inline-block; padding:11px 22px; border-radius:999px; text-decoration:none;
-  font-size:0.86rem; font-weight:700; border:1px solid var(--panel-border); color:var(--cyan);
-  background:var(--panel);
-}
-.cta-row a:hover{ border-color:var(--cyan); }
-
-footer{ margin-top:56px; text-align:center; color:var(--muted); font-size:0.76rem; }
-footer a{ color:var(--cyan); text-decoration:none; }
-
-  /* ---- CTD rosette scroll illustration ---- */
-  .ctd-rig{
-    position:fixed;
-    left:calc(50% + 306px);
-    top:0;
-    height:100vh;
-    width:56px;
-    pointer-events:none;
-    z-index:3;
-    color:var(--cyan);
-    opacity:0.55;
-  }
-  .ctd-davit{ position:absolute; top:86px; left:0; width:46px; height:24px; }
-  .ctd-cable{
-    position:absolute;
-    top:108px;
-    left:30px;
-    width:1.3px;
-    height:0;
-    background:linear-gradient(180deg, var(--cyan), rgba(var(--cyan-rgb),0.15));
-    box-shadow:0 0 4px rgba(var(--cyan-rgb),0.55);
-  }
-  .ctd-wake{
-    position:absolute;
-    left:28.65px;
-    top:108px;
-    width:4px;
-    height:0;
-    border-radius:3px;
-    background:linear-gradient(180deg, transparent, rgba(var(--cyan-rgb),0.5) 55%, rgba(var(--cyan-rgb),0.1));
-    filter:blur(1.5px);
-    pointer-events:none;
-  }
-  .ctd-rosette{
-    position:absolute;
-    top:108px;
-    left:6px;
-    width:48px;
-    height:75px;
-  }
-  #ctd-sensor{ transform-box:fill-box; transform-origin:center; }
-  .ctd-sensor-flash{ animation:sensor-flash .55s ease-out; }
-  @keyframes sensor-flash{
-    0%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
-    35%{ filter:drop-shadow(0 0 5px var(--cyan)); transform:scale(1.6); }
-    100%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
-  }
-  .ctd-bubbles .bub{
-    opacity:0;
-    transform-box:fill-box;
-    transform-origin:center;
-    animation:bub-rise 3.6s ease-in infinite;
-  }
-  .ctd-bubbles .b1{ animation-delay:0s; }
-  .ctd-bubbles .b2{ animation-delay:1.2s; }
-  .ctd-bubbles .b3{ animation-delay:2.4s; }
-  @keyframes bub-rise{
-    0%{ transform:translateY(0); opacity:0; }
-    12%{ opacity:0.8; }
-    90%{ opacity:0.15; }
-    100%{ transform:translateY(-46px); opacity:0; }
-  }
-  .ctd-sway{
-    transform-box:fill-box;
-    transform-origin:50% 0%;
-    animation:ctd-sway 4.5s ease-in-out infinite;
-  }
-  @keyframes ctd-sway{
-    0%,100%{ transform:rotate(-2.5deg); }
-    50%{ transform:rotate(2.5deg); }
-  }
-  .ctd-depth{
-    position:absolute;
-    top:108px;
-    left:2px;
-    width:55px;
-    text-align:center;
-    font-size:0.86rem;
-    font-weight:600;
-    font-family:Georgia,serif;
-    color:var(--cyan);
-    opacity:0.8;
-    white-space:nowrap;
-  }
-  @media (max-width:880px){ .ctd-rig{ display:none; } }
-  .ctd-depth-mobile{
-    display:none;
-    position:fixed;
-    right:14px;
-    bottom:14px;
-    z-index:4;
-    background:var(--panel);
-    border:1px solid var(--panel-border);
-    border-radius:999px;
-    padding:6px 14px;
-    font-family:Georgia,serif;
-    font-size:0.8rem;
-    font-weight:600;
-    color:var(--cyan);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    pointer-events:none;
-  }
-  @media (max-width:880px){ .ctd-depth-mobile{ display:block; } }
-
-/* ---- side promo: quick link to IMPAS-Garraf ---- */
-.side-promo{
-  position:fixed; left:0; top:50%; transform:translateY(-50%);
-  z-index:6; display:flex; align-items:center; gap:11px;
-  background:var(--panel); border:1px solid var(--panel-border); border-left:none;
-  border-radius:0 16px 16px 0; padding:9px 18px 9px 9px; text-decoration:none;
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  box-shadow:8px 0 26px -10px rgba(0,0,0,0.6);
-  transition:transform .2s ease, box-shadow .2s ease;
-  max-width:190px;
-  animation:side-promo-fade .6s ease .35s backwards;
-}
-.side-promo:hover{ transform:translateY(-50%) translateX(5px); box-shadow:10px 0 30px -8px rgba(var(--cyan-rgb),0.35); }
-.side-promo-thumb{
-  position:relative; flex:0 0 auto; width:46px; height:46px; border-radius:50%; overflow:hidden;
-  border:1.5px solid rgba(var(--cyan-rgb),0.55); box-shadow:0 0 0 3px rgba(0,7,5,0.9), 0 4px 12px rgba(0,0,0,0.5);
-}
-.side-promo-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-.side-promo-ring{
-  position:absolute; inset:-5px; border-radius:50%; border:1px solid rgba(var(--cyan-rgb),0.45);
-  opacity:0; animation:side-promo-ping 3.2s cubic-bezier(0.2,0.6,0.35,1) infinite;
-}
 @keyframes side-promo-ping{ 0%{ transform:scale(0.82); opacity:0.55; } 70%{ opacity:0.12; } 100%{ transform:scale(1.28); opacity:0; } }
 @keyframes side-promo-fade{ from{ opacity:0; } to{ opacity:1; } }
-.side-promo-text{ display:flex; flex-direction:column; gap:1px; }
-.side-promo-tag{ font-size:0.58rem; text-transform:uppercase; letter-spacing:0.09em; color:#d9a441; font-weight:700; }
-.side-promo-title{ font-family:Georgia,serif; font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
-@media (max-width:640px){
-  .side-promo{ top:auto; bottom:14px; left:14px; transform:none; padding:0; width:52px; height:52px; border-radius:50%; justify-content:center; max-width:none; }
-  .side-promo:hover{ transform:scale(1.06); }
-  .side-promo-thumb{ width:100%; height:100%; }
-  .side-promo-text{ display:none; }
-}
-</style>
-</head>
+  </style>
+<link rel="preconnect" href="https://server.arcgisonline.com" />
+  
+  <meta name="description" content="Línies de recerca, campanyes oceanogràfiques i projectes de Marc Cerdà i Domènech: metalls antropogènics, hidrogeologia costanera i governança marina." />
+  <link rel="canonical" href="https://athanor8732.github.io/recerca/index.html" />
+  <meta property="og:site_name" content="Marc Cerdà i Domènech" />
+  <meta property="og:title" content="Recerca · Marc Cerdà i Domènech" />
+  <meta property="og:description" content="Línies de recerca, campanyes oceanogràfiques i projectes de Marc Cerdà i Domènech: metalls antropogènics, hidrogeologia costanera i governança marina." />
+  <meta property="og:url" content="https://athanor8732.github.io/recerca/index.html" />
+  <meta property="og:image" content="https://athanor8732.github.io/img/marc.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ca_ES" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Recerca · Marc Cerdà i Domènech" />
+  <meta name="twitter:description" content="Línies de recerca, campanyes oceanogràfiques i projectes de Marc Cerdà i Domènech: metalls antropogènics, hidrogeologia costanera i governança marina." />
+  <meta name="twitter:image" content="https://athanor8732.github.io/img/marc.png" />
+  </head>
 <body>
-  <a class="side-promo" href="../impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
-    <span class="side-promo-thumb">
-      <span class="side-promo-ring"></span>
-      <img src="../img/impas/thumb-impas.jpg" alt="" />
-    </span>
-    <span class="side-promo-text">
-      <span class="side-promo-tag">Projecte actiu</span>
-      <span class="side-promo-title">IMPAS-Garraf</span>
-    </span>
-  </a>
+  <a class="skip-link" href="#main">Salta al contingut</a>
+<div class="side-promos">
+      <a class="side-promo" href="../impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
+      <span class="side-promo-thumb">
+        <span class="side-promo-ring"></span>
+        <img src="../img/impas/thumb-impas.jpg" alt="" />
+      </span>
+      <span class="side-promo-text">
+        <span class="side-promo-tag">Projecte actiu</span>
+        <span class="side-promo-title">IMPAS-Garraf</span>
+      </span>
+    </a>
+</div>
 
-
-  <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
+    <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
 
   <div class="ctd-rig" aria-hidden="true">
     <svg class="ctd-davit" viewBox="0 0 46 24" fill="none" stroke="currentColor">
@@ -324,9 +133,13 @@ footer a{ color:var(--cyan); text-decoration:none; }
     <div class="ctd-depth" id="ctd-depth">0 m</div>
   </div>
 
-  <div class="wrap">
-    <div class="topbar">
-      <a class="brand" href="../index.html">
+  
+
+  <div class="wrap" id="main">
+      <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand-row">
+          <a class="brand" href="../index.html">
         <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
           <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
           <g stroke-width="1.1" opacity="0.5">
@@ -346,9 +159,22 @@ footer a{ color:var(--cyan); text-decoration:none; }
           <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
         </svg>
-        <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+        <span class="brand-text"><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
       </a>
+      <button class="topbar-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="topbar-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+        </div>
+        <nav class="topbar-nav" id="topbar-nav">
+        <a href="../recerca/index.html" data-nav="recerca" aria-current="page">Recerca</a>
+        <a href="../publicacions/index.html" data-nav="publicacions">Publicacions</a>
+        <a href="../docencia/index.html" data-nav="docencia">Docència</a>
+        <a href="../premsa/index.html" data-nav="premsa">Premsa</a>
+        <a href="../blog/index.html" data-nav="blog">Bloc</a>
+        <a href="../contacte/index.html" data-nav="contacte">Contacte</a>
+      </nav>
     </div>
+  </div>
 
     <p class="crumbs"><a href="../index.html">← Torna al perfil</a></p>
     <h1 class="page-title">Recerca</h1>
@@ -369,7 +195,7 @@ footer a{ color:var(--cyan); text-decoration:none; }
 
     <div class="prose">
       <p>Investigador en <strong>Geociències Marines</strong> i professor lector a la Universitat de Barcelona. La meva recerca pivota sobre dos eixos complementaris: la caracterització dels fluxos i distribució espaciotemporal de <strong>metalls i metal·loides d'origen antropogènic</strong> a la columna d'aigua i al sediment —incloent-hi la seva remobilització en escenaris de canvi climàtic— i la dinàmica dels <strong>residus flotants</strong>, amb especial atenció als plàstics, microplàstics i tovalloletes humides, des de rius i clavegueram fins a platges i sistemes costaners.</p>
-      <p>Metodològicament integro la sedimentologia, tècniques no destructives, la geoquímica elemental i la geocronologia, complementades amb instrumentació de fondejos marins. Paral·lelament, contribueixo de manera continuada a la <strong>hidrogeologia costanera</strong>, utilitzant isòtops de radi i radó com a traçadors per quantificar fluxos de nutrients, metalls i compostos emergents cap al mar.</p>
+      <p>Metodològicament integro la sedimentologia, les tècniques no destructives, la geoquímica elemental i la geocronologia, complementades amb instrumentació de fondejos marins. Paral·lelament, contribueixo de manera continuada a la <strong>hidrogeologia costanera</strong>, utilitzant isòtops de radi i radó com a traçadors per quantificar fluxos de nutrients, metalls i compostos emergents cap al mar.</p>
       <p>El 2025 vaig obtenir la plaça de professor lector a la UB i vaig iniciar el meu primer projecte com a investigador principal, <strong>IMPAS-Garraf</strong>, finançat per l'Agència Catalana de l'Aigua.</p>
     </div>
 
@@ -448,7 +274,7 @@ footer a{ color:var(--cyan); text-decoration:none; }
     <p class="table-footnote">Detall complet de les 11 campanyes més documentades. El resum més recent del CV en compta 14 en total.</p>
 
     <h2 class="section">Projectes de recerca</h2>
-    <p class="section-sub">14 aportacions en projectes competitius, del 2014 a l'actualitat</p>
+    <p class="section-sub">14 participacions en projectes competitius, del 2014 a l'actualitat</p>
 
     <p class="proj-group-label">Com a investigador principal</p>
     <a class="proj-card" href="../impas-garraf/index.html" style="display:block; text-decoration:none; color:inherit; transition:transform .15s ease, box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
@@ -526,12 +352,25 @@ footer a{ color:var(--cyan); text-decoration:none; }
     </div>
 
     <footer>
-      <a href="../index.html">← Torna al perfil</a> · Font: Curriculum vitae AQU Catalunya, gener 2026
+      <div class="affil">
+        <a href="https://www.ub.edu/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="../img/ub-logo-white.png" alt="Universitat de Barcelona" /></a>
+        <a href="https://www.ub.edu/geomarines/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="../img/gmar-logo-white.png" alt="Gmar · Grup de Recerca en Geociències Marines" /></a>
+      </div>
+      <a href="../index.html">← Torna al perfil</a>
+      <p class="cc-notice">Aquest contingut es distribueix sota llicència <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="noopener">Creative Commons Reconeixement-NoComercial-CompartirIgual 4.0</a></p>
     </footer>
   </div>
 
-  <script src="../js/stats.js" data-path="../data/stats.json"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script id="stats-inline">
+  (function () {
+    var stats = {"publications": 16, "citations": 276, "hIndex": 7, "citeScoreTop": "25%", "projects": 14, "campaigns": 14, "campaignsDetailed": 11, "seaDays": "160+", "intlCoauthorship": "55,6%", "researchLines": 3, "researchLinesLabel": "Tres eixos complementaris, des del sediment fins a la costa", "source": "OpenAlex (autor A5002623148), complementat amb el currículum AQU Catalunya", "updated": "2026-08-23"};
+    document.querySelectorAll("[data-stat]").forEach(function (el) {
+      var key = el.getAttribute("data-stat");
+      if (stats[key] !== undefined) el.textContent = stats[key];
+    });
+  })();
+</script>
+  <script src="../vendor/leaflet/leaflet.js"></script>
   <script>
     var sites = [
       { name: "Antàrtida", lat: -62.5, lon: -60.5, info: "CHALLENGE-2 · 12/01/25–20/02/25 · B/O Hespérides" },
@@ -557,61 +396,17 @@ footer a{ color:var(--cyan); text-decoration:none; }
     map.fitBounds(bounds, { padding: [30, 30] });
   </script>
 
-  <script>
-    (function () {
-      var rosette = document.getElementById('ctd-rosette');
-      var cable = document.getElementById('ctd-cable');
-      var wake = document.getElementById('ctd-wake');
-      var depth = document.getElementById('ctd-depth');
-      var depthMobile = document.getElementById('ctd-depth-mobile');
-      var sensor = document.getElementById('ctd-sensor');
-      if (!rosette || !cable) return;
-
-      var targetY = 0, currentY = 0;
-
-      function computeTarget() {
-        var scrollTop = window.scrollY || document.documentElement.scrollTop;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var frac = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
-        var maxDrop = window.innerHeight - 187;
-        targetY = frac * maxDrop;
-        var depthText = Math.round(frac * 1200) + ' m';
-        if (depth) depth.textContent = depthText;
-        if (depthMobile) depthMobile.textContent = depthText;
-      }
-
-      function render() {
-        currentY += (targetY - currentY) * 0.08;
-        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
-        rosette.style.transform = 'translateY(' + currentY + 'px)';
-        cable.style.height = currentY + 'px';
-        if (wake) {
-          var wakeH = Math.min(40, currentY);
-          wake.style.height = wakeH + 'px';
-          wake.style.top = (108 + currentY - wakeH) + 'px';
-        }
-        if (depth) depth.style.transform = 'translateY(' + (currentY + 79) + 'px)';
-        requestAnimationFrame(render);
-      }
-
-      window.addEventListener('scroll', computeTarget, { passive: true });
-      window.addEventListener('resize', computeTarget);
-      computeTarget();
-      requestAnimationFrame(render);
-
-      if (sensor && 'IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) {
-              sensor.classList.remove('ctd-sensor-flash');
-              void sensor.getBoundingClientRect();
-              sensor.classList.add('ctd-sensor-flash');
-            }
-          });
-        }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
-        document.querySelectorAll('h2.section').forEach(function (h) { io.observe(h); });
-      }
+  
+<script src="../js/ctd-rig.js" defer></script>
+  <script id="hamburger-init">
+    (function(){
+      var btn=document.querySelector('.topbar-toggle');if(!btn)return;
+      var nav=document.getElementById('topbar-nav');if(!nav)return;
+      btn.addEventListener('click',function(){
+        var open=nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded',open);
+      });
     })();
   </script>
-</body>
+  </body>
 </html>
