@@ -1,48 +1,46 @@
 #!/usr/bin/env python3
-"""Actualitza les dades científiques de la web des de Scopus.
+"""Actualitza les dades científiques de la web des d'OpenAlex.
 
-Consultes a les API d'Elsevier:
-  - Author Retrieval   -> h-index i cited-by-count globals de l'autor
-  - Scopus Search      -> llista de documents atribuïts a l'autor
-  - Abstract Retrieval -> llista d'autors de les publicacions noves
-  - Serial Title       -> quartil CiteScore de les revistes noves
+OpenAlex és una font oberta i lliure (sense clau API) que es pot consultar
+des de qualsevol IP, inclosos els runners de GitHub Actions.
 
-Estratègia de merge (hibrid curat + automàtic):
-  - data/publications.json és un seed curat (llistes d'autors, JIF, quartil
-    revisats manualment a partir del CV). Scopus només hi afegeix:
-      * recompte de cites actualitzat (citedby-count) per als DOI existents
-      * publicacions noves no presents al seed (amb autors i quartil de Scopus)
+Consultes:
+  - Author  -> h-index, cited_by_count i works_count globals de l'autor
+  - Works   -> llista d'obres atribuïdes a l'autor (articles/reviews amb DOI)
+
+Estratègia de merge (híbrid curat + automàtic):
+  - data/publications.json és un seed curat (llistes d'autors, JIF i quartil
+    revisats manualment a partir del CV). OpenAlex només hi afegeix:
+      * recompte de cites actualitzat (cited_by_count) per als DOI existents
+      * publicacions noves no presents al seed (amb autors i dades d'OpenAlex)
   - data/stats.json: s'actualitzen només els camps automàtics
     (publications, citations, hIndex, updated, source); els manuals es respecten.
 
 Ús:
-  SCOPUS_API_KEY=... [SCOPUS_INSTTOKEN=...] python3 scripts/update_scholarly_data.py
+  python3 scripts/update_scholarly_data.py
+  # opcional (polic pool d'OpenAlex): MAILTO=el-teu@correu.cat
 """
 import json
 import os
 import re
 import sys
 import time
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date
 
 # ---- Configuració ----
-AUTHOR_ID = "57193928271"
-ALLOWED_SUBTYPES = {"ar", "re"}        # Article, Review (els que compten com a publicació)
+AUTHOR_ID = "A5002623148"              # OpenAlex author id (Marc Cerdà-Domènech)
+ALLOWED_TYPES = {"article", "review"}  # tipus d'obra que compten com a publicació
 EXCLUDE_DOIS = set()                   # DOIs a ignorar (homònims, errades, etc.)
-BASE = "https://api.elsevier.com"
+BASE = "https://api.openalex.org"
+MAILTO = os.environ.get("MAILTO", "").strip()  # recomanat per al polite pool
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATS_PATH = os.path.join(ROOT, "data", "stats.json")
 PUBS_PATH = os.path.join(ROOT, "data", "publications.json")
-
-API_KEY = os.environ.get("SCOPUS_API_KEY", "").strip()
-INST_TOKEN = os.environ.get("SCOPUS_INSTTOKEN", "").strip()
-if not API_KEY:
-    print("ERROR: falta la variable d'entorn SCOPUS_API_KEY", file=sys.stderr)
-    sys.exit(2)
 
 # Camps de stats.json que l'script no toca (valors manuals del CV).
 MANUAL_STATS = {
@@ -51,11 +49,8 @@ MANUAL_STATS = {
 }
 
 
-def _headers():
-    h = {"Accept": "application/json", "X-ELS-APIKey": API_KEY}
-    if INST_TOKEN:
-        h["X-ELS-InstToken"] = INST_TOKEN
-    return h
+def _q():
+    return f"mailto={urllib.parse.quote(MAILTO)}&" if MAILTO else ""
 
 
 def get(url, tries=3):
@@ -63,7 +58,7 @@ def get(url, tries=3):
     last = None
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers=_headers())
+            req = urllib.request.Request(url, headers={"Accept": "application/json"})
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
@@ -73,8 +68,8 @@ def get(url, tries=3):
             except Exception:
                 pass
             last = RuntimeError(f"HTTP {e.code} a {url}: {body[:400]}")
-            if e.code in (401, 403):
-                raise last  # autenticació/entitlement: no val la pena reintentar
+            if e.code in (401, 403, 404):
+                raise last
             time.sleep(1.0 * (i + 1))
         except Exception as e:  # xarxa, timeout...
             last = e
@@ -86,135 +81,94 @@ def norm_doi(doi):
     if not doi:
         return ""
     d = doi.strip().lower()
-    return d.replace("https://doi.org/", "").replace("http://doi.org/", "")
+    for p in ("https://doi.org/", "http://doi.org/"):
+        if d.startswith(p):
+            d = d[len(p):]
+    return d
 
 
 def norm(s):
-    return re.sub(r"[^a-z0-9]", "", (s or "").lower())
+    """Normalitza per comparar: minúscules, sense diacrítics ni separadors."""
+    s = unicodedata.normalize("NFKD", (s or "").lower())
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]", "", s)
 
 
 def today():
     return date.today().isoformat()
 
 
-# ---- API Scopus ----
+# ---- API OpenAlex ----
 def author_metrics():
-    data = get(f"{BASE}/content/author/?author_id={AUTHOR_ID}")
-    prof = data.get("author-retrieval-profile", [])
-    if not prof:
-        raise RuntimeError("perfil d'autor buit")
-    cd = prof[0].get("coredata", {})
+    data = get(f"{BASE}/authors/{AUTHOR_ID}?{_q()}")
+    name = data.get("display_name", "")
+    if "cerda" not in norm(name):
+        print(f"  AVÍS: el perfil d'OpenAlex és «{name}» (comprova l'ID).", file=sys.stderr)
+    ss = data.get("summary_stats", {}) or {}
     return {
-        "hIndex": int(cd.get("h-index", 0) or 0),
-        "citations": int(cd.get("cited-by-count", 0) or 0),
-        "docCount": int(cd.get("document-count", 0) or 0),
+        "hIndex": int(ss.get("h_index", 0) or 0),
+        "citations": int(data.get("cited_by_count", 0) or 0),
+        "works": int(data.get("works_count", 0) or 0),
     }
 
 
-def scopus_docs():
-    """Tots els documents de l'autor (paginat)."""
-    docs = []
-    start = 0
-    q = urllib.parse.quote(f"AU-ID({AUTHOR_ID})")
-    fields = ("dc:creator,dc:title,prism:publicationName,prism:volume,"
-              "prism:issueIdentifier,prism:pageRange,prism:coverDate,prism:doi,"
-              "citedby-count,prism:issn,prism:eIssn,subtype,subtypeDescription")
+def author_works():
+    """Totes les obres de l'autor (paginació per cursor)."""
+    fields = ("id,doi,title,publication_year,publication_date,cited_by_count,"
+              "type,primary_location,biblio,authorships")
+    works = []
+    cursor = "*"
     while True:
-        url = (f"{BASE}/content/search/scopus?query={q}&sort=-coverDate"
-               f"&count=25&start={start}&fields={fields}")
+        url = (f"{BASE}/works?filter=author.id:{AUTHOR_ID}&per-page=200"
+               f"&sort=publication_date:desc&select={fields}&cursor={cursor}&{_q()}")
         data = get(url)
-        sr = data.get("search-results", {})
-        total = int(sr.get("opensearch:totalResults", 0) or 0)
-        entries = sr.get("entry", [])
-        if not entries:
+        results = data.get("results", []) or []
+        works.extend(results)
+        cursor = data.get("meta", {}).get("next_cursor")
+        if not cursor or not results:
             break
-        if isinstance(entries, dict):
-            entries = [entries]
-        docs.extend(entries)
-        start += len(entries)
-        if start >= total or not entries:
-            break
-        time.sleep(0.4)
-    return docs
+        time.sleep(0.2)
+    return works
 
 
-def abstract_authors(scopus_id):
-    """Llista d'autors formatada ("Surname, F. I.") amb l'autor objectiu en negreta."""
-    if not scopus_id:
-        return None
-    try:
-        data = get(f"{BASE}/content/abstract/scopus_id/{scopus_id}")
-    except Exception:
-        return None
-    resp = data.get("abstracts-retrieval-response", {})
-    auth = resp.get("authors", {}).get("author", [])
-    if isinstance(auth, dict):
-        auth = [auth]
+def format_authors(authorships):
+    """Llista d'autors (raw_author_name) amb l'autor objectiu en negreta."""
+    if not authorships:
+        return ""
     parts = []
-    for a in auth:
-        sn = a.get("ce:surname") or ""
-        gn = a.get("ce:given-name") or ""
-        if not sn:
-            pn = a.get("preferred-name", {})
-            sn = pn.get("ce:surname", "")
-            gn = gn or pn.get("ce:given-name", "")
-        initials = " ".join(w[0].upper() + "." for w in gn.split() if w)
-        name = f"{sn}, {initials}" if initials else sn
-        if str(a.get("@auid", "")) == AUTHOR_ID or "cerda" in norm(sn):
+    for a in authorships:
+        name = a.get("raw_author_name") or (a.get("author", {}) or {}).get("display_name", "") or ""
+        if not name:
+            continue
+        aid = ((a.get("author", {}) or {}).get("id", "") or "")
+        if AUTHOR_ID in aid or "cerda" in norm(name):
             name = f"<b>{name}</b>"
         parts.append(name)
     if not parts:
-        return None
+        return ""
     if len(parts) == 1:
         return parts[0]
     return ", ".join(parts[:-1]) + " & " + parts[-1]
 
 
-def _find_quartile(obj):
-    """Cerca recursiva d'un 'Q[1-4]' dins l'objecte Serial Title."""
-    if isinstance(obj, dict):
-        for v in obj.values():
-            r = _find_quartile(v)
-            if r:
-                return r
-    elif isinstance(obj, list):
-        for v in obj:
-            r = _find_quartile(v)
-            if r:
-                return r
-    elif isinstance(obj, str):
-        m = re.fullmatch(r"Q[1-4]", obj.strip())
-        if m:
-            return m.group(0)
-    return None
-
-
-def serial_quartile(issn):
-    if not issn:
-        return ""
-    try:
-        data = get(f"{BASE}/content/serial/title/issn:{issn}")
-        entries = data.get("serial-metadata-response", {}).get("entry", [])
-        if isinstance(entries, dict):
-            entries = [entries]
-        for e in entries:
-            q = _find_quartile(e)
-            if q:
-                return q
-    except Exception:
-        pass
-    return ""
+def pages_str(biblio):
+    biblio = biblio or {}
+    fp = (biblio.get("first_page") or "").strip()
+    lp = (biblio.get("last_page") or "").strip()
+    if fp and lp and fp != lp:
+        return f"{fp}-{lp}"
+    return fp or lp
 
 
 # ---- Merge ----
 def main():
-    print(">>> Mètriques globals de l'autor...")
+    print(">>> Mètriques globals de l'autor (OpenAlex)...")
     m = author_metrics()
-    print(f"    h-index={m['hIndex']}  cites={m['citations']}  docs={m['docCount']}")
+    print(f"    h-index={m['hIndex']}  cites={m['citations']}  obres={m['works']}")
 
-    print(">>> Llista de documents de Scopus...")
-    docs = scopus_docs()
-    print(f"    {len(docs)} documents trobats")
+    print(">>> Obres de l'autor...")
+    works = author_works()
+    print(f"    {len(works)} obres trobades")
 
     # Seed curat
     seed = {"publications": []}
@@ -231,45 +185,37 @@ def main():
             no_doi_seed.append(dict(p))
 
     new_entries = []
-    for e in docs:
-        if not isinstance(e, dict) or "error" in e:
-            continue
-        doi = norm_doi(e.get("prism:doi"))
-        sub = e.get("subtype", "") or ""
+    seen = set(by_doi)
+    for w in works:
+        doi = norm_doi(w.get("doi"))
+        wtype = w.get("type", "") or ""
         if doi and doi in by_doi:
-            # Actualitza cites (i guardem l'Scopus ID); la resta és curada
-            cb = e.get("citedby-count")
-            if cb is not None:
-                by_doi[doi]["citations"] = int(cb)
-            ident = e.get("dc:identifier", "") or ""
-            if ident:
-                by_doi[doi]["scopusId"] = ident.replace("SCOPUS_ID:", "")
+            # Actualitza cites; la resta és curada
+            by_doi[doi]["citations"] = int(w.get("cited_by_count", 0) or 0)
             continue
-        if not doi or sub not in ALLOWED_SUBTYPES or doi in EXCLUDE_DOIS:
+        if not doi or wtype not in ALLOWED_TYPES or doi in EXCLUDE_DOIS or doi in seen:
             continue
         # Publicació nova no present al seed
-        sid = (e.get("dc:identifier", "") or "").replace("SCOPUS_ID:", "")
-        time.sleep(0.4)
-        authors = abstract_authors(sid) or (e.get("dc:creator") or "")
-        issn = e.get("prism:issn") or e.get("prism:eIssn") or ""
-        quartile = serial_quartile(issn)
+        pl = w.get("primary_location") or {}
+        src = pl.get("source") or {}
+        biblio = w.get("biblio") or {}
         entry = {
-            "doi": e.get("prism:doi", doi),
-            "authors": authors,
-            "title": e.get("dc:title", "") or "",
-            "journal": e.get("prism:publicationName", "") or "",
-            "volume": e.get("prism:volume", "") or "",
-            "issue": e.get("prism:issueIdentifier", "") or "",
-            "pages": e.get("prism:pageRange", "") or "",
-            "year": int((e.get("prism:coverDate", "") or "0")[:4] or 0),
+            "doi": w.get("doi", "").replace("https://doi.org/", "").replace("http://doi.org/", ""),
+            "authors": format_authors(w.get("authorships") or []),
+            "title": w.get("title", "") or "",
+            "journal": src.get("display_name", "") or "",
+            "volume": (biblio.get("volume") or "").strip(),
+            "issue": (biblio.get("issue") or "").strip(),
+            "pages": pages_str(biblio),
+            "year": int(w.get("publication_year", 0) or 0),
             "jif": "",
-            "quartile": quartile or "—",
-            "citations": int(e.get("citedby-count", 0) or 0),
-            "scopusId": sid,
-            "issn": issn,
+            "quartile": "—",   # OpenAlex no aporta quartil: es cura manualment
+            "citations": int(w.get("cited_by_count", 0) or 0),
+            "openalexId": (w.get("id", "") or "").replace("https://openalex.org/", ""),
             "auto": True,
         }
         new_entries.append(entry)
+        seen.add(doi)
         print(f"    + NOVA: {entry['title'][:75]} ({entry['year']})")
 
     merged = list(by_doi.values()) + no_doi_seed + new_entries
@@ -290,7 +236,7 @@ def main():
     stats["citations"] = m["citations"]
     stats["hIndex"] = m["hIndex"]
     stats["updated"] = today()
-    stats["source"] = "Scopus (autor 57193928271) · Curriculum vitae AQU Catalunya"
+    stats["source"] = "OpenAlex (autor A5002623148), complementat amb el currículum AQU Catalunya"
     with open(STATS_PATH, "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
         f.write("\n")

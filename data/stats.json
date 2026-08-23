@@ -1,7 +1,7 @@
 {
-  "publications": 14,
-  "citations": 213,
-  "hIndex": 6,
+  "publications": 16,
+  "citations": 275,
+  "hIndex": 7,
   "citeScoreTop": "25%",
   "projects": 14,
   "campaigns": 14,
@@ -10,6 +10,6 @@
   "intlCoauthorship": "55,6%",
   "researchLines": 3,
   "researchLinesLabel": "Tres eixos complementaris, des del sediment fins a la costa",
-  "source": "Curriculum vitae AQU Catalunya, gener 2026",
-  "updated": "2026-08-19"
+  "source": "OpenAlex (autor A5002623148), complementat amb el currículum AQU Catalunya",
+  "updated": "2026-08-23"
 }
