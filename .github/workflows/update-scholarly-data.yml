@@ -1,0 +1,39 @@
+name: Actualitzar dades científiques (Scopus)
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"   # dilluns 03:17 UTC (fora de puntes)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Executa l'actualització Scopus
+        env:
+          SCOPUS_API_KEY: ${{ secrets.SCOPUS_API_KEY }}
+          SCOPUS_INSTTOKEN: ${{ secrets.SCOPUS_INSTTOKEN }}
+        run: python3 scripts/update_scholarly_data.py
+
+      - name: Commit i push si hi ha canvis
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/stats.json data/publications.json
+          if git diff --cached --quiet; then
+            echo "Sense canvis nou."
+          else
+            git commit -m "Actualització automàtica de dades científiques (Scopus)
+
+            Generat per .github/workflows/update-scholarly-data.yml"
+            git push
+          fi
