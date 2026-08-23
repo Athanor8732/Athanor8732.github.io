@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sobre mi · Marc Cerdà i Domènech</title>
+<title>Docència · Marc Cerdà i Domènech</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 <style>
 :root{
@@ -44,16 +44,6 @@ position:sticky;top:0;z-index:5;background:radial-gradient(ellipse 900px 500px a
 h1.page-title{ font-family:Georgia,serif; font-weight:700; font-size:2rem; margin:0 0 6px; }
 p.page-sub{ color:var(--muted); font-size:0.92rem; margin:0 auto 36px; max-width:560px; }
 
-.award{
-  display:flex; align-items:center; gap:12px; justify-content:center;
-  background:linear-gradient(150deg, rgba(242,193,78,0.12), rgba(255,255,255,0.025));
-  border:1px solid rgba(242,193,78,0.35); border-radius:999px;
-  padding:10px 20px; margin:0 auto 40px; max-width:fit-content;
-}
-.award svg{ width:20px; height:20px; color:var(--gold); flex:0 0 auto; }
-.award p{ margin:0; font-size:0.84rem; color:#f4e4b8; }
-.award b{ color:var(--gold); }
-
 .prose{ background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:26px 28px; margin-bottom:16px; }
 .prose p{ font-size:0.96rem; line-height:1.8; color:#dbe6e8; margin:0 0 18px; }
 .prose p:last-child{ margin-bottom:0; }
@@ -61,6 +51,19 @@ p.page-sub{ color:var(--muted); font-size:0.92rem; margin:0 auto 36px; max-width
 
 h2.section{ font-family:Georgia,serif; font-weight:700; font-size:1.4rem; margin:52px 0 24px; text-align:center; }
 
+/* ---- teaching key figures ---- */
+.teach-stats{
+  display:flex; flex-wrap:wrap; gap:0; justify-content:center;
+  margin:0 0 8px; background:var(--panel); border:1px solid var(--panel-border);
+  border-radius:14px; padding:20px 8px;
+}
+.teach-stats .ts{ flex:1 1 130px; text-align:center; padding:6px 10px; border-left:1px solid var(--panel-border); }
+.teach-stats .ts:first-child{ border-left:none; }
+.teach-stats .ts b{ display:block; color:var(--cyan); font-family:Georgia,serif; font-size:1.3rem; }
+.teach-stats .ts span{ display:block; color:var(--muted); font-size:0.64rem; text-transform:uppercase; letter-spacing:0.07em; margin-top:3px; }
+@media (max-width:480px){ .teach-stats .ts{ flex-basis:50%; } .teach-stats .ts:nth-child(3){ border-left:none; } }
+
+/* ---- timeline (shared) ---- */
 .timeline{ position:relative; padding-left:28px; }
 .timeline::before{ content:''; position:absolute; left:6px; top:6px; bottom:6px; width:1px; background:var(--panel-border); }
 .tl-item{ position:relative; margin-bottom:22px; }
@@ -70,9 +73,30 @@ h2.section{ font-family:Georgia,serif; font-weight:700; font-size:1.4rem; margin
 .tl-item h3{ margin:2px 0 4px; font-family:Georgia,serif; font-size:1rem; color:#fff; }
 .tl-item p{ margin:0; color:var(--muted); font-size:0.85rem; line-height:1.55; }
 
-.facts{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:8px; }
-.facts .badge{ padding:9px 18px; border-radius:999px; border:1px solid var(--panel-border); background:var(--panel); font-size:0.78rem; color:var(--muted); }
-.facts .badge b{ color:var(--text); font-weight:600; }
+/* ---- subjects grouped by program ---- */
+.prog-list{ display:flex; flex-direction:column; gap:14px; }
+.prog-group{
+  background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--cyan);
+  border-radius:10px; padding:18px 22px;
+}
+.prog-group h3{ margin:0 0 3px; font-family:Georgia,serif; font-size:1.02rem; color:#fff; }
+.prog-group .prog-inst{ color:var(--muted); font-size:0.78rem; margin:0 0 12px; }
+.prog-group ul{ margin:0; padding-left:18px; color:#dbe6e8; font-size:0.9rem; line-height:1.75; }
+.prog-group li::marker{ color:var(--cyan); }
+
+/* ---- supervised works ---- */
+.superv-list{ display:flex; flex-direction:column; gap:10px; }
+.superv-item{
+  background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--coral);
+  border-radius:8px; padding:14px 18px;
+}
+.superv-item .s-type{ color:var(--coral); font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; }
+.superv-item h4{ margin:3px 0 4px; font-family:Georgia,serif; font-size:0.95rem; color:#fff; font-weight:600; }
+.superv-item p{ margin:0; color:var(--muted); font-size:0.82rem; line-height:1.5; }
+
+.note{
+  margin-top:10px; font-size:0.8rem; color:var(--muted); text-align:center; line-height:1.6;
+}
 
 .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:44px; }
 .cta-row a{
@@ -311,87 +335,138 @@ footer a{ color:var(--cyan); text-decoration:none; }
 
     <div class="hero">
       <div class="hero-photo"><img src="../img/marc.png" alt="Marc Cerdà i Domènech" /></div>
-      <h1 class="page-title">Sobre mi</h1>
-      <p class="page-sub">Investigador en geociències marines i professor lector a la Universitat de Barcelona</p>
+      <h1 class="page-title">Docència</h1>
+      <p class="page-sub">Professor lector a la Universitat de Barcelona; docència universitària des del 2016 en graus, màsters i bàtxelors de dues universitats</p>
     </div>
 
-    <div class="award">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.4 5.5 6 .5-4.5 4 1.4 6-5.3-3.2-5.3 3.2 1.4-6-4.5-4 6-.5z"/></svg>
-      <p><b>Premi Carmina Virgili 2025</b> — Institut d'Estudis Catalans</p>
+    <div class="teach-stats">
+      <div class="ts"><b>1.249</b><span>Hores docents</span></div>
+      <div class="ts"><b>17</b><span>Assignatures</span></div>
+      <div class="ts"><b>2</b><span>Universitats</span></div>
+      <div class="ts"><b>8</b><span>Treballs dirigits</span></div>
     </div>
 
     <div class="prose">
-      <p>Sóc investigador en <strong>Geociències Marines</strong> i professor lector a la Universitat de Barcelona (UB). Llicenciat en Ciències Ambientals (UAB), Màster en Oceanografia i Gestió del Medi Marí (UB) i Doctor en Ciències del Mar (UB), he consolidat una trajectòria centrada en l'estudi dels impactes antropogènics a l'oceà amb una mirada integradora que combina la recerca i la transferència de coneixement orientada a la gestió ambiental.</p>
-      <p>La meva trajectòria s'articula en tres períodes. En el primer (2012–2014), al Laboratori de Radioactivitat de la UAB, em vaig iniciar en traçadors radioactius naturals per quantificar la descàrrega d'aigua subterrània (SGD), una línia que va culminar en una contribució metodològica rellevant durant el doctorat, àmpliament citada i aplicada a casos reals a la badia de Portmán (Múrcia). El segon període (2015–2020), com a investigador predoctoral a la UB, va enllaçar la hidrogeologia costanera amb la geociència marina aplicada i una estada de recerca al Centre Renard de Geologia Marina (Bèlgica).</p>
-      <p>El tercer període (2019–actualitat) consolida les línies sobre metalls i residus flotants en el marc del Grup de Recerca en Geociències Marines, amb publicacions en revistes d'alt impacte i participació en projectes nacionals i internacionals. El 2025 vaig obtenir la plaça de professor lector a la UB i vaig iniciar el meu primer projecte com a investigador principal, IMPAS-Garraf, finançat per l'Agència Catalana de l'Aigua. Aquell mateix any vaig rebre el Premi Carmina Virgili de la Secció de Ciències i Tecnologia de l'Institut d'Estudis Catalans.</p>
-      <p>La transferència ha estat un vector constant de la meva trajectòria: com a consultor sènior a Eurofins Cavendish (2022–2023) vaig donar suport a la Direcció de Platges de Barcelona en la gestió integral del litoral, i he participat com a expert en processos legislatius al Parlament de Catalunya i en informes del Consell de Treball, Econòmic i Social de Catalunya — reforçant sempre el vincle entre l'evidència científica i la regulació pública.</p>
+      <p>La docència és un eix central de la meva trajectòria. Des del curs <strong>2016/2017</strong> he impartit <strong>1.249 hores</strong> en <strong>17 assignatures</strong> diferents — a més de la direcció de treballs finals de grau, màster i bàtxelor — a la <strong>Universitat de Barcelona</strong> i la <strong>Universitat Carlemany</strong>, amb una mitjana de 178 hores anuals.</p>
+      <p>La meva feina a l'aula abasta des dels fonaments de les ciències del mar al grau fins a mòduls avançats de màster, i combina teoria, pràctiques de laboratori i campanyes de mar, amb una mirada pràctica i orientada a la resolució de problemes ambientals reals. A banda de les assignatures reglades, he dirigit <strong>3 treballs finals de grau, 2 de màster i 3 de bàtxelor</strong>, i he participat en un projecte d'innovació docent de la UB.</p>
     </div>
 
-    <h2 class="section">Formació</h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <span class="tl-date">2020</span>
-        <h3>Doctorat en Ciències del Mar</h3>
-        <p>Universitat de Barcelona · Cum Laude · Directors: Miquel Canals i Artigas, Jaime Frigola Ferrer</p>
-      </div>
-      <div class="tl-item">
-        <span class="tl-date">2014</span>
-        <h3>Màster en Oceanografia i Gestió del Medi Marí</h3>
-        <p>Universitat de Barcelona</p>
-      </div>
-      <div class="tl-item">
-        <span class="tl-date">2013</span>
-        <h3>Llicenciatura en Ciències Ambientals</h3>
-        <p>Universitat Autònoma de Barcelona</p>
-      </div>
-    </div>
-
-    <h2 class="section">Trajectòria professional</h2>
+    <h2 class="section">Trajectòria docent</h2>
     <div class="timeline">
       <div class="tl-item">
         <span class="tl-date">2025 — Actualitat</span>
         <h3>Professor Lector</h3>
-        <p>Dept. de Dinàmica de la Terra i de l'Oceà, Universitat de Barcelona</p>
+        <p>Departament de Dinàmica de la Terra i de l'Oceà · Universitat de Barcelona</p>
       </div>
       <div class="tl-item">
-        <span class="tl-date">2023 — 2025</span>
-        <h3>Tècnic Superior de Recerca Grup I</h3>
-        <p>Universitat de Barcelona</p>
-      </div>
-      <div class="tl-item">
-        <span class="tl-date">2022 — 2023</span>
-        <h3>Consultor Ambiental Marí Sènior</h3>
-        <p>Eurofins Cavendish S.L.U</p>
+        <span class="tl-date">2022 — 2025</span>
+        <h3>Professor Col·laborador</h3>
+        <p>Àrea de Ciències Ambientals · Universitat Carlemany</p>
       </div>
       <div class="tl-item">
         <span class="tl-date">2019 — 2025</span>
         <h3>Professor Associat</h3>
-        <p>Universitat de Barcelona (compatible amb altres càrrecs)</p>
+        <p>Departament de Dinàmica de la Terra i de l'Oceà · Universitat de Barcelona</p>
       </div>
       <div class="tl-item">
-        <span class="tl-date">2015 — 2019</span>
-        <h3>Investigador Predoctoral en Formació</h3>
-        <p>Universitat de Barcelona</p>
-      </div>
-      <div class="tl-item">
-        <span class="tl-date">2011 — 2014</span>
-        <h3>Tècnic de Suport al Grau de Ciències Ambientals</h3>
-        <p>Universitat Autònoma de Barcelona</p>
+        <span class="tl-date">2016 — Inici</span>
+        <h3>Primera docència universitària</h3>
+        <p>Màster en Ciència i Gestió Integral de l'Aigua · Universitat de Barcelona</p>
       </div>
     </div>
 
-    <h2 class="section">Docència</h2>
-    <div class="facts">
-      <span class="badge"><b>Grau en Ciències del Mar</b> — Universitat de Barcelona</span>
-      <span class="badge"><b>Màster en Oceanografia i Gestió del Medi Marí</b> — Universitat de Barcelona</span>
-      <span class="badge"><b>Bàtxelor en Ciències Ambientals / Data Science</b> — Universitat Carlemany</span>
+    <h2 class="section">Assignatures impartides</h2>
+    <div class="prog-list">
+      <div class="prog-group">
+        <h3>Grau en Ciències del Mar</h3>
+        <p class="prog-inst">Universitat de Barcelona</p>
+        <ul>
+          <li>Iniciació a les Ciències del Mar</li>
+          <li>Geologia Marina</li>
+          <li>Ambients i Processos Sedimentaris Marins</li>
+          <li>Biogeoquímica Marina</li>
+          <li>Oceanografia Dinàmica</li>
+          <li>Oceanografia Química</li>
+          <li>Dinàmica Sedimentària Litoral</li>
+          <li>Impacte Antropogènic en el Medi Marí</li>
+          <li>Cartografia d'hàbitats marins</li>
+          <li>Disseny de Projecte: Iniciació als TFG</li>
+          <li>Treball de Fi de Grau</li>
+        </ul>
+      </div>
+      <div class="prog-group">
+        <h3>Màster en Ciència i Gestió Integral de l'Aigua</h3>
+        <p class="prog-inst">Universitat de Barcelona</p>
+        <ul>
+          <li>Aigües Marines</li>
+          <li>Tractament Biològic de l'Aigua</li>
+        </ul>
+      </div>
+      <div class="prog-group">
+        <h3>Màster en Oceanografia i Gestió del Medi Marí</h3>
+        <p class="prog-inst">Universitat de Barcelona</p>
+        <ul>
+          <li>Ambients i Processos Sedimentaris Marins</li>
+          <li>Cartografia d'Habitats Marins</li>
+          <li>Pràctiques de Mar</li>
+        </ul>
+      </div>
+      <div class="prog-group">
+        <h3>Bàtxelor en Ciències Ambientals</h3>
+        <p class="prog-inst">Universitat Carlemany</p>
+        <ul>
+          <li>Sistemes d'Informació Geogràfica</li>
+          <li>Tècniques d'Anàlisi de la Contaminació</li>
+        </ul>
+      </div>
+      <div class="prog-group">
+        <h3>Bàtxelor en Data Science</h3>
+        <p class="prog-inst">Universitat Carlemany</p>
+        <ul>
+          <li>Sistemes d'Informació Geogràfica</li>
+        </ul>
+      </div>
     </div>
-    <p style="text-align:center; margin-top:18px;"><a href="../docencia/index.html" style="color:var(--cyan); text-decoration:none; font-weight:600; font-size:0.88rem;">Veure el detall docent →</a></p>
+
+    <h2 class="section">Direcció de treballs finals</h2>
+    <div class="superv-list">
+      <div class="superv-item">
+        <span class="s-type">Treball de Fi de Grau</span>
+        <h4>Impacte dels residus miners en la fauna endobentònica marina</h4>
+        <p>Marcos Martínez · Grau en Ciències del Mar, UB (2024-25)</p>
+      </div>
+      <div class="superv-item">
+        <span class="s-type">Treball de Fi de Grau</span>
+        <h4>Quantificació de les emissions de contaminants atmosfèrics dels creuers turístics al Port de Barcelona</h4>
+        <p>Laura Seoane · Grau en Ciències del Mar, UB (2024-25) — base del projecte EMICREUER-BCN</p>
+      </div>
+      <div class="superv-item">
+        <span class="s-type">Treball de Fi de Màster</span>
+        <h4>Estudi de les traces aglutinades de l'Eocè de Sant Quirze de Besora</h4>
+        <p>Milene D. Bermúdez Yépez · Màster en Paleobiologia i Registre Fòssil, UB (2024-25)</p>
+      </div>
+      <div class="superv-item">
+        <span class="s-type">Treball de Fi de Bàtxelor</span>
+        <h4>Revisió i proposta de millora del pla de conservació marina del coral <i>Desmophyllum pertusum</i> (Trondheim, Noruega)</h4>
+        <p>Lesia Trubat · Bàtxelor en Ciències Ambientals, Universitat Carlemany (2023-24)</p>
+      </div>
+      <div class="superv-item">
+        <span class="s-type">Treball de Fi de Bàtxelor</span>
+        <h4>Impacte del canvi climàtic en la <i>Caulerpa prolifera</i> a la Mediterrània</h4>
+        <p>Víctor Cazorla · Universitat Carlemany</p>
+      </div>
+    </div>
+    <p class="note">3 treballs finals de grau, 2 de màster i 3 de bàtxelor dirigits entre la UB i la Universitat Carlemany.</p>
+
+    <h2 class="section">Innovació docent</h2>
+    <div class="prose">
+      <p>He participat en el projecte d'innovació docent <strong>«2024PEDC-CTT/001»</strong> de la Universitat de Barcelona, amb Josep Oriol Ferrer García com a investigador principal, orientat a millorar la docència en ciències de la Terra i de l'oceà.</p>
+    </div>
 
     <div class="cta-row">
       <a href="../recerca/index.html">Recerca →</a>
       <a href="../publicacions/index.html">Publicacions →</a>
-      <a href="../premsa/index.html">Premsa i divulgació →</a>
+      <a href="../sobre-mi/index.html">Sobre mi →</a>
     </div>
 
     <footer>
