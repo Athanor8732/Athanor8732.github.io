@@ -1,0 +1,34 @@
+---
+title: Salvador Illa i el futur de les polítiques climàtiques a Catalunya
+slug: salvador-illa-politiques-climatiques
+date: 2024-08-13
+date_display: 13 d'agost de 2024
+excerpt: Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant.
+image: img/posts/salvador-illa.jpg
+image_alt: Imatge simbòlica de política institucional
+source_url: https://cerdadomenech.blog/2024/08/13/salvador-illa-i-el-futur-de-les-politiques-climatiques-a-catalunya/
+source_note: Publicat el 13 d'agost del 2024 — Marc Cerdà i Domènech
+---
+Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant. Tot i que encara és massa d'hora per saber quin serà el programa que presentarà el nou govern, el posicionament del Partit Socialista en els darrers anys ens permet fer-nos una idea aproximada de quines seran les línies estratègiques generals del nou govern.
+
+El que sí que sabem és que la quinzena legislatura del Parlament de Catalunya serà la del compliment o incompliment dels acords climàtics. Ara mateix l'objectiu de reduir un 40% les emissions l'any 2030 com estableix la Llei de Canvi Climàtic es troba ben lluny. D'ençà de la pandèmia, les emissions de gasos d'efecte hivernacle s'han estancat. No es evolucionen com deurien i, de fet, l'any 2022 la reducció va ser només de mig punt. Un exemple tangible de l'insuficient abast que han tingut les polítiques climàtiques de l'executiu de Pere Aragonès.
+
+Els Socialistes es van comprometre a aplicar mesures, sense concretar gaire, per reduir les emissions un 20% en quatre anys.
+
+El repte del nou govern de la Generalitat i de la macroconselleria de Sílvia Paneque – que inclou Territori, Habitatge i Transició Ecològica – és aconseguir reduir un 6% cada any, un 24% en els quatre anys de legislatura si no hi ha eleccions anticipades. Això suposa un repte majúscul que només és possible si es promouen canvis estructurals, especialment en l'àmbit del transport i l'energia. Però també, és necessari una transformació del model productiu català massa dependent d'un sector amb una elevada petjada de carboni com és el turisme. Canvis que amb un govern socialista sembla complicat que es produeixin.
+
+El primer senyal d'alerta que no es podria complir amb l'agenda climàtica es va poder veure amb el resultat de les negociacions per l'investidura. L'acord els Comuns amb els Socialistes va incloure, sense concretar gaire, mesures per reduir les emissions un 20% en quatre anys. Això significa quatre punts percentuals menys del que seria necessari per complir amb la Llei de Canvi Climàtic i arribar a una reducció del 40% l'any 2030, el que posa en qüestió, abans de començar la legislatura, els objectius de reducció. Tota una declaració d'intencions de la frenada en l'ambició climàtica per part del nou govern i els seu socis d'investidura.
+
+Tot i aquesta reducció, com s'aconseguirà arribar a la reducció del 20% de les emissions en quatre anys és un altre problema per Salvador Illa. Si ho ha de fer només amb les propostes incloses dins de l'acord d'investidura amb Esquerra i Comuns, serà pràcticament impossible assolir l'objectiu de reducció. D'una banda, perquè en l'acord que van subscriure els de Marta Rovira, el canvi climàtic és una qüestió circumstancial. Com a exemple anecdòtic, el concepte "canvi climàtic" només apareix una vegada en tot el redactat i les propostes en l'àmbit climàtic es redueixen dues mesures genèriques. Per Esquerra, encara en estat de xoc pels resultats electorals, sembla que aquesta no és una prioritat.
+
+I, d'altra banda, perquè, si bé és cert que el pacte amb els Comuns concreta més la política climàtica, el detall de l'acord és poc ambiciós. De fet, moltes del punts pactats són d'execució de mesures com els pressupostos de carboni que fa anys que segons la Llei de Canvi Climàtic s'haurien d'haver fet. És a dir, es pacta fer complir la llei. És cert que el desplegament total de la Llei de Canvi Climàtic és una tasca pendent dels darrers governs, tantmateix, res fa pensar que aquesta legislatura sigui la definitiva.
+
+Per als Socialistes, tal com han anat defensat al llarg dels darrers anys al Parlament, la peça de caça major serà la transició energètica on a Catalunya està a les beceroles. El govern de Pere Aragonès ha estat incapaç d'implementar un pla d'energies renovables de proximitat, local i descentralitzat i l'entrada de Salvador Illa al Palau de la Generalitat pot fer decantar la balança cap al model que s'ha imposat, per exemple, a l'Aragó. Un model de grans infraestructures energètiques, és a dir, de grans extensions de molins de vent i plaques solars controlades per transnacionals de l'energia com és el projecte del parc eòlic marí de Roses. El temps en dirà.
+
+L'altra pedra a la sabata dels Socialistes són els grans projectes urbanístics i d'infraestructures que han defensat durant els darrers anys, especialment, la culminació del Quart Cinturó, la construcció del Hard Rock i l'ampliació de l'aeroport. Els de Salvador Illa s'han adonat que sense un pas enrere, teòric, en aquests projectes, seria impossible recollir els suports d'Esquerra i els Comuns. Aquest va ser el motiu pel qual els Comuns van vetar els pressupostos d'Aragonès. Tanmateix, com encaixa el discurs expansionista del Partit Socialista d'aquests anys amb els acords, encara s'ha de veure. Ara mateix, però, la paralització del Hard Rock s'ha deixat en mans d'una estratègia de dubtós filibusterisme administratiu.
+
+Tot rema perquè aquesta legislatura, sigui una legislatura de viratge conservador de les polítiques climàtiques i ambientals.
+
+Queden moltes carpetes obertes com les mesures de millora i ampliació de la xarxa de transport públic que tot incloure's dins de l'acord d'investidura queden força restringides a l'àmbit metropolità. Part del país com el Pirineu o les Terres de l'Ebre han quedat relegades a un segon pla. També quedarà pendent l'aprovació dels pressupostos de carboni i de l'impost a les emissions de gasos d'efecte hivernacle a l'activitat econòmica. Dues mesures incloses en la Llei de Canvi Climàtic que Esquerra no va ser capaç d'implementar.
+
+Tot sembla indicar que aquesta legislatura, tot i la importància que té per la seva proximitat a la primera fita de reducció de les emissions, sigui una legislatura de viratge conservador en les polítiques climàtiques i ambientals. No és una qüestió de retocs estètics. L'acord d'investidura hauria de ser una eina per forçar als Socialistes a implementar una agenda radical en matèria climàtica, però la inconcreció, la falta de calendaris i les bones intencions del redactat deixaran en paper mullat molt dels acords, el que deixa via lliure a l'ala més conservadora en qüestions ambientals i climàtiques del Partit Socialista. Ho anirem analitzant.

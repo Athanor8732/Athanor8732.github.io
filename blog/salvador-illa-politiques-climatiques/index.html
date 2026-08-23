@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Salvador Illa i el futur de les polítiques climàtiques a Catalunya · Marc Cerdà i Domènech</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg-deep:#000705; --bg-mid:#04140f;
+  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
+  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;
+}
+.wrap{ max-width:648px; margin:0 auto; padding:0 24px 90px; }
+.topbar{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:44px;
+  position:sticky; top:0; z-index:5;
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+}
+.topbar .mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
+.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
+.topbar span{
+  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
+  text-transform:uppercase; font-size:0.76rem; color:var(--muted);
+}
+.topbar strong{ color:var(--text); font-style:normal; }
+.crumbs{ text-align:center; margin-bottom:8px; }
+.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
+h1.page-title{
+  font-family:Georgia,serif; font-weight:700; font-size:2rem; text-align:center;
+  margin:8px 0 6px;
+}
+p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 0 40px; }
+.posts{ display:flex; flex-direction:column; gap:16px; }
+.post-card{
+  display:flex; gap:18px; text-decoration:none; color:inherit;
+  background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--cyan);
+  border-radius:10px; padding:18px; transition:transform .15s ease, box-shadow .15s ease;
+}
+.post-card:hover{ transform:translateY(-2px); box-shadow:0 10px 26px -10px var(--cyan); }
+.post-card img{ width:110px; height:110px; object-fit:cover; border-radius:8px; flex:0 0 auto; }
+.post-card .meta{ text-transform:uppercase; letter-spacing:0.08em; font-size:0.66rem; color:var(--cyan); font-weight:700; margin:0 0 6px; }
+.post-card h2{ font-family:Georgia,serif; font-size:1.1rem; margin:0 0 6px; color:#fff; }
+.post-card p.excerpt{ margin:0; color:var(--muted); font-size:0.85rem; line-height:1.5; }
+.article-hero{ width:100%; max-height:340px; object-fit:cover; border-radius:12px; margin-bottom:26px; }
+.article-meta{ text-align:center; color:var(--muted); font-size:0.8rem; margin:0 0 34px; text-transform:uppercase; letter-spacing:0.06em; }
+.article-body p{ font-size:1.02rem; line-height:1.75; color:#dbe6e8; margin:0 0 22px; }
+.article-body blockquote{
+  margin:32px 0; padding:4px 0 4px 22px; border-left:3px solid var(--cyan);
+  font-family:Georgia,serif; font-style:italic; font-size:1.2rem; color:#fff;
+}
+.source-note{
+  margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border);
+  color:var(--muted); font-size:0.82rem; text-align:center;
+}
+.source-note a{ color:var(--cyan); text-decoration:none; }
+footer{ margin-top:56px; text-align:center; color:var(--muted); font-size:0.76rem; }
+footer a{ color:var(--cyan); text-decoration:none; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+  <a class="brand" href="../../index.html">
+    <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
+  <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+  <g stroke-width="1.1" opacity="0.5">
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+    <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+  </g>
+  <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+</svg>
+    <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+  </a>
+</div>
+    <p class="crumbs"><a href="../index.html">← Tots els articles</a></p>
+    <h1 class="page-title">Salvador Illa i el futur de les polítiques climàtiques a Catalunya</h1>
+    <p class="article-meta">13 d'agost de 2024</p>
+    <img class="article-hero" src="../../img/posts/salvador-illa.jpg" alt="Imatge simbòlica de política institucional" />
+    <div class="article-body">
+<p>Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant. Tot i que encara és massa d&#x27;hora per saber quin serà el programa que presentarà el nou govern, el posicionament del Partit Socialista en els darrers anys ens permet fer-nos una idea aproximada de quines seran les línies estratègiques generals del nou govern.</p>
+<p>El que sí que sabem és que la quinzena legislatura del Parlament de Catalunya serà la del compliment o incompliment dels acords climàtics. Ara mateix l&#x27;objectiu de reduir un 40% les emissions l&#x27;any 2030 com estableix la Llei de Canvi Climàtic es troba ben lluny. D&#x27;ençà de la pandèmia, les emissions de gasos d&#x27;efecte hivernacle s&#x27;han estancat. No es evolucionen com deurien i, de fet, l&#x27;any 2022 la reducció va ser només de mig punt. Un exemple tangible de l&#x27;insuficient abast que han tingut les polítiques climàtiques de l&#x27;executiu de Pere Aragonès.</p>
+<p>Els Socialistes es van comprometre a aplicar mesures, sense concretar gaire, per reduir les emissions un 20% en quatre anys.</p>
+<p>El repte del nou govern de la Generalitat i de la macroconselleria de Sílvia Paneque – que inclou Territori, Habitatge i Transició Ecològica – és aconseguir reduir un 6% cada any, un 24% en els quatre anys de legislatura si no hi ha eleccions anticipades. Això suposa un repte majúscul que només és possible si es promouen canvis estructurals, especialment en l&#x27;àmbit del transport i l&#x27;energia. Però també, és necessari una transformació del model productiu català massa dependent d&#x27;un sector amb una elevada petjada de carboni com és el turisme. Canvis que amb un govern socialista sembla complicat que es produeixin.</p>
+<p>El primer senyal d&#x27;alerta que no es podria complir amb l&#x27;agenda climàtica es va poder veure amb el resultat de les negociacions per l&#x27;investidura. L&#x27;acord els Comuns amb els Socialistes va incloure, sense concretar gaire, mesures per reduir les emissions un 20% en quatre anys. Això significa quatre punts percentuals menys del que seria necessari per complir amb la Llei de Canvi Climàtic i arribar a una reducció del 40% l&#x27;any 2030, el que posa en qüestió, abans de començar la legislatura, els objectius de reducció. Tota una declaració d&#x27;intencions de la frenada en l&#x27;ambició climàtica per part del nou govern i els seu socis d&#x27;investidura.</p>
+<p>Tot i aquesta reducció, com s&#x27;aconseguirà arribar a la reducció del 20% de les emissions en quatre anys és un altre problema per Salvador Illa. Si ho ha de fer només amb les propostes incloses dins de l&#x27;acord d&#x27;investidura amb Esquerra i Comuns, serà pràcticament impossible assolir l&#x27;objectiu de reducció. D&#x27;una banda, perquè en l&#x27;acord que van subscriure els de Marta Rovira, el canvi climàtic és una qüestió circumstancial. Com a exemple anecdòtic, el concepte &quot;canvi climàtic&quot; només apareix una vegada en tot el redactat i les propostes en l&#x27;àmbit climàtic es redueixen dues mesures genèriques. Per Esquerra, encara en estat de xoc pels resultats electorals, sembla que aquesta no és una prioritat.</p>
+<p>I, d&#x27;altra banda, perquè, si bé és cert que el pacte amb els Comuns concreta més la política climàtica, el detall de l&#x27;acord és poc ambiciós. De fet, moltes del punts pactats són d&#x27;execució de mesures com els pressupostos de carboni que fa anys que segons la Llei de Canvi Climàtic s&#x27;haurien d&#x27;haver fet. És a dir, es pacta fer complir la llei. És cert que el desplegament total de la Llei de Canvi Climàtic és una tasca pendent dels darrers governs, tantmateix, res fa pensar que aquesta legislatura sigui la definitiva.</p>
+<p>Per als Socialistes, tal com han anat defensat al llarg dels darrers anys al Parlament, la peça de caça major serà la transició energètica on a Catalunya està a les beceroles. El govern de Pere Aragonès ha estat incapaç d&#x27;implementar un pla d&#x27;energies renovables de proximitat, local i descentralitzat i l&#x27;entrada de Salvador Illa al Palau de la Generalitat pot fer decantar la balança cap al model que s&#x27;ha imposat, per exemple, a l&#x27;Aragó. Un model de grans infraestructures energètiques, és a dir, de grans extensions de molins de vent i plaques solars controlades per transnacionals de l&#x27;energia com és el projecte del parc eòlic marí de Roses. El temps en dirà.</p>
+<p>L&#x27;altra pedra a la sabata dels Socialistes són els grans projectes urbanístics i d&#x27;infraestructures que han defensat durant els darrers anys, especialment, la culminació del Quart Cinturó, la construcció del Hard Rock i l&#x27;ampliació de l&#x27;aeroport. Els de Salvador Illa s&#x27;han adonat que sense un pas enrere, teòric, en aquests projectes, seria impossible recollir els suports d&#x27;Esquerra i els Comuns. Aquest va ser el motiu pel qual els Comuns van vetar els pressupostos d&#x27;Aragonès. Tanmateix, com encaixa el discurs expansionista del Partit Socialista d&#x27;aquests anys amb els acords, encara s&#x27;ha de veure. Ara mateix, però, la paralització del Hard Rock s&#x27;ha deixat en mans d&#x27;una estratègia de dubtós filibusterisme administratiu.</p>
+<p>Tot rema perquè aquesta legislatura, sigui una legislatura de viratge conservador de les polítiques climàtiques i ambientals.</p>
+<p>Queden moltes carpetes obertes com les mesures de millora i ampliació de la xarxa de transport públic que tot incloure&#x27;s dins de l&#x27;acord d&#x27;investidura queden força restringides a l&#x27;àmbit metropolità. Part del país com el Pirineu o les Terres de l&#x27;Ebre han quedat relegades a un segon pla. També quedarà pendent l&#x27;aprovació dels pressupostos de carboni i de l&#x27;impost a les emissions de gasos d&#x27;efecte hivernacle a l&#x27;activitat econòmica. Dues mesures incloses en la Llei de Canvi Climàtic que Esquerra no va ser capaç d&#x27;implementar.</p>
+<p>Tot sembla indicar que aquesta legislatura, tot i la importància que té per la seva proximitat a la primera fita de reducció de les emissions, sigui una legislatura de viratge conservador en les polítiques climàtiques i ambientals. No és una qüestió de retocs estètics. L&#x27;acord d&#x27;investidura hauria de ser una eina per forçar als Socialistes a implementar una agenda radical en matèria climàtica, però la inconcreció, la falta de calendaris i les bones intencions del redactat deixaran en paper mullat molt dels acords, el que deixa via lliure a l&#x27;ala més conservadora en qüestions ambientals i climàtiques del Partit Socialista. Ho anirem analitzant.</p>
+    </div>
+    <p class="source-note">Publicat el 13 d&#x27;agost del 2024 — Marc Cerdà i Domènech —
+      <a href="https://cerdadomenech.blog/2024/08/13/salvador-illa-i-el-futur-de-les-politiques-climatiques-a-catalunya/" target="_blank" rel="noopener">llegeix l'original a cerdadomenech.blog</a></p>
+    <footer>
+      <a href="../../index.html">← Torna al perfil</a> · Basat en <a href="https://cerdadomenech.blog/" target="_blank" rel="noopener">cerdadomenech.blog</a>
+    </footer>
+  </div>
+</body>
+</html>

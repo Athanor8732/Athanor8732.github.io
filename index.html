@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marc Cerdà i Domènech</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg-deep:#000705;
+    --bg-mid:#04140f;
+    --panel:rgba(255,255,255,0.045);
+    --panel-border:rgba(255,255,255,0.09);
+    --text:#eaf2f4;
+    --muted:#8fa5ac;
+    --cyan:#39ffb0;
+    --cyan-rgb:57,255,176;
+    --coral:#ff7a63;
+    --sand:#d9a441;
+    --indigo:#5b8cff;
+    --seafoam:#39c98f;
+    --metal-1:#9aa2ab;
+    --metal-2:#e7ebef;
+    --metal-3:#6b7178;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    position:relative;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+    background-attachment:fixed;
+    color:var(--text);
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh;
+  }
+  .wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:0 24px 90px;
+  }
+
+  /* ---- top bar ---- */
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    padding:18px 0;
+    border-bottom:1px solid var(--panel-border);
+    margin-bottom:44px;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+    background-attachment:fixed;
+  }
+  .topbar .mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
+  .topbar span{
+    font-family:Georgia,'Iowan Old Style',serif;
+    font-style:italic;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:0.78rem;
+    color:var(--muted);
+  }
+  .topbar strong{ color:var(--text); font-style:normal; }
+
+  /* ---- porthole photo ---- */
+  .profile{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:24px;
+    text-align:left;
+    max-width:600px;
+    margin:0 auto;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:14px;
+    padding:20px 26px;
+  }
+  .porthole-wrap{
+    position:relative;
+    width:112px;
+    height:112px;
+    flex:0 0 auto;
+  }
+  .sonar-sweep{
+    position:absolute;
+    inset:-12px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(var(--cyan-rgb),0.4), transparent 18%, transparent 100%);
+    animation:sweep-rotate 3.6s linear infinite;
+    mix-blend-mode:screen;
+    -webkit-mask-image:radial-gradient(circle, transparent 42%, #000 43%, #000 100%);
+    mask-image:radial-gradient(circle, transparent 42%, #000 43%, #000 100%);
+  }
+  @keyframes sweep-rotate{ to{ transform:rotate(360deg); } }
+  .sonar{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:1.5px solid rgba(var(--cyan-rgb),0.55);
+    opacity:0;
+    animation:sonar-ping 2.8s cubic-bezier(0.2,0.6,0.35,1) infinite;
+  }
+  .sonar.r1{ animation-delay:0s; }
+  .sonar.r2{ animation-delay:0.95s; }
+  .sonar.r3{ animation-delay:1.9s; }
+  @keyframes sonar-ping{
+    0%{ transform:scale(0.75); opacity:0.6; }
+    70%{ opacity:0.18; }
+    100%{ transform:scale(1.35); opacity:0; }
+  }
+
+  .porthole{
+    position:absolute;
+    inset:7px;
+    border-radius:50%;
+    padding:5px;
+    background:conic-gradient(from 200deg, var(--metal-3), var(--metal-2) 20%, var(--metal-1) 40%, var(--metal-2) 60%, var(--metal-3) 80%, var(--metal-2) 100%);
+    box-shadow:
+      0 0 0 2px #021018,
+      0 10px 24px rgba(0,0,0,0.65),
+      inset 0 0 8px rgba(0,0,0,0.5);
+  }
+  .porthole-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    overflow:hidden;
+    background:#0c0c0c;
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,0.5);
+  }
+  .porthole-inner img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:contrast(1.06) saturate(1.08);
+  }
+  .glare{
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 32% 26%, rgba(255,255,255,0.55), transparent 42%);
+    mix-blend-mode:overlay;
+    pointer-events:none;
+  }
+  .rivet{
+    position:absolute;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #f2f4f6, #6b7178 70%);
+    box-shadow:0 1px 2px rgba(0,0,0,0.6);
+    top:50%; left:50%;
+    margin:-2.5px 0 0 -2.5px;
+  }
+  .seal-badge{
+    position:absolute;
+    right:-6px;
+    bottom:-6px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--bg-deep);
+    border:1px solid rgba(var(--cyan-rgb),0.4);
+    box-shadow:0 6px 16px rgba(0,0,0,0.6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(-8deg);
+  }
+  .seal-badge svg{ width:22px; height:22px; color:var(--cyan); }
+
+  .id-block h1{
+    margin:0 0 4px;
+    font-family:Georgia,'Iowan Old Style',serif;
+    font-weight:700;
+    font-size:1.7rem;
+    letter-spacing:-0.01em;
+  }
+  .id-block .handle{
+    color:var(--cyan);
+    font-weight:600;
+    font-size:0.95rem;
+    margin:0 0 6px;
+  }
+  .id-block .role{
+    color:var(--muted);
+    font-size:0.92rem;
+    margin:0 0 14px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-size:0.72rem;
+  }
+  .socials{
+    display:flex;
+    gap:14px;
+    justify-content:flex-start;
+    margin-bottom:8px;
+  }
+  .socials a{
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:1px solid var(--panel-border);
+    background:var(--panel);
+  }
+  .socials a:hover{ color:var(--cyan); border-color:rgba(var(--cyan-rgb),0.5); }
+  .socials svg{ width:14px; height:14px; }
+
+  @media (max-width:560px){
+    .profile{ flex-direction:column; text-align:center; gap:16px; }
+    .socials{ justify-content:center; }
+  }
+
+  /* ---- depth gauge stats ---- */
+  .gauge{
+    display:flex;
+    justify-content:center;
+    margin:32px 0 6px;
+  }
+  .gauge .stat{
+    padding:0 22px;
+    text-align:center;
+    border-left:1px solid var(--panel-border);
+  }
+  .gauge .stat:first-child{ border-left:none; }
+  .gauge .stat b{
+    display:block;
+    color:var(--cyan);
+    font-family:Georgia,serif;
+    font-size:1.15rem;
+  }
+  .gauge .stat span{
+    display:block;
+    color:var(--muted);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-top:2px;
+  }
+
+  /* ---- bio note ---- */
+  .bio{
+    margin:36px auto 0;
+    max-width:600px;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-left:3px solid var(--coral);
+    border-radius:4px;
+    padding:22px 26px;
+    font-size:1rem;
+    line-height:1.7;
+    color:#dbe6e8;
+    text-align:left;
+  }
+  .bio::first-letter{
+    font-family:Georgia,serif;
+    font-size:2.6rem;
+    float:left;
+    line-height:0.8;
+    padding:6px 8px 0 0;
+    color:var(--cyan);
+  }
+  .bio strong{ color:#fff; font-weight:600; }
+
+  h2.section{
+    font-family:Georgia,serif;
+    font-weight:700;
+    font-size:1.4rem;
+    margin:50px 0 4px;
+    text-align:center;
+  }
+  .section-sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.82rem;
+    margin:0 0 26px;
+  }
+
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    max-width:600px;
+    margin:0 auto;
+  }
+  .card{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:16px 18px;
+    border-radius:10px;
+    text-decoration:none;
+    color:var(--text);
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-left:3px solid var(--accent);
+    backdrop-filter:blur(6px);
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .card:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,0.075);
+    box-shadow:0 10px 26px -8px var(--accent);
+  }
+  .card .icon{
+    flex:0 0 auto;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--panel-border);
+    color:var(--accent);
+  }
+  .card .icon svg{ width:18px; height:18px; }
+  .card .label{
+    font-weight:700;
+    font-size:1rem;
+    margin:0 0 2px;
+    color:#fff;
+  }
+  .card .desc{
+    font-size:0.84rem;
+    color:var(--muted);
+    margin:0;
+  }
+  .card.c-coral{ --accent:var(--coral); }
+  .card.c-cyan{ --accent:var(--cyan); }
+  .card.c-sand{ --accent:var(--sand); }
+  .card.c-indigo{ --accent:var(--indigo); }
+  .card.c-seafoam{ --accent:var(--seafoam); }
+
+  /* ---- pull quote ---- */
+  .quote{
+    margin:44px auto 0;
+    max-width:540px;
+    text-align:center;
+    font-family:Georgia,serif;
+    font-style:italic;
+    font-size:1.18rem;
+    line-height:1.5;
+    color:#cfe4e6;
+    padding:0 20px;
+  }
+  .quote span{ color:var(--cyan); font-style:normal; }
+
+  /* ---- featured post ---- */
+  .posts{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:16px;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .featured-post{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-left:3px solid var(--cyan);
+    border-radius:10px;
+    padding:22px 24px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .featured-post:hover{ transform:translateY(-2px); box-shadow:0 10px 26px -10px var(--cyan); }
+  .featured-post .tag{
+    text-transform:uppercase;
+    letter-spacing:0.09em;
+    font-size:0.66rem;
+    color:var(--cyan);
+    margin:0 0 10px;
+    font-weight:700;
+  }
+  .featured-post h3{
+    margin:0 0 8px;
+    font-family:Georgia,serif;
+    font-size:1.15rem;
+    color:#fff;
+  }
+  .featured-post p{
+    margin:0;
+    color:var(--muted);
+    font-size:0.88rem;
+    line-height:1.65;
+  }
+  .featured-post .read-more{
+    display:inline-block;
+    margin-top:14px;
+    color:var(--cyan);
+    font-size:0.84rem;
+    font-weight:700;
+  }
+
+  /* ---- subscribe callout ---- */
+  .subscribe{
+    margin-top:52px;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+    background:linear-gradient(150deg, rgba(var(--cyan-rgb),0.08), rgba(255,255,255,0.025));
+    border:1px solid var(--panel-border);
+    border-radius:14px;
+    padding:32px 26px;
+  }
+  .subscribe h2{
+    margin:0 0 8px;
+    font-family:Georgia,serif;
+    font-weight:700;
+    font-size:1.3rem;
+  }
+  .subscribe p{
+    margin:0 0 20px;
+    color:var(--muted);
+    font-size:0.9rem;
+    max-width:420px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .subscribe a.btn{
+    display:inline-block;
+    background:var(--cyan);
+    color:#04141d;
+    font-weight:700;
+    padding:12px 28px;
+    border-radius:999px;
+    text-decoration:none;
+    font-size:0.92rem;
+  }
+  .subscribe a.btn:hover{ opacity:0.88; }
+
+  /* ---- project banner (homepage highlight) ---- */
+  .project-banner{
+    position:relative; display:flex; align-items:flex-end;
+    margin:40px 0 0; max-width:600px; margin-left:auto; margin-right:auto;
+    border-radius:16px; overflow:hidden; min-height:200px;
+    text-decoration:none; border:1px solid var(--panel-border);
+    box-shadow:0 18px 40px -18px rgba(0,0,0,0.7);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .project-banner:hover{ transform:translateY(-3px); box-shadow:0 22px 48px -16px rgba(0,0,0,0.8); }
+  .project-banner img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 40%;
+    filter:saturate(1.05) contrast(1.02);
+  }
+  .project-banner::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(0,7,5,0.95) 0%, rgba(0,7,5,0.6) 45%, rgba(0,7,5,0.12) 80%);
+  }
+  .project-banner-body{ position:relative; z-index:1; padding:22px 26px; width:100%; }
+  .project-banner-tag{
+    display:inline-block; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.1em;
+    color:var(--cyan); background:rgba(var(--cyan-rgb),0.14); border:1px solid rgba(var(--cyan-rgb),0.4);
+    padding:3px 10px; border-radius:999px; margin-bottom:10px; font-weight:700;
+  }
+  .project-banner h3{ margin:0 0 6px; font-family:Georgia,serif; font-weight:700; font-size:1.35rem; color:#fff; }
+  .project-banner p{ margin:0; color:#cfe0e2; font-size:0.86rem; max-width:440px; line-height:1.55; }
+  .project-banner .banner-cta{ display:inline-block; margin-top:12px; color:var(--cyan); font-size:0.82rem; font-weight:700; }
+
+  /* ---- contact block ---- */
+  .contact-block{
+    max-width:600px;
+    margin:0 auto;
+    text-align:center;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:12px;
+    padding:26px 28px;
+  }
+  .contact-block p{
+    margin:3px 0;
+    color:var(--muted);
+    font-size:0.9rem;
+    line-height:1.6;
+  }
+  .contact-block p strong{ color:#fff; font-weight:700; }
+  .contact-block .contact-links{ margin-top:12px; }
+  .contact-block .contact-links a{
+    color:var(--cyan);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .contact-block .contact-links span{ margin:0 8px; opacity:0.5; }
+
+  /* ---- affiliation badges ---- */
+  .affil-title{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin:56px 0 16px;
+  }
+  .affil{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:44px;
+  }
+  .affil img{
+    height:38px;
+    width:auto;
+    opacity:0.9;
+  }
+  footer{
+    margin-top:56px;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.76rem;
+  }
+  footer a{ color:var(--cyan); text-decoration:none; }
+  footer p{ margin:4px 0; }
+  .footer-mark{ margin-bottom:16px; }
+  .footer-mark svg{ width:46px; height:46px; color:var(--cyan); }
+  .cc-notice{ max-width:380px; margin:0 auto 6px !important; line-height:1.5; }
+
+  /* ---- CTD rosette scroll illustration ---- */
+  .ctd-rig{
+    position:fixed;
+    left:calc(50% + 306px);
+    top:0;
+    height:100vh;
+    width:56px;
+    pointer-events:none;
+    z-index:3;
+    color:var(--cyan);
+    opacity:0.55;
+  }
+  .ctd-davit{ position:absolute; top:86px; left:0; width:46px; height:24px; }
+  .ctd-cable{
+    position:absolute;
+    top:108px;
+    left:30px;
+    width:1.3px;
+    height:0;
+    background:linear-gradient(180deg, var(--cyan), rgba(var(--cyan-rgb),0.15));
+    box-shadow:0 0 4px rgba(var(--cyan-rgb),0.55);
+  }
+  .ctd-wake{
+    position:absolute;
+    left:28.65px;
+    top:108px;
+    width:4px;
+    height:0;
+    border-radius:3px;
+    background:linear-gradient(180deg, transparent, rgba(var(--cyan-rgb),0.5) 55%, rgba(var(--cyan-rgb),0.1));
+    filter:blur(1.5px);
+    pointer-events:none;
+  }
+  .ctd-rosette{
+    position:absolute;
+    top:108px;
+    left:6px;
+    width:48px;
+    height:75px;
+  }
+  #ctd-sensor{ transform-box:fill-box; transform-origin:center; }
+  .ctd-sensor-flash{ animation:sensor-flash .55s ease-out; }
+  @keyframes sensor-flash{
+    0%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
+    35%{ filter:drop-shadow(0 0 5px var(--cyan)); transform:scale(1.6); }
+    100%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
+  }
+  .ctd-bubbles .bub{
+    opacity:0;
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:bub-rise 3.6s ease-in infinite;
+  }
+  .ctd-bubbles .b1{ animation-delay:0s; }
+  .ctd-bubbles .b2{ animation-delay:1.2s; }
+  .ctd-bubbles .b3{ animation-delay:2.4s; }
+  @keyframes bub-rise{
+    0%{ transform:translateY(0); opacity:0; }
+    12%{ opacity:0.8; }
+    90%{ opacity:0.15; }
+    100%{ transform:translateY(-46px); opacity:0; }
+  }
+  .ctd-sway{
+    transform-box:fill-box;
+    transform-origin:50% 0%;
+    animation:ctd-sway 4.5s ease-in-out infinite;
+  }
+  @keyframes ctd-sway{
+    0%,100%{ transform:rotate(-2.5deg); }
+    50%{ transform:rotate(2.5deg); }
+  }
+  .ctd-depth{
+    position:absolute;
+    top:108px;
+    left:2px;
+    width:55px;
+    text-align:center;
+    font-size:0.86rem;
+    font-weight:600;
+    font-family:Georgia,serif;
+    color:var(--cyan);
+    opacity:0.8;
+    white-space:nowrap;
+  }
+  @media (max-width:880px){ .ctd-rig{ display:none; } }
+  .ctd-depth-mobile{
+    display:none;
+    position:fixed;
+    right:14px;
+    bottom:14px;
+    z-index:4;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:999px;
+    padding:6px 14px;
+    font-family:Georgia,serif;
+    font-size:0.8rem;
+    font-weight:600;
+    color:var(--cyan);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    pointer-events:none;
+  }
+  @media (max-width:880px){ .ctd-depth-mobile{ display:block; } }
+
+  /* ---- scroll reveal ---- */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .7s ease, transform .7s cubic-bezier(0.16,0.8,0.24,1);
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .cards .card.reveal:nth-child(1){ transition-delay:0ms; }
+  .cards .card.reveal:nth-child(2){ transition-delay:70ms; }
+  .cards .card.reveal:nth-child(3){ transition-delay:140ms; }
+  .cards .card.reveal:nth-child(4){ transition-delay:210ms; }
+  .cards .card.reveal:nth-child(5){ transition-delay:280ms; }
+  .cards .card.reveal:nth-child(6){ transition-delay:350ms; }
+  .posts .featured-post.reveal:nth-child(1){ transition-delay:0ms; }
+  .posts .featured-post.reveal:nth-child(2){ transition-delay:90ms; }
+  .posts .featured-post.reveal:nth-child(3){ transition-delay:180ms; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+/* ---- side promos: quick links to active projects ---- */
+.side-promos{
+  position:fixed; left:0; top:50%; transform:translateY(-50%);
+  z-index:6; display:flex; flex-direction:column; gap:14px;
+}
+.side-promo{
+  display:flex; align-items:center; gap:11px;
+  background:var(--panel); border:1px solid var(--panel-border); border-left:none;
+  border-radius:0 16px 16px 0; padding:9px 18px 9px 9px; text-decoration:none;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  box-shadow:8px 0 26px -10px rgba(0,0,0,0.6);
+  transition:transform .2s ease, box-shadow .2s ease;
+  max-width:190px;
+  animation:side-promo-fade .6s ease .35s backwards;
+}
+.side-promo:hover{ transform:translateX(5px); box-shadow:10px 0 30px -8px rgba(var(--cyan-rgb),0.35); }
+.side-promo-thumb{
+  position:relative; flex:0 0 auto; width:46px; height:46px; border-radius:50%; overflow:hidden;
+  border:1.5px solid rgba(var(--cyan-rgb),0.55); box-shadow:0 0 0 3px rgba(0,7,5,0.9), 0 4px 12px rgba(0,0,0,0.5);
+}
+.side-promo-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.side-promo-ring{
+  position:absolute; inset:-5px; border-radius:50%; border:1px solid rgba(var(--cyan-rgb),0.45);
+  opacity:0; animation:side-promo-ping 3.2s cubic-bezier(0.2,0.6,0.35,1) infinite;
+}
+@keyframes side-promo-ping{ 0%{ transform:scale(0.82); opacity:0.55; } 70%{ opacity:0.12; } 100%{ transform:scale(1.28); opacity:0; } }
+@keyframes side-promo-fade{ from{ opacity:0; } to{ opacity:1; } }
+.side-promo-text{ display:flex; flex-direction:column; gap:1px; }
+.side-promo-tag{ font-size:0.58rem; text-transform:uppercase; letter-spacing:0.09em; color:#d9a441; font-weight:700; }
+.side-promo-tag.alt{ color:var(--indigo); }
+.side-promo-title{ font-family:Georgia,serif; font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
+@media (max-width:640px){
+  .side-promos{ top:auto; bottom:14px; left:14px; transform:none; flex-direction:row; gap:10px; }
+  .side-promo{ padding:0; width:52px; height:52px; border-radius:50%; justify-content:center; max-width:none; }
+  .side-promo:hover{ transform:scale(1.06); }
+  .side-promo-thumb{ width:100%; height:100%; }
+  .side-promo-text{ display:none; }
+}
+</style>
+</head>
+<body>
+  <div class="side-promos">
+    <a class="side-promo" href="impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
+      <span class="side-promo-thumb">
+        <span class="side-promo-ring"></span>
+        <img src="img/impas/thumb-impas.jpg" alt="" />
+      </span>
+      <span class="side-promo-text">
+        <span class="side-promo-tag">Projecte actiu</span>
+        <span class="side-promo-title">IMPAS-Garraf</span>
+      </span>
+    </a>
+    <a class="side-promo" href="emicreuer-bcn/index.html" aria-label="Projecte EMICREUER-BCN">
+      <span class="side-promo-thumb">
+        <span class="side-promo-ring"></span>
+        <img src="img/emicreuer/hero-vikingships.jpg" alt="" />
+      </span>
+      <span class="side-promo-text">
+        <span class="side-promo-tag alt">Nou projecte</span>
+        <span class="side-promo-title">EMICREUER-BCN</span>
+      </span>
+    </a>
+  </div>
+
+
+  <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
+
+  <div class="ctd-rig" aria-hidden="true">
+    <svg class="ctd-davit" viewBox="0 0 46 24" fill="none" stroke="currentColor">
+      <path d="M2 5 h21 a7 7 0 0 1 7 7 v7" stroke-width="1.4"/>
+      <circle cx="30" cy="19" r="3" stroke-width="1.1"/>
+    </svg>
+    <div class="ctd-cable" id="ctd-cable"></div>
+    <div class="ctd-wake" id="ctd-wake"></div>
+    <svg class="ctd-rosette" id="ctd-rosette" viewBox="0 0 48 74" fill="none" stroke="currentColor">
+      <defs>
+        <linearGradient id="niskin-fill" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" style="stop-color:rgba(var(--cyan-rgb),0.35)"/>
+          <stop offset="42%" style="stop-color:rgba(var(--cyan-rgb),1)"/>
+          <stop offset="58%" style="stop-color:rgba(var(--cyan-rgb),0.75)"/>
+          <stop offset="100%" style="stop-color:rgba(var(--cyan-rgb),0.3)"/>
+        </linearGradient>
+      </defs>
+      <g class="ctd-sway">
+        <circle id="ctd-sensor" cx="24" cy="4" r="2" fill="currentColor" stroke="none" opacity="0.85"/>
+        <line x1="24" y1="6" x2="24" y2="11" stroke-width="1.2"/>
+        <ellipse cx="24" cy="11" rx="18" ry="5" stroke-width="1.4"/>
+        <ellipse cx="24" cy="53" rx="18" ry="5" stroke-width="1.4"/>
+        <line x1="6" y1="11" x2="6" y2="53" stroke-width="1.2"/>
+        <line x1="42" y1="11" x2="42" y2="53" stroke-width="1.2"/>
+        <rect x="7" y="16" width="3.2" height="33" rx="1.6" fill="url(#niskin-fill)" fill-opacity="0.85" stroke-width="0.8" opacity="0.7"/>
+        <rect x="14" y="14" width="4" height="36" rx="2" fill="url(#niskin-fill)" fill-opacity="0.9" stroke-width="0.9" opacity="0.82"/>
+        <rect x="21.2" y="13" width="5.6" height="38" rx="2.5" fill="url(#niskin-fill)" fill-opacity="0.95" stroke-width="1" opacity="1"/>
+        <rect x="30" y="14" width="4" height="36" rx="2" fill="url(#niskin-fill)" fill-opacity="0.9" stroke-width="0.9" opacity="0.82"/>
+        <rect x="37.8" y="16" width="3.2" height="33" rx="1.6" fill="url(#niskin-fill)" fill-opacity="0.85" stroke-width="0.8" opacity="0.7"/>
+        <line x1="24" y1="53" x2="24" y2="60" stroke-width="1.2"/>
+        <rect x="19" y="60" width="10" height="10" rx="2" fill="currentColor" fill-opacity="0.15" stroke-width="1"/>
+        <line x1="24" y1="70" x2="24" y2="74" stroke-width="1.2"/>
+        <g class="ctd-bubbles" fill="currentColor" stroke="none">
+          <circle class="bub b1" cx="10" cy="20" r="1.1"/>
+          <circle class="bub b2" cx="35" cy="30" r="0.9"/>
+          <circle class="bub b3" cx="18" cy="9" r="1.3"/>
+        </g>
+      </g>
+    </svg>
+    <div class="ctd-depth" id="ctd-depth">0 m</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="topbar">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
+        <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+        <g stroke-width="1.1" opacity="0.5">
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+          <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+        </g>
+        <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+    </div>
+
+    <div class="profile">
+      <div class="porthole-wrap">
+        <div class="sonar-sweep"></div>
+        <div class="sonar r3"></div>
+        <div class="sonar r2"></div>
+        <div class="sonar r1"></div>
+        <div class="porthole">
+          <div class="porthole-inner">
+            <img src="img/marc.png" alt="Marc Cerdà i Domènech" />
+            <div class="glare"></div>
+          </div>
+          <span class="rivet" style="transform:rotate(0deg) translate(49px) rotate(0deg);"></span>
+          <span class="rivet" style="transform:rotate(45deg) translate(49px) rotate(-45deg);"></span>
+          <span class="rivet" style="transform:rotate(90deg) translate(49px) rotate(-90deg);"></span>
+          <span class="rivet" style="transform:rotate(135deg) translate(49px) rotate(-135deg);"></span>
+          <span class="rivet" style="transform:rotate(180deg) translate(49px) rotate(-180deg);"></span>
+          <span class="rivet" style="transform:rotate(225deg) translate(49px) rotate(-225deg);"></span>
+          <span class="rivet" style="transform:rotate(270deg) translate(49px) rotate(-270deg);"></span>
+          <span class="rivet" style="transform:rotate(315deg) translate(49px) rotate(-315deg);"></span>
+          <div class="seal-badge">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor">
+              <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+              <g stroke-width="1.1" opacity="0.5">
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+                <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+              </g>
+              <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="id-block">
+        <h1>Marc Cerdà i Domènech</h1>
+        <p class="handle">@elpiratavell</p>
+        <p class="role">Professor Lector · Universitat de Barcelona</p>
+        <div class="socials">
+          <a href="https://twitter.com/elpiratavell" target="_blank" rel="noopener" title="X (Twitter)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7.1l-5.5-7.2L4.3 22H1.2l8.2-9.3L1 2h7.3l5 6.6L18.9 2zm-1.2 18h1.9L7.4 4H5.3l12.4 16z"/></svg>
+          </a>
+          <a href="https://bsky.app/profile/elpiratavell.bsky.social" target="_blank" rel="noopener" title="Bluesky">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.6C10.6 7.9 7.7 5.1 5.2 4c-1.2-.5-1.7 0-1.7 1v10.5c0 1.4 1.1 2.5 2.5 2.5 1.6 0 3.9.7 5.9 2.3.1.1.3.1.4 0 2-1.6 4.3-2.3 5.9-2.3 1.4 0 2.5-1.1 2.5-2.5V5c0-1-.5-1.5-1.7-1-2.5 1.1-5.4 3.9-6.8 6.6-.1.2-.1.3-.2 0z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/elpiratavell/" target="_blank" rel="noopener" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2 .2 2.4.4.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.3 1.2.4 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 2-.4 2.4-.2.6-.5 1-1 1.5-.4.4-.9.7-1.5 1-.4.2-1.2.3-2.4.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.2-2.4-.4-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-1-1.5-.2-.4-.3-1.2-.4-2.4-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.2-2 .4-2.4.2-.6.5-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1.2-.3 2.4-.4 1.3-.1 1.7-.1 4.9-.1zM12 0C8.7 0 8.3 0 7 .1 5.7.1 4.7.3 3.9.6c-.9.3-1.6.8-2.3 1.5C.9 2.8.4 3.5.1 4.4c-.3.8-.5 1.8-.6 3.1C-.1 8.7 0 9.1 0 12s0 3.3.1 4.6c.1 1.3.3 2.3.6 3.1.3.9.8 1.6 1.5 2.3.7.7 1.4 1.2 2.3 1.5.8.3 1.8.5 3.1.6C8.3 24 8.7 24 12 24s3.3 0 4.6-.1c1.3-.1 2.3-.3 3.1-.6.9-.3 1.6-.8 2.3-1.5.7-.7 1.2-1.4 1.5-2.3.3-.8.5-1.8.6-3.1.1-1.3.1-1.7.1-4.6s0-3.3-.1-4.6c-.1-1.3-.3-2.3-.6-3.1-.3-.9-.8-1.6-1.5-2.3C21.2.9 20.5.4 19.6.1c-.8-.3-1.8-.5-3.1-.6C15.3 0 14.9 0 12 0zm0 5.8A6.2 6.2 0 1 0 12 18.2 6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.5a1.4 1.4 0 1 1-2.9 0 1.4 1.4 0 0 1 2.9 0z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/marc-cerd%C3%A0-i-dom%C3%A8nech-0a748849/" target="_blank" rel="noopener" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.4h-3.6v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.2V9h3.5v1.6h.1c.5-.9 1.7-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.4H3.6V9h3.5v11.4z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@Athosdel" target="_blank" rel="noopener" title="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5V8.5L15.8 12l-6.2 3.5z"/></svg>
+          </a>
+          <a href="https://github.com/Athanor8732" target="_blank" rel="noopener" title="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+          </a>
+          <a href="https://orcid.org/0000-0001-5053-755X" target="_blank" rel="noopener" title="ORCID">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zM7.6 7.4a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zM8.6 18.2h-2V9h2v9.2zm2.4-9.2h4.1c3 0 4.9 1.9 4.9 4.6 0 2.7-1.9 4.6-4.9 4.6H11V9zm2 1.9v5.4h2c2 0 3-1.1 3-2.7s-1-2.7-3-2.7h-2z"/></svg>
+          </a>
+          <a href="mailto:cerda.domenech@ub.edu" title="Correu electrònic">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 4h20v16H2V4zm2 2v.2l8 6 8-6V6H4zm16 2.4-8 6-8-6V18h16V8.4z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="gauge">
+      <div class="stat"><b>PhD</b><span>Ciències del Mar</span></div>
+      <div class="stat"><b>UB</b><span>Professor Lector</span></div>
+      <div class="stat"><b data-stat="researchLines">3</b><span>Línies de recerca</span></div>
+    </div>
+
+    <p class="bio reveal">
+      Sóc ambientòleg, professor de la Universitat de Barcelona i investigador en
+      <strong>geociències marines</strong>. Estudio la contaminació per metalls i metal·loides des de
+      l'Antàrtida fins a l'Àrtic, passant pel Mediterrani, per entendre com l'activitat antropogènica
+      altera els oceans. Assessoro administracions i consultories ambientals en la
+      <strong>gestió integral del litoral</strong> i participo en mitjans de comunicació per connectar
+      ciència i polítiques públiques.
+    </p>
+
+    <p class="quote reveal"><span>“</span>La ciència que necessitem per a l'oceà que volem<span>”</span></p>
+
+    <h2 class="section reveal">Immersió</h2>
+    <p class="section-sub">Endinsa't en la meva feina i les meves publicacions</p>
+    <div class="cards">
+      <a class="card reveal c-coral" href="sobre-mi/index.html">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-9 2.2-9 5v3h18v-3c0-2.8-4.6-5-9-5z"/></svg></span>
+        <span>
+          <p class="label">Sobre mi</p>
+          <p class="desc">Qui sóc i la meva trajectòria com a investigador</p>
+        </span>
+      </a>
+      <a class="card reveal c-cyan" href="recerca/index.html">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2v6.3L4.2 17a2 2 0 0 0 1.7 3h12.2a2 2 0 0 0 1.7-3L15 8.3V2h-2v2h-2V2H9zm2 8.7V4h2v6.7l4.6 8.3H6.4L11 10.7z"/></svg></span>
+        <span>
+          <p class="label">Línies de recerca</p>
+          <p class="desc">Contaminació marina, campanyes oceanogràfiques i projectes</p>
+        </span>
+      </a>
+      <a class="card reveal c-sand" href="publicacions/index.html">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM8 12h8v2H8v-2zm0 4h8v2H8v-2zm0-8h4v2H8V8z"/></svg></span>
+        <span>
+          <p class="label">Publicacions</p>
+          <p class="desc"><span data-stat="publications">14</span> articles Q1 amb DOI, revista i citacions</p>
+        </span>
+      </a>
+      <a class="card reveal c-indigo" href="blog/index.html">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.3 14.6 5.7l3.7 3.7L6.7 21H3v-3.7zM19.7 7l-3.7-3.7 1.8-1.8a1.5 1.5 0 0 1 2.1 0l1.6 1.6a1.5 1.5 0 0 1 0 2.1L19.7 7z"/></svg></span>
+        <span>
+          <p class="label">Bloc</p>
+          <p class="desc">Reflexions sobre ciència, clima i política ambiental</p>
+        </span>
+      </a>
+      <a class="card reveal c-indigo" href="premsa/index.html">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h13l3 3v13H4V4zm2 4h9v2H6V8zm0 4h9v2H6v-2zm0 4h6v2H6v-2z"/></svg></span>
+        <span>
+          <p class="label">Premsa i divulgació</p>
+          <p class="desc">Articles d'opinió, entrevistes i xerrades</p>
+        </span>
+      </a>
+      <a class="card reveal c-seafoam" href="contacte/index.html">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 4h20v16H2V4zm2 2v.2l8 6 8-6V6H4zm16 2.4-8 6-8-6V18h16V8.4z"/></svg></span>
+        <span>
+          <p class="label">Contacte</p>
+          <p class="desc">Facultat de Ciències de la Terra, Universitat de Barcelona</p>
+        </span>
+      </a>
+    </div>
+
+    <h2 class="section reveal">Perfil investigador</h2>
+    <p class="section-sub">El meu registre acadèmic a les principals bases de dades</p>
+    <div class="cards">
+      <a class="card reveal c-coral" href="https://orcid.org/0000-0001-5053-755X" target="_blank" rel="noopener">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zM7.6 7.4a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zM8.6 18.2h-2V9h2v9.2zm2.4-9.2h4.1c3 0 4.9 1.9 4.9 4.6 0 2.7-1.9 4.6-4.9 4.6H11V9zm2 1.9v5.4h2c2 0 3-1.1 3-2.7s-1-2.7-3-2.7h-2z"/></svg></span>
+        <span>
+          <p class="label">ORCID</p>
+          <p class="desc">Identificador i historial de publicacions</p>
+        </span>
+      </a>
+      <a class="card reveal c-sand" href="https://www.researchgate.net/profile/Marc-Cerda-Domenech" target="_blank" rel="noopener">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm12 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm-6 7a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM6 12.5c1 0 1.9.3 2.6.9L6.9 15c-.3-.2-.6-.3-.9-.3-1 0-1.8.8-1.8 1.8v3.5H2V16.5c0-2.2 1.8-4 4-4zm12 0c2.2 0 4 1.8 4 4v3.5h-2.2V16.5c0-1-.8-1.8-1.8-1.8-.3 0-.6.1-.9.3l-1.7-1.6c.7-.6 1.6-.9 2.6-.9zM12 15.3c.3 0 .6.1.9.3l1.7 1.6c-.7.6-1.6.9-2.6.9s-1.9-.3-2.6-.9l1.7-1.6c.3-.2.6-.3.9-.3z"/></svg></span>
+        <span>
+          <p class="label">ResearchGate</p>
+          <p class="desc">Xarxa de col·laboració científica</p>
+        </span>
+      </a>
+      <a class="card reveal c-cyan" href="https://www.scopus.com/pages/authors/57193928271" target="_blank" rel="noopener">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 20V10h3v10H4zm6.5 0V4h3v16h-3zM17 20v-7h3v7h-3z"/></svg></span>
+        <span>
+          <p class="label">Scopus</p>
+          <p class="desc">Mètriques de citació i perfil d'autor</p>
+        </span>
+      </a>
+      <a class="card reveal c-indigo" href="https://github.com/Athanor8732" target="_blank" rel="noopener">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg></span>
+        <span>
+          <p class="label">GitHub</p>
+          <p class="desc">Codi, dades i recursos oberts</p>
+        </span>
+      </a>
+    </div>
+
+    <h2 class="section reveal">Últims articles del bloc</h2>
+    <div class="posts">
+      <a class="featured-post reveal" href="blog/empremta-climatica-ia/index.html">
+        <p class="tag">Novembre 2025</p>
+        <h3>L'empremta climàtica de la intel·ligència artificial</h3>
+        <p>Arran de la irrupció massiva de la intel·ligència artificial, hem viscut una autèntica revolució. Avui, tot incorpora aquest segell: aplicacions, dispositius, electrodomèstics, vehicles… No integrar-la és gairebé sinònim de perdre el tren del futur, encara que en molts casos sigui del tot innecessària…</p>
+        <span class="read-more">Llegeix l'article →</span>
+      </a>
+      <a class="featured-post reveal" href="blog/salvador-illa-politiques-climatiques/index.html">
+        <p class="tag">Agost 2024</p>
+        <h3>Salvador Illa i el futur de les polítiques climàtiques a Catalunya</h3>
+        <p>Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant. Tot i que encara és massa d'hora per saber quin serà el programa que presentarà el nou govern…</p>
+        <span class="read-more">Llegeix l'article →</span>
+      </a>
+      <a class="featured-post reveal" href="blog/sequera-mirall-pais/index.html">
+        <p class="tag">Abril 2024</p>
+        <h3>La sequera com a mirall d'un país</h3>
+        <p>No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. Per aquest motiu, el conseller d'Acció Climàtica, David Mascort, va alertar, fa uns dies, que si no canvien prou les coses el sistema Ter-Llobregat entraria en fase d'emergència…</p>
+        <span class="read-more">Llegeix l'article →</span>
+      </a>
+    </div>
+
+    <div class="subscribe reveal">
+      <h2>Subscriu-te al bloc</h2>
+      <p>Rep els nous articles sobre ciència marina, clima i polítiques ambientals directament al teu correu.</p>
+      <a class="btn" href="https://cerdadomenech.blog/bloc/" target="_blank" rel="noopener">Subscriu-me</a>
+    </div>
+
+    <h2 class="section reveal">Contacte i detalls</h2>
+    <div class="contact-block reveal">
+      <p><strong>Professor Lector</strong></p>
+      <p>Grup de Recerca en Geociències Marines</p>
+      <p>Dept. de Dinàmica de la Terra i l'Oceà · Facultat de Ciències de la Terra</p>
+      <p>Universitat de Barcelona</p>
+      <p>C/ Martí Franquès, s/n · 08028 Barcelona</p>
+      <p class="contact-links">
+        <a href="mailto:cerda.domenech@ub.edu">cerda.domenech@ub.edu</a>
+        <span>·</span>
+        <a href="tel:+34934021369">+34 93 402 13 69</a>
+      </p>
+    </div>
+
+    <p class="affil-title">Afiliació</p>
+    <div class="affil reveal">
+      <a href="https://www.ub.edu/" target="_blank" rel="noopener"><img src="img/ub-logo-white.png" alt="Universitat de Barcelona" /></a>
+      <a href="https://www.ub.edu/geomarines/" target="_blank" rel="noopener"><img src="img/gmar-logo-white.png" alt="Gmar · Grup de Recerca en Geociències Marines" /></a>
+    </div>
+
+    <footer>
+      <div class="footer-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor">
+          <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+          <g stroke-width="1.1" opacity="0.5">
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+          </g>
+          <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <p class="cc-notice">Aquest contingut es distribueix sota llicència <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="noopener">Creative Commons Reconeixement-NoComercial-CompartirIgual 4.0</a></p>
+      <p>Basat en <a href="https://cerdadomenech.blog/" target="_blank" rel="noopener">cerdadomenech.blog</a> · pàgina de proves local</p>
+    </footer>
+  </div>
+  <script src="js/stats.js" data-path="data/stats.json"></script>
+  <script>
+    (function () {
+      var rosette = document.getElementById('ctd-rosette');
+      var cable = document.getElementById('ctd-cable');
+      var wake = document.getElementById('ctd-wake');
+      var depth = document.getElementById('ctd-depth');
+      var depthMobile = document.getElementById('ctd-depth-mobile');
+      var sensor = document.getElementById('ctd-sensor');
+      if (!rosette || !cable) return;
+
+      var targetY = 0, currentY = 0;
+
+      function computeTarget() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var frac = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+        var maxDrop = window.innerHeight - 187;
+        targetY = frac * maxDrop;
+        var depthText = Math.round(frac * 1200) + ' m';
+        if (depth) depth.textContent = depthText;
+        if (depthMobile) depthMobile.textContent = depthText;
+      }
+
+      function render() {
+        currentY += (targetY - currentY) * 0.08;
+        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
+        rosette.style.transform = 'translateY(' + currentY + 'px)';
+        cable.style.height = currentY + 'px';
+        if (wake) {
+          var wakeH = Math.min(40, currentY);
+          wake.style.height = wakeH + 'px';
+          wake.style.top = (108 + currentY - wakeH) + 'px';
+        }
+        if (depth) depth.style.transform = 'translateY(' + (currentY + 79) + 'px)';
+        requestAnimationFrame(render);
+      }
+
+      window.addEventListener('scroll', computeTarget, { passive: true });
+      window.addEventListener('resize', computeTarget);
+      computeTarget();
+      requestAnimationFrame(render);
+
+      if (sensor && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              sensor.classList.remove('ctd-sensor-flash');
+              void sensor.getBoundingClientRect();
+              sensor.classList.add('ctd-sensor-flash');
+            }
+          });
+        }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+        document.querySelectorAll('h2.section').forEach(function (h) { io.observe(h); });
+      }
+    })();
+
+    (function () {
+      var revealEls = document.querySelectorAll('.reveal');
+      if (!revealEls.length) return;
+      if (!('IntersectionObserver' in window)) {
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      revealEls.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>

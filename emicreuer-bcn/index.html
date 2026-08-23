@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EMICREUER-BCN · Marc Cerdà i Domènech</title>
+<meta name="description" content="EMICREUER-BCN: inventari 2012-2025 de les emissions atmosfèriques dels creuers al Port de Barcelona. Projecte propi del GMAR-UB, nascut d'un TFG, sense finançament extern." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root{
+  --bg-deep:#000705; --bg-mid:#04140f;
+  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
+  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176;
+  --coral:#ff7a63; --sand:#d9a441; --sand-rgb:217,164,65; --indigo:#5b8cff; --indigo-rgb:91,140,255; --seafoam:#39c98f; --gold:#f2c14e;
+  --karst:#d9a441; --karst-rgb:217,164,65;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--karst-rgb),0.09), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;
+}
+.wrap{ max-width:680px; margin:0 auto; padding:0 24px 90px; }
+.topbar{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:36px;
+  position:sticky; top:0; z-index:5;
+  background:radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--karst-rgb),0.09), transparent 60%),repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+}
+.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
+.topbar svg.mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
+.topbar span{
+  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
+  text-transform:uppercase; font-size:0.78rem; color:var(--muted);
+}
+.topbar strong{ color:var(--text); font-style:normal; }
+.crumbs{ text-align:center; margin-bottom:8px; }
+.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
+.crumbs span{ color:var(--muted); margin:0 6px; }
+
+/* ---- hero ---- */
+.hero{
+  position:relative; margin:18px 0 0; border-radius:18px; overflow:hidden;
+  border:1px solid rgba(var(--cyan-rgb),0.25);
+  box-shadow:0 22px 50px -18px rgba(0,0,0,0.75), 0 0 0 1px rgba(0,0,0,0.4);
+  min-height:360px; display:flex; align-items:flex-end;
+  scroll-margin-top:90px;
+}
+.hero img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 38%; filter:saturate(1.08) contrast(1.03); transform:scale(1.01); }
+.hero::before{
+  content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, rgba(0,7,5,0.15) 0%, transparent 22%, transparent 62%, rgba(0,7,5,0.55) 100%);
+}
+.hero::after{
+  content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(0deg, rgba(0,7,5,0.96) 0%, rgba(0,7,5,0.68) 38%, rgba(0,7,5,0.1) 72%, rgba(0,7,5,0.05) 100%);
+}
+.hero-body{ position:relative; z-index:2; padding:26px 28px 24px; width:100%; }
+.hero-edge{ position:absolute; inset:0; z-index:2; pointer-events:none; box-shadow:inset 0 0 60px 10px rgba(0,7,5,0.35); border-radius:18px; }
+.hero-tag{
+  display:inline-block; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em;
+  color:var(--karst); background:rgba(var(--karst-rgb),0.14); border:1px solid rgba(var(--karst-rgb),0.4);
+  padding:4px 11px; border-radius:999px; margin-bottom:12px; font-weight:700;
+}
+.hero h1{ margin:0 0 6px; font-family:Georgia,serif; font-weight:700; font-size:1.8rem; line-height:1.15; color:#fff; }
+.hero .acronym{ color:var(--cyan); font-weight:700; }
+.hero p.hero-sub{ margin:0; color:#cfe0e2; font-size:0.9rem; max-width:520px; line-height:1.55; }
+.hero-credit{ text-align:right; font-size:0.62rem; color:var(--muted); opacity:0.7; margin:5px 0 0; }
+
+.fund-strip{
+  display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap;
+  margin:18px 0 0; padding:9px 22px; border-radius:999px;
+  background:linear-gradient(150deg, rgba(var(--indigo-rgb),0.12), rgba(255,255,255,0.025));
+  border:1px solid rgba(91,140,255,0.35);
+}
+.fund-strip svg{ width:18px; height:18px; color:var(--indigo); flex:0 0 auto; }
+.fund-strip p{ margin:0; font-size:0.82rem; color:#dbe4ff; text-align:center; }
+.fund-strip b{ color:var(--indigo); }
+
+.gauge{ display:flex; justify-content:center; gap:0; margin:28px 0 4px; flex-wrap:wrap; }
+.gauge .stat{ padding:0 20px; text-align:center; border-left:1px solid var(--panel-border); }
+.gauge .stat:first-child{ border-left:none; }
+.gauge .stat b{ display:block; color:var(--cyan); font-family:Georgia,serif; font-size:1.2rem; }
+.gauge .stat span{ display:block; color:var(--muted); font-size:0.63rem; text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+.gauge-note{ text-align:center; color:var(--muted); font-size:0.76rem; margin:8px 0 0; }
+
+.prose{ background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:26px 28px; margin:36px 0 16px; }
+.prose p{ font-size:0.96rem; line-height:1.75; color:#dbe6e8; margin:0 0 16px; }
+.prose p:last-child{ margin-bottom:0; }
+.prose strong{ color:#fff; }
+.prose.narrow-border{ border-left:3px solid var(--indigo); }
+
+h2.section{
+  font-family:Georgia,serif; font-weight:700; font-size:1.85rem; letter-spacing:-0.01em;
+  margin:18px 0 0; text-align:center; scroll-margin-top:90px; color:#fff;
+  text-shadow:0 0 30px rgba(var(--cyan-rgb),0.2);
+}
+h2.section::after{
+  content:''; display:block; width:38px; height:2px; margin:16px auto 0;
+  background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+p.section-sub{ text-align:center; color:var(--muted); font-size:0.85rem; margin:14px 0 28px; max-width:520px; margin-left:auto; margin-right:auto; }
+
+/* ---- section transition marker ---- */
+.section-divider{ display:flex; flex-direction:column; align-items:center; margin:96px 0 0; }
+.section-divider .divider-line{ width:1px; height:34px; background:linear-gradient(180deg, transparent, rgba(var(--cyan-rgb),0.55)); }
+.section-divider .divider-dot{ width:5px; height:5px; margin-top:-1px; border-radius:50%; background:var(--cyan); box-shadow:0 0 7px rgba(var(--cyan-rgb),0.65); }
+
+/* ---- figure ---- */
+.figure{ margin:0 0 18px; border-radius:12px; overflow:hidden; border:1px solid var(--panel-border); background:#04141d; }
+.figure img{ width:100%; display:block; }
+.figure figcaption{ padding:10px 16px; font-size:0.74rem; color:var(--muted); line-height:1.5; background:rgba(255,255,255,0.02); }
+.figure figcaption b{ color:#cfe0e2; }
+
+/* ---- study area map ---- */
+.map-panel{ background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:20px; margin:0 0 18px; }
+.map-panel h3{ margin:0 0 4px; font-family:Georgia,serif; font-size:1rem; color:#fff; text-align:center; }
+.map-panel .map-note{ text-align:center; color:var(--muted); font-size:0.72rem; margin:0 0 14px; }
+#study-map{ width:100%; height:360px; border-radius:10px; background:#05141e; }
+.leaflet-popup-content-wrapper{ background:#0b1e2b; color:#eaf2f4; border-radius:8px; }
+.leaflet-popup-content b{ color:var(--karst); }
+.term-label{ background:#0b1e2b; color:var(--karst); border:1px solid rgba(var(--karst-rgb),0.55); border-radius:6px; padding:1px 6px; font-family:Georgia,serif; font-weight:700; font-size:0.74rem; box-shadow:0 2px 8px rgba(0,0,0,0.5); }
+.term-label::before{ display:none; }
+.leaflet-popup-tip{ background:#0b1e2b; }
+.leaflet-container a.leaflet-popup-close-button{ color:#8fa5ac; }
+.leaflet-container{ font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+
+/* ---- methods grid ---- */
+.method-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.method-card{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:16px 16px;
+  border-top:3px solid var(--accent);
+}
+.method-card .icon{
+  width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.05); border:1px solid var(--panel-border); color:var(--accent); margin-bottom:10px;
+}
+.method-card .icon svg{ width:16px; height:16px; }
+.method-card h4{ margin:0 0 6px; font-size:0.88rem; color:#fff; font-family:Georgia,serif; }
+.method-card p{ margin:0; font-size:0.76rem; color:var(--muted); line-height:1.55; }
+.method-card.m1{ --accent:var(--cyan); }
+.method-card.m2{ --accent:var(--karst); }
+.method-card.m3{ --accent:var(--coral); }
+.method-card.m4{ --accent:var(--indigo); }
+@media (max-width:520px){ .method-grid{ grid-template-columns:1fr; } }
+
+/* ---- benefits ---- */
+.benefit-cols{ display:flex; flex-direction:column; gap:14px; }
+.benefit-card{ background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:18px 20px; border-left:3px solid var(--accent); }
+.benefit-card h4{ margin:0 0 8px; font-family:Georgia,serif; font-size:0.98rem; color:#fff; }
+.benefit-card p{ margin:0; font-size:0.85rem; color:var(--muted); line-height:1.65; }
+.benefit-card.b1{ --accent:var(--cyan); }
+.benefit-card.b2{ --accent:var(--karst); }
+.benefit-card.b3{ --accent:var(--seafoam); }
+
+/* ---- origin / TFG card ---- */
+.origin-card{
+  background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--coral);
+  border-radius:14px; padding:24px 26px;
+}
+.origin-card .origin-badge{
+  display:inline-block; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.1em;
+  color:var(--coral); background:rgba(255,122,99,0.12); border:1px solid rgba(255,122,99,0.35);
+  padding:3px 10px; border-radius:999px; margin-bottom:12px; font-weight:700;
+}
+.origin-card h3{ margin:0 0 12px; font-family:Georgia,serif; font-size:1.15rem; color:#fff; }
+.origin-card p{ margin:0 0 12px; color:#dbe6e8; font-size:0.9rem; line-height:1.7; }
+.origin-card p:last-child{ margin-bottom:0; }
+
+/* ---- team ---- */
+.team-grid{ display:flex; flex-direction:column; gap:12px; }
+.team-card{ background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:16px 18px; display:flex; gap:14px; align-items:flex-start; }
+.team-card .initial{
+  flex:0 0 auto; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:rgba(var(--cyan-rgb),0.12); border:1px solid rgba(var(--cyan-rgb),0.35); color:var(--cyan);
+  font-family:Georgia,serif; font-weight:700; font-size:1rem;
+}
+.team-card .name{ margin:0 0 3px; font-weight:700; color:#fff; font-size:0.94rem; }
+.team-card .role{ margin:0; color:var(--muted); font-size:0.8rem; line-height:1.5; }
+
+.cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:44px; }
+.cta-row a{
+  display:inline-block; padding:11px 22px; border-radius:999px; text-decoration:none;
+  font-size:0.86rem; font-weight:700; border:1px solid var(--panel-border); color:var(--cyan);
+  background:var(--panel);
+}
+.cta-row a:hover{ border-color:var(--cyan); }
+
+.affil-title{ text-align:center; color:var(--muted); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.12em; margin:52px 0 16px; }
+.affil{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:36px; }
+.affil img{ height:32px; width:auto; opacity:0.9; }
+
+footer{ margin-top:44px; text-align:center; color:var(--muted); font-size:0.76rem; }
+footer a{ color:var(--cyan); text-decoration:none; }
+footer p{ margin:4px 0; }
+
+/* ---- section index (left-side progress index, always visible) ---- */
+.section-nav{
+  position:fixed; left:34px; top:50%; transform:translateY(-50%);
+  z-index:6; display:flex; flex-direction:column; gap:2px;
+}
+.section-nav a{ position:relative; display:flex; align-items:center; gap:15px; text-decoration:none; padding:11px 0; }
+.section-nav .dot-wrap{ position:relative; width:17px; height:17px; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+.section-nav .dot-wrap::before{
+  content:''; position:absolute; top:-11px; bottom:-11px; left:50%; width:1px;
+  background:var(--panel-border); transform:translateX(-50%); z-index:-1;
+}
+.section-nav a:first-child .dot-wrap::before{ top:50%; }
+.section-nav a:last-child .dot-wrap::before{ bottom:50%; }
+.section-nav .dot{ width:8px; height:8px; border-radius:50%; background:var(--bg-mid); border:2px solid var(--panel-border); transition:all .25s ease; }
+.section-nav .nav-label{
+  font-size:0.84rem; color:var(--muted); opacity:0.6; white-space:nowrap; transition:all .2s ease;
+  text-shadow:0 1px 8px rgba(0,0,0,0.85), 0 0 18px rgba(0,0,0,0.6);
+}
+.section-nav a:hover .nav-label{ opacity:0.95; color:#eaf2f4; }
+.section-nav a.active .dot{ background:var(--cyan); border-color:var(--cyan); box-shadow:0 0 10px rgba(var(--cyan-rgb),0.6); transform:scale(1.5); }
+.section-nav a.active .nav-label{ color:var(--cyan); opacity:1; font-weight:700; font-size:0.9rem; }
+@media (max-width:1240px){ .section-nav{ display:none; } }
+
+/* ---- cruise-liner scroll illustration (EMICREUER-BCN motif) ---- */
+.liner-rig{ position:fixed; left:calc(50% + 336px); top:0; height:100vh; width:72px; pointer-events:none; z-index:3; color:var(--karst); opacity:0.6; }
+.liner-quay{ position:absolute; top:86px; left:5px; width:20px; height:16px; }
+.liner-cable{ position:absolute; top:102px; left:14.3px; width:1.3px; height:0; background:linear-gradient(180deg, var(--karst), rgba(var(--karst-rgb),0.15)); box-shadow:0 0 4px rgba(var(--karst-rgb),0.5); }
+.liner-wake{ position:absolute; left:13px; top:102px; width:4px; height:0; border-radius:3px; background:linear-gradient(180deg, transparent, rgba(var(--karst-rgb),0.5) 55%, rgba(var(--karst-rgb),0.1)); filter:blur(1.5px); pointer-events:none; }
+.liner-ship{ position:absolute; top:102px; left:0; width:72px; height:38px; overflow:visible; }
+#liner-lookout{ transform-box:fill-box; transform-origin:center; }
+.liner-lookout-flash{ animation:lookout-flash .55s ease-out; }
+@keyframes lookout-flash{ 0%{ filter:drop-shadow(0 0 0px var(--karst)); transform:scale(1); } 35%{ filter:drop-shadow(0 0 6px var(--karst)); transform:scale(1.8); } 100%{ filter:drop-shadow(0 0 0px var(--karst)); transform:scale(1); } }
+.liner-smoke .puff{ opacity:0; transform-box:fill-box; transform-origin:center; animation:puff-rise 3.6s ease-out infinite; }
+.liner-smoke .p1{ animation-delay:0s; } .liner-smoke .p2{ animation-delay:0.9s; } .liner-smoke .p3{ animation-delay:1.8s; } .liner-smoke .p4{ animation-delay:2.7s; }
+@keyframes puff-rise{
+  0%{ transform:translate(0,0) scale(0.4); opacity:0; }
+  16%{ opacity:0.6; }
+  55%{ opacity:0.4; }
+  100%{ transform:translate(9px,-20px) scale(2.3); opacity:0; }
+}
+.liner-flag{ transform-box:fill-box; transform-origin:0% 50%; animation:flag-flutter 1.7s ease-in-out infinite; }
+@keyframes flag-flutter{ 0%,100%{ transform:skewX(0deg) scaleX(1); } 50%{ transform:skewX(-16deg) scaleX(0.9); } }
+.liner-drift{ transform-box:fill-box; transform-origin:50% 50%; animation:liner-drift 6s ease-in-out infinite; }
+@keyframes liner-drift{ 0%,100%{ transform:translateX(0); } 50%{ transform:translateX(-1.8px); } }
+.liner-bob{ transform-box:fill-box; transform-origin:50% 100%; animation:liner-bob 4.2s ease-in-out infinite; }
+@keyframes liner-bob{ 0%,100%{ transform:translateY(0) rotate(-0.8deg); } 50%{ transform:translateY(-1.6px) rotate(0.8deg); } }
+.liner-wash{ transform-box:fill-box; animation:wash-flow 2.6s linear infinite; }
+@keyframes wash-flow{ 0%{ stroke-dashoffset:0; } 100%{ stroke-dashoffset:-14; } }
+.liner-year{ position:absolute; top:102px; left:0; width:72px; text-align:center; font-size:0.86rem; font-weight:600; font-family:Georgia,serif; color:var(--karst); opacity:0.85; white-space:nowrap; }
+@media (max-width:960px){ .liner-rig{ display:none; } }
+.liner-year-mobile{ display:none; position:fixed; right:14px; bottom:14px; z-index:4; background:var(--panel); border:1px solid var(--panel-border); border-radius:999px; padding:6px 14px; font-family:Georgia,serif; font-size:0.8rem; font-weight:600; color:var(--karst); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); pointer-events:none; }
+@media (max-width:960px){ .liner-year-mobile{ display:block; } }
+
+.reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s cubic-bezier(0.16,0.8,0.24,1); }
+.reveal.is-visible{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+</style>
+</head>
+<body>
+
+  <div class="liner-year-mobile" id="liner-year-mobile" aria-hidden="true">2012</div>
+
+  <div class="liner-rig" aria-hidden="true">
+    <svg class="liner-quay" viewBox="0 0 20 16" fill="none" stroke="currentColor">
+      <path d="M2 3 h16" stroke-width="1.4"/>
+      <path d="M2 3 v11 M18 3 v11" stroke-width="1" opacity="0.5"/>
+    </svg>
+    <div class="liner-cable" id="liner-cable"></div>
+    <div class="liner-wake" id="liner-wake"></div>
+    <svg class="liner-ship" id="liner-ship" viewBox="0 0 72 38" fill="none" stroke="currentColor">
+      <defs>
+        <linearGradient id="hull-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--karst)" stop-opacity="0.32"/>
+          <stop offset="100%" stop-color="var(--karst)" stop-opacity="0.02"/>
+        </linearGradient>
+        <radialGradient id="smoke-grad" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#eaf2f4" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#eaf2f4" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g class="liner-drift">
+        <g class="liner-bob">
+          <g class="liner-smoke">
+            <circle class="puff p1" cx="55" cy="2.5" r="2.1" fill="url(#smoke-grad)"/>
+            <circle class="puff p2" cx="55" cy="2.5" r="1.7" fill="url(#smoke-grad)"/>
+            <circle class="puff p3" cx="55" cy="2.5" r="2.4" fill="url(#smoke-grad)"/>
+            <circle class="puff p4" cx="55" cy="2.5" r="1.9" fill="url(#smoke-grad)"/>
+          </g>
+
+          <path d="M6,27 C6,22 9,19 15,15 L58,15 Q65,15 65,21 L65,24 Q65,29 59,29 L11,29 Q6,29 6,27 Z"
+                fill="url(#hull-grad)" stroke="currentColor" stroke-width="1.3"/>
+
+          <rect x="18" y="9" width="32" height="7" rx="1.6" fill="rgba(234,242,244,0.05)" stroke="currentColor" stroke-width="1.1"/>
+          <rect x="20" y="4" width="11" height="6" rx="1.3" fill="rgba(234,242,244,0.07)" stroke="currentColor" stroke-width="1"/>
+
+          <rect x="50" y="2" width="7" height="9" rx="1.8" fill="url(#hull-grad)" stroke="currentColor" stroke-width="1.1"/>
+          <rect x="50" y="5.5" width="7" height="1.7" fill="var(--coral)" opacity="0.85"/>
+
+          <g fill="currentColor" opacity="0.8">
+            <rect x="21.5" y="6.2" width="1.3" height="1.4" rx="0.3"/>
+            <rect x="24.5" y="6.2" width="1.3" height="1.4" rx="0.3"/>
+            <rect x="27.5" y="6.2" width="1.3" height="1.4" rx="0.3"/>
+          </g>
+          <g fill="currentColor" opacity="0.8">
+            <rect x="21" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="24.4" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="27.8" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="31.2" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="34.6" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="38" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="41.4" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+            <rect x="44.8" y="11.5" width="1.4" height="1.5" rx="0.3"/>
+          </g>
+          <g stroke="currentColor" stroke-width="0.7" opacity="0.55">
+            <rect x="15" y="19" width="2.2" height="7" rx="0.7"/>
+            <rect x="21.6" y="19" width="2.2" height="7" rx="0.7"/>
+            <rect x="28.2" y="19" width="2.2" height="7" rx="0.7"/>
+            <rect x="34.8" y="19" width="2.2" height="7" rx="0.7"/>
+            <rect x="41.4" y="19" width="2.2" height="7" rx="0.7"/>
+            <rect x="48" y="19" width="2.2" height="7" rx="0.7"/>
+            <rect x="54.6" y="19" width="2.2" height="7" rx="0.7"/>
+          </g>
+
+          <line x1="15" y1="15" x2="15" y2="7" stroke="currentColor" stroke-width="1.1"/>
+          <path class="liner-flag" d="M15,7 L21,8.6 L15,10.2 Z" fill="currentColor" opacity="0.8"/>
+          <circle id="liner-lookout" cx="15" cy="6.4" r="1.3" fill="currentColor" stroke="none" opacity="0.9"/>
+
+          <path class="liner-wash" d="M0,34 Q9,32 18,34 T36,34 T54,34 T72,34" stroke="currentColor" stroke-width="1" opacity="0.45" stroke-dasharray="3 3"/>
+          <path d="M0,36.5 Q9,35 18,36.5 T36,36.5 T54,36.5 T72,36.5" stroke="currentColor" stroke-width="0.8" opacity="0.22"/>
+        </g>
+      </g>
+    </svg>
+    <div class="liner-year" id="liner-year">
+      <span class="yr" id="liner-yr">2012</span>
+    </div>
+  </div>
+
+  <nav class="section-nav" aria-label="Navegació per seccions">
+    <a href="#portada"><span class="dot-wrap"><span class="dot"></span></span><span class="nav-label">Portada</span></a>
+    <a href="#ambit"><span class="dot-wrap"><span class="dot"></span></span><span class="nav-label">Àmbit d'estudi</span></a>
+    <a href="#metodologia"><span class="dot-wrap"><span class="dot"></span></span><span class="nav-label">Metodologia</span></a>
+    <a href="#origen"><span class="dot-wrap"><span class="dot"></span></span><span class="nav-label">L'origen: un TFG</span></a>
+    <a href="#equip"><span class="dot-wrap"><span class="dot"></span></span><span class="nav-label">Equip</span></a>
+  </nav>
+
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="../index.html">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
+          <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+          <g stroke-width="1.1" opacity="0.5">
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+          </g>
+          <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+      </a>
+    </div>
+
+    <p class="crumbs"><a href="../index.html">← Perfil</a><span>/</span><a href="../recerca/index.html">Recerca</a><span>/</span>EMICREUER-BCN</p>
+
+    <div class="hero reveal" id="portada">
+      <img src="../img/emicreuer/hero-vikingships.jpg" alt="Dos creuers Viking amarrats al Moll Adossat, port de Barcelona" loading="lazy" />
+      <div class="hero-edge" aria-hidden="true"></div>
+      <div class="hero-body">
+        <span class="hero-tag">GMAR-UB · Projecte propi, sense finançament extern</span>
+        <h1><span class="acronym">EMICREUER</span>-BCN</h1>
+        <p class="hero-sub">EMIssions atmosfèriques dels CREUERs al port de Barcelona: inventari 2012–2025, impacte de la regulació internacional i escenaris de transició energètica.</p>
+      </div>
+    </div>
+    <p class="hero-credit">Creuers <i>Viking Vesta</i> i <i>Viking Star</i> al Moll Adossat · Anthony Levrot / Wikimedia Commons, CC BY-SA 4.0</p>
+
+    <div class="fund-strip reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/></svg>
+      <p>Manuscrit en preparació · Nascut d'un <b>TFG</b> · Sense finançament extern</p>
+    </div>
+
+    <div class="gauge reveal">
+      <div class="stat"><b>14</b><span>anys (2012–25)</span></div>
+      <div class="stat"><b>9.475</b><span>escales de creuer</span></div>
+      <div class="stat"><b>343</b><span>vaixells únics</span></div>
+      <div class="stat"><b>6</b><span>contaminants</span></div>
+    </div>
+
+    <div class="prose narrow-border reveal">
+      <p>Barcelona és el port de creuers més actiu d'Europa —i, segons diverses fonts, també un dels més afectats per la contaminació atmosfèrica que generen. Mentre estan amarrats, els creuers mantenen els motors auxiliars en marxa contínua per alimentar llums, climatització i cuines —l'anomenat <strong>"hotelling"</strong>— alliberant NOx, CO, partícules (PM), carboni negre (BC) i CO₂ a tocar de barris densament poblats com Ciutat Vella i la Barceloneta.</p>
+      <p><strong>EMICREUER-BCN</strong> construeix el primer inventari d'emissions vaixell a vaixell del port de Barcelona per als 14 anys 2012–2025, seguint com ha evolucionat la contaminació en paral·lel al creixement de la infraestructura portuària i a l'auge dels "mega-creuers". L'objectiu és oferir una base transparent i reproduïble que l'autoritat portuària i els reguladors puguin fer servir per planificar l'electrificació dels molls (<i>cold ironing</i>) i avaluar la futura regulació mediterrània de qualitat de l'aire.</p>
+    </div>
+
+    <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span><span class="divider-dot"></span></div>
+    <h2 class="section reveal" id="ambit">Àmbit d'estudi</h2>
+    <p class="section-sub">El Port de Barcelona, el més actiu d'Europa en passatgers de creuer, a menys d'1 km de Ciutat Vella i la Barceloneta</p>
+
+    <div class="map-panel reveal">
+      <h3>Moll Adossat, Port de Barcelona</h3>
+      <p class="map-note">Terminals de creuers A–F · Imatge de satèl·lit (Esri World Imagery, sobre l'ecosistema OpenStreetMap/Leaflet)</p>
+      <div id="study-map"></div>
+    </div>
+
+    <figure class="figure reveal">
+      <img src="../img/emicreuer/port-ciutat.jpg" alt="Creuer amarrat al Port Vell de Barcelona, vist des del Parc de Montjuïc, amb la ciutat al fons" loading="lazy" />
+      <figcaption>El port de creuers s'entrellaça amb el teixit urbà de Barcelona. Michael Paraskevas / Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+    </figure>
+
+    <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span><span class="divider-dot"></span></div>
+    <h2 class="section reveal" id="metodologia">Metodologia</h2>
+    <p class="section-sub">Un model Tier 3 activitat-per-activitat (EMEP/EEA Guidebook 2023), escala rere escala</p>
+
+    <div class="method-grid reveal">
+      <div class="method-card m1">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 20V10h3v10H4zm6.5 0V4h3v16h-3zM17 20v-7h3v7h-3z"/></svg></div>
+        <h4>Inventari escala per escala</h4>
+        <p>9.487 escales oficials del Port de Barcelona (2012–2025) creuades amb IMO, MMSI i nom de vaixell.</p>
+      </div>
+      <div class="method-card m2">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <h4>Base de dades de potència</h4>
+        <p>377 registres per a 343 vaixells únics (Port de Barcelona, IHS-Sea, MarineTraffic, CruiseMapper, VesselFinder); cobertura del 99,9%.</p>
+      </div>
+      <div class="method-card m3">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
+        <h4>Model Tier 3</h4>
+        <p>E = P × LF × EF × T per fase (navegació, maniobra, hotelling), amb motor principal i auxiliar per separat.</p>
+      </div>
+      <div class="method-card m4">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V7l8-4z"/></svg></div>
+        <h4>Auditoria de qualitat de dades</h4>
+        <p>21 vaixells amb potències contradictòries, verificats un a un contra fitxes de drassana i naviliera; 18 corregits, 1 confirmat.</p>
+      </div>
+      <div class="method-card m1">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l6-6-4-4 8-6M14 4h6v6"/></svg></div>
+        <h4>Factors d'emissió per any</h4>
+        <p>Ajustats per la penetració de motors Tier I→II (NOx) i la retallada del 20% en PM des del límit global de sofre (2020).</p>
+      </div>
+      <div class="method-card m2">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+        <h4>Incertesa Monte Carlo</h4>
+        <p>10.000 iteracions per als sis contaminants, més una anàlisi de sensibilitat sobre la ràtio de potència auxiliar/principal.</p>
+      </div>
+      <div class="method-card m3">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4v16h16M8 16l3-5 3 3 5-8"/></svg></div>
+        <h4>Validació externa</h4>
+        <p>Comparació amb l'inventari oficial de l'Autoritat Portuària de Barcelona (2017) i amb Transport &amp; Environment (2023).</p>
+      </div>
+      <div class="method-card m4">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 3 4 7l4 4M16 3l4 4-4 4M4 7h16M4 17h16M8 21l-4-4 4-4M16 21l4-4-4-4"/></svg></div>
+        <h4>Implementació reproduïble</h4>
+        <p>Python (pandas, NumPy), 77 tests unitaris i un pipeline de control de qualitat automatitzat.</p>
+      </div>
+    </div>
+
+    <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span><span class="divider-dot"></span></div>
+    <h2 class="section reveal" id="origen">L'origen: un TFG</h2>
+    <p class="section-sub">Un treball de fi de grau que ha crescut fins a convertir-se en un inventari complet 2012–2025</p>
+
+    <div class="origin-card reveal">
+      <span class="origin-badge">UB · Grau en Ciències del Mar</span>
+      <h3>"Quantificació de les emissions de contaminants atmosfèrics dels creuers al Port de Barcelona"</h3>
+      <p>El projecte va néixer com el Treball de Fi de Grau de <strong>Laura Seoane Álvarez</strong>, defensat el 12 de juny de 2025, que comparava les emissions del port en dos anys (2017 i 2024) i va rebre un premi al millor pòster. El treball es va desenvolupar en col·laboració amb el <strong>Centro Tecnológico Naval y del Mar (CTN)</strong>, sota la codirecció del Dr. Iván Felis Enguix, en el marc d'unes pràctiques curriculars de Laura al centre.</p>
+      <p>A partir d'aquesta base, Marc Cerdà i Domènech (GMAR-UB) ha ampliat l'anàlisi a la sèrie completa 2012–2025, incorporant l'auditoria de qualitat de dades, l'ajust dels factors d'emissió any a any, la quantificació d'incertesa per Monte Carlo i els escenaris de transició 2030–2050, en un manuscrit actualment en preparació.</p>
+    </div>
+
+    <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span><span class="divider-dot"></span></div>
+    <h2 class="section reveal" id="equip">Equip</h2>
+    <p class="section-sub">Un projecte propi del GMAR-UB, sense consorci ni finançament extern</p>
+
+    <div class="team-grid reveal">
+      <div class="team-card">
+        <span class="initial">MC</span>
+        <div>
+          <p class="name">Marc Cerdà i Domènech</p>
+          <p class="role">GMAR-UB · idea original, ampliació de l'anàlisi a la sèrie 2012–2025 i redacció del manuscrit.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <span class="initial">LS</span>
+        <div>
+          <p class="name">Laura Seoane Álvarez</p>
+          <p class="role">UB, Grau en Ciències del Mar · autora del TFG original (2025), base de dades i anàlisi inicial 2017–2024.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <span class="initial">IF</span>
+        <div>
+          <p class="name">Dr. Iván Felis Enguix</p>
+          <p class="role">Centro Tecnológico Naval y del Mar (CTN) · codirector del TFG.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <span class="initial">R</span>
+        <div>
+          <p class="name">Raül <span style="opacity:0.5;">(cognom pendent)</span></p>
+          <p class="role">Pràctiques d'empresa · desenvolupador d'una eina web (GitHub) per quantificar emissions. Detalls del projecte pendents d'afegir.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <span class="initial">O</span>
+        <div>
+          <p class="name">Ona <span style="opacity:0.5;">(cognom pendent)</span></p>
+          <p class="role">Autora del TFG més recent vinculat al projecte. Detalls pendents d'afegir.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-row reveal">
+      <a href="../recerca/index.html">← Totes les línies de recerca</a>
+      <a href="../contacte/index.html">Contacte →</a>
+    </div>
+
+    <p class="affil-title">Afiliació</p>
+    <div class="affil reveal">
+      <a href="https://www.ub.edu/" target="_blank" rel="noopener"><img src="../img/ub-logo-white.png" alt="Universitat de Barcelona" /></a>
+      <a href="https://www.ub.edu/geomarines/" target="_blank" rel="noopener"><img src="../img/gmar-logo-white.png" alt="Gmar · Grup de Recerca en Geociències Marines" /></a>
+    </div>
+
+    <footer>
+      <a href="../index.html">← Torna al perfil</a>
+      <p>Projecte propi del GMAR-UB, sense finançament extern · manuscrit en preparació</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    (function () {
+      var el = document.getElementById('study-map');
+      if (!el || typeof L === 'undefined') return;
+      var map = L.map('study-map', { scrollWheelZoom: false });
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics | Map data via OpenStreetMap/Leaflet',
+        maxZoom: 18
+      }).addTo(map);
+
+      var terminals = [
+        { id: 'A', lat: 41.3623, lon: 2.1815 },
+        { id: 'B', lat: 41.3596, lon: 2.1797 },
+        { id: 'C', lat: 41.3568, lon: 2.1779 },
+        { id: 'D', lat: 41.3538, lon: 2.1760 },
+        { id: 'E', lat: 41.3508, lon: 2.1741 },
+        { id: 'F', lat: 41.3475, lon: 2.1740 }
+      ];
+      var bounds = [];
+      terminals.forEach(function (t) {
+        L.circleMarker([t.lat, t.lon], { radius: 6, color: '#000705', weight: 1.5, fillColor: '#d9a441', fillOpacity: 0.95 })
+          .addTo(map)
+          .bindTooltip(t.id, { permanent: true, direction: 'top', offset: [0, -6], className: 'term-label' })
+          .bindPopup('<b>Terminal ' + t.id + '</b><br>Moll Adossat, Port de Barcelona');
+        bounds.push([t.lat, t.lon]);
+      });
+      map.fitBounds(bounds, { padding: [36, 36] });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var ship = document.getElementById('liner-ship');
+      var cable = document.getElementById('liner-cable');
+      var wake = document.getElementById('liner-wake');
+      var year = document.getElementById('liner-year');
+      var yr = document.getElementById('liner-yr');
+      var yearMobile = document.getElementById('liner-year-mobile');
+      var lookout = document.getElementById('liner-lookout');
+      if (!ship || !cable) return;
+
+      var targetY = 0, currentY = 0;
+
+      function computeTarget() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var frac = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+        var maxDrop = window.innerHeight - 175;
+        targetY = frac * maxDrop;
+        var yrText = String(2012 + Math.round(frac * 13));
+        if (yr) yr.textContent = yrText;
+        if (yearMobile) yearMobile.textContent = yrText;
+      }
+
+      function render() {
+        currentY += (targetY - currentY) * 0.08;
+        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
+        ship.style.transform = 'translateY(' + currentY + 'px)';
+        cable.style.height = currentY + 'px';
+        if (wake) {
+          var wakeH = Math.min(40, currentY);
+          wake.style.height = wakeH + 'px';
+          wake.style.top = (102 + currentY - wakeH) + 'px';
+        }
+        if (year) year.style.transform = 'translateY(' + (currentY + 40) + 'px)';
+        requestAnimationFrame(render);
+      }
+
+      window.addEventListener('scroll', computeTarget, { passive: true });
+      window.addEventListener('resize', computeTarget);
+      computeTarget();
+      requestAnimationFrame(render);
+
+      if (lookout && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              lookout.classList.remove('liner-lookout-flash');
+              void lookout.getBoundingClientRect();
+              lookout.classList.add('liner-lookout-flash');
+            }
+          });
+        }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+        document.querySelectorAll('h2.section').forEach(function (h) { io.observe(h); });
+      }
+    })();
+
+    (function () {
+      var navLinks = document.querySelectorAll('.section-nav a');
+      if (!navLinks.length) return;
+      var sections = [];
+      navLinks.forEach(function (a) {
+        var el = document.getElementById(a.getAttribute('href').slice(1));
+        if (el) sections.push({ link: a, el: el });
+      });
+      if (!sections.length) return;
+
+      var ticking = false;
+      function updateActive() {
+        ticking = false;
+        var line = window.scrollY + window.innerHeight * 0.3;
+        var atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+        var current = sections[0];
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].el.offsetTop <= line) current = sections[i];
+        }
+        if (atBottom) current = sections[sections.length - 1];
+        sections.forEach(function (s) { s.link.classList.toggle('active', s === current); });
+      }
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(updateActive);
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      updateActive();
+
+      navLinks.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var el = document.getElementById(a.getAttribute('href').slice(1));
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    })();
+
+    (function () {
+      var revealEls = document.querySelectorAll('.reveal');
+      if (!revealEls.length) return;
+      if (!('IntersectionObserver' in window)) {
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      revealEls.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>

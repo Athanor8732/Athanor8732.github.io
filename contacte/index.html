@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contacte · Marc Cerdà i Domènech</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg-deep:#000705; --bg-mid:#04140f;
+  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
+  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;
+}
+.wrap{ max-width:648px; margin:0 auto; padding:0 24px 90px; }
+.topbar{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:44px;
+position:sticky;top:0;z-index:5;background:radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);background-attachment:fixed;}
+.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
+.topbar svg.mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
+.topbar span{
+  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
+  text-transform:uppercase; font-size:0.78rem; color:var(--muted);
+}
+.topbar strong{ color:var(--text); font-style:normal; }
+.crumbs{ text-align:center; margin-bottom:8px; }
+.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
+h1.page-title{ font-family:Georgia,serif; font-weight:700; font-size:2rem; text-align:center; margin:8px 0 6px; }
+p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 auto 36px; max-width:560px; }
+
+.contact-block{
+  text-align:center;
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  border-radius:14px;
+  padding:32px 30px;
+  margin-bottom:24px;
+}
+.contact-block p{ margin:3px 0; color:var(--muted); font-size:0.94rem; line-height:1.7; }
+.contact-block p strong{ color:#fff; font-weight:700; font-size:1.05rem; }
+.contact-block .contact-links{ margin-top:18px; display:flex; flex-direction:column; gap:8px; align-items:center; }
+.contact-block .contact-links a{
+  color:var(--cyan); text-decoration:none; font-weight:600; font-size:0.95rem;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.contact-block .contact-links svg{ width:16px; height:16px; }
+
+.socials-row{ display:flex; gap:14px; justify-content:center; margin:26px 0 0; }
+.socials-row a{
+  color:var(--muted); display:flex; align-items:center; justify-content:center;
+  width:36px; height:36px; border-radius:50%; border:1px solid var(--panel-border); background:var(--panel);
+}
+.socials-row a:hover{ color:var(--cyan); border-color:rgba(var(--cyan-rgb),0.5); }
+.socials-row svg{ width:17px; height:17px; }
+
+.map-embed{ border-radius:12px; overflow:hidden; border:1px solid var(--panel-border); height:260px; margin-bottom:24px; }
+.map-embed iframe{ width:100%; height:100%; border:0; filter:invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.95); }
+
+.note{ text-align:center; color:var(--muted); font-size:0.8rem; max-width:440px; margin:0 auto 40px; line-height:1.6; }
+
+.cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+.cta-row a{
+  display:inline-block; padding:11px 22px; border-radius:999px; text-decoration:none;
+  font-size:0.86rem; font-weight:700; border:1px solid var(--panel-border); color:var(--cyan);
+  background:var(--panel);
+}
+.cta-row a:hover{ border-color:var(--cyan); }
+
+footer{ margin-top:56px; text-align:center; color:var(--muted); font-size:0.76rem; }
+footer a{ color:var(--cyan); text-decoration:none; }
+
+  /* ---- CTD rosette scroll illustration ---- */
+  .ctd-rig{
+    position:fixed;
+    left:calc(50% + 306px);
+    top:0;
+    height:100vh;
+    width:56px;
+    pointer-events:none;
+    z-index:3;
+    color:var(--cyan);
+    opacity:0.55;
+  }
+  .ctd-davit{ position:absolute; top:86px; left:0; width:46px; height:24px; }
+  .ctd-cable{
+    position:absolute;
+    top:108px;
+    left:30px;
+    width:1.3px;
+    height:0;
+    background:linear-gradient(180deg, var(--cyan), rgba(var(--cyan-rgb),0.15));
+    box-shadow:0 0 4px rgba(var(--cyan-rgb),0.55);
+  }
+  .ctd-wake{
+    position:absolute;
+    left:28.65px;
+    top:108px;
+    width:4px;
+    height:0;
+    border-radius:3px;
+    background:linear-gradient(180deg, transparent, rgba(var(--cyan-rgb),0.5) 55%, rgba(var(--cyan-rgb),0.1));
+    filter:blur(1.5px);
+    pointer-events:none;
+  }
+  .ctd-rosette{
+    position:absolute;
+    top:108px;
+    left:6px;
+    width:48px;
+    height:75px;
+  }
+  #ctd-sensor{ transform-box:fill-box; transform-origin:center; }
+  .ctd-sensor-flash{ animation:sensor-flash .55s ease-out; }
+  @keyframes sensor-flash{
+    0%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
+    35%{ filter:drop-shadow(0 0 5px var(--cyan)); transform:scale(1.6); }
+    100%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
+  }
+  .ctd-bubbles .bub{
+    opacity:0;
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:bub-rise 3.6s ease-in infinite;
+  }
+  .ctd-bubbles .b1{ animation-delay:0s; }
+  .ctd-bubbles .b2{ animation-delay:1.2s; }
+  .ctd-bubbles .b3{ animation-delay:2.4s; }
+  @keyframes bub-rise{
+    0%{ transform:translateY(0); opacity:0; }
+    12%{ opacity:0.8; }
+    90%{ opacity:0.15; }
+    100%{ transform:translateY(-46px); opacity:0; }
+  }
+  .ctd-sway{
+    transform-box:fill-box;
+    transform-origin:50% 0%;
+    animation:ctd-sway 4.5s ease-in-out infinite;
+  }
+  @keyframes ctd-sway{
+    0%,100%{ transform:rotate(-2.5deg); }
+    50%{ transform:rotate(2.5deg); }
+  }
+  .ctd-depth{
+    position:absolute;
+    top:108px;
+    left:2px;
+    width:55px;
+    text-align:center;
+    font-size:0.86rem;
+    font-weight:600;
+    font-family:Georgia,serif;
+    color:var(--cyan);
+    opacity:0.8;
+    white-space:nowrap;
+  }
+  @media (max-width:880px){ .ctd-rig{ display:none; } }
+  .ctd-depth-mobile{
+    display:none;
+    position:fixed;
+    right:14px;
+    bottom:14px;
+    z-index:4;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:999px;
+    padding:6px 14px;
+    font-family:Georgia,serif;
+    font-size:0.8rem;
+    font-weight:600;
+    color:var(--cyan);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    pointer-events:none;
+  }
+  @media (max-width:880px){ .ctd-depth-mobile{ display:block; } }
+
+/* ---- side promo: quick link to IMPAS-Garraf ---- */
+.side-promo{
+  position:fixed; left:0; top:50%; transform:translateY(-50%);
+  z-index:6; display:flex; align-items:center; gap:11px;
+  background:var(--panel); border:1px solid var(--panel-border); border-left:none;
+  border-radius:0 16px 16px 0; padding:9px 18px 9px 9px; text-decoration:none;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  box-shadow:8px 0 26px -10px rgba(0,0,0,0.6);
+  transition:transform .2s ease, box-shadow .2s ease;
+  max-width:190px;
+  animation:side-promo-fade .6s ease .35s backwards;
+}
+.side-promo:hover{ transform:translateY(-50%) translateX(5px); box-shadow:10px 0 30px -8px rgba(var(--cyan-rgb),0.35); }
+.side-promo-thumb{
+  position:relative; flex:0 0 auto; width:46px; height:46px; border-radius:50%; overflow:hidden;
+  border:1.5px solid rgba(var(--cyan-rgb),0.55); box-shadow:0 0 0 3px rgba(0,7,5,0.9), 0 4px 12px rgba(0,0,0,0.5);
+}
+.side-promo-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.side-promo-ring{
+  position:absolute; inset:-5px; border-radius:50%; border:1px solid rgba(var(--cyan-rgb),0.45);
+  opacity:0; animation:side-promo-ping 3.2s cubic-bezier(0.2,0.6,0.35,1) infinite;
+}
+@keyframes side-promo-ping{ 0%{ transform:scale(0.82); opacity:0.55; } 70%{ opacity:0.12; } 100%{ transform:scale(1.28); opacity:0; } }
+@keyframes side-promo-fade{ from{ opacity:0; } to{ opacity:1; } }
+.side-promo-text{ display:flex; flex-direction:column; gap:1px; }
+.side-promo-tag{ font-size:0.58rem; text-transform:uppercase; letter-spacing:0.09em; color:#d9a441; font-weight:700; }
+.side-promo-title{ font-family:Georgia,serif; font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
+@media (max-width:640px){
+  .side-promo{ top:auto; bottom:14px; left:14px; transform:none; padding:0; width:52px; height:52px; border-radius:50%; justify-content:center; max-width:none; }
+  .side-promo:hover{ transform:scale(1.06); }
+  .side-promo-thumb{ width:100%; height:100%; }
+  .side-promo-text{ display:none; }
+}
+</style>
+</head>
+<body>
+  <a class="side-promo" href="../impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
+    <span class="side-promo-thumb">
+      <span class="side-promo-ring"></span>
+      <img src="../img/impas/thumb-impas.jpg" alt="" />
+    </span>
+    <span class="side-promo-text">
+      <span class="side-promo-tag">Projecte actiu</span>
+      <span class="side-promo-title">IMPAS-Garraf</span>
+    </span>
+  </a>
+
+
+  <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
+
+  <div class="ctd-rig" aria-hidden="true">
+    <svg class="ctd-davit" viewBox="0 0 46 24" fill="none" stroke="currentColor">
+      <path d="M2 5 h21 a7 7 0 0 1 7 7 v7" stroke-width="1.4"/>
+      <circle cx="30" cy="19" r="3" stroke-width="1.1"/>
+    </svg>
+    <div class="ctd-cable" id="ctd-cable"></div>
+    <div class="ctd-wake" id="ctd-wake"></div>
+    <svg class="ctd-rosette" id="ctd-rosette" viewBox="0 0 48 74" fill="none" stroke="currentColor">
+      <defs>
+        <linearGradient id="niskin-fill" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" style="stop-color:rgba(var(--cyan-rgb),0.35)"/>
+          <stop offset="42%" style="stop-color:rgba(var(--cyan-rgb),1)"/>
+          <stop offset="58%" style="stop-color:rgba(var(--cyan-rgb),0.75)"/>
+          <stop offset="100%" style="stop-color:rgba(var(--cyan-rgb),0.3)"/>
+        </linearGradient>
+      </defs>
+      <g class="ctd-sway">
+        <circle id="ctd-sensor" cx="24" cy="4" r="2" fill="currentColor" stroke="none" opacity="0.85"/>
+        <line x1="24" y1="6" x2="24" y2="11" stroke-width="1.2"/>
+        <ellipse cx="24" cy="11" rx="18" ry="5" stroke-width="1.4"/>
+        <ellipse cx="24" cy="53" rx="18" ry="5" stroke-width="1.4"/>
+        <line x1="6" y1="11" x2="6" y2="53" stroke-width="1.2"/>
+        <line x1="42" y1="11" x2="42" y2="53" stroke-width="1.2"/>
+        <rect x="7" y="16" width="3.2" height="33" rx="1.6" fill="url(#niskin-fill)" fill-opacity="0.85" stroke-width="0.8" opacity="0.7"/>
+        <rect x="14" y="14" width="4" height="36" rx="2" fill="url(#niskin-fill)" fill-opacity="0.9" stroke-width="0.9" opacity="0.82"/>
+        <rect x="21.2" y="13" width="5.6" height="38" rx="2.5" fill="url(#niskin-fill)" fill-opacity="0.95" stroke-width="1" opacity="1"/>
+        <rect x="30" y="14" width="4" height="36" rx="2" fill="url(#niskin-fill)" fill-opacity="0.9" stroke-width="0.9" opacity="0.82"/>
+        <rect x="37.8" y="16" width="3.2" height="33" rx="1.6" fill="url(#niskin-fill)" fill-opacity="0.85" stroke-width="0.8" opacity="0.7"/>
+        <line x1="24" y1="53" x2="24" y2="60" stroke-width="1.2"/>
+        <rect x="19" y="60" width="10" height="10" rx="2" fill="currentColor" fill-opacity="0.15" stroke-width="1"/>
+        <line x1="24" y1="70" x2="24" y2="74" stroke-width="1.2"/>
+        <g class="ctd-bubbles" fill="currentColor" stroke="none">
+          <circle class="bub b1" cx="10" cy="20" r="1.1"/>
+          <circle class="bub b2" cx="35" cy="30" r="0.9"/>
+          <circle class="bub b3" cx="18" cy="9" r="1.3"/>
+        </g>
+      </g>
+    </svg>
+    <div class="ctd-depth" id="ctd-depth">0 m</div>
+  </div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="../index.html">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
+          <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+          <g stroke-width="1.1" opacity="0.5">
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+          </g>
+          <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+      </a>
+    </div>
+
+    <p class="crumbs"><a href="../index.html">← Torna al perfil</a></p>
+    <h1 class="page-title">Contacte</h1>
+    <p class="page-sub">Facultat de Ciències de la Terra, Universitat de Barcelona</p>
+
+    <div class="contact-block">
+      <p><strong>Professor Lector</strong></p>
+      <p>Grup de Recerca en Geociències Marines</p>
+      <p>Dept. de Dinàmica de la Terra i l'Oceà · Facultat de Ciències de la Terra</p>
+      <p>Universitat de Barcelona</p>
+      <p>C/ Martí Franquès, s/n · 08028 Barcelona</p>
+      <div class="contact-links">
+        <a href="mailto:cerda.domenech@ub.edu">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 4h20v16H2V4zm2 2v.2l8 6 8-6V6H4zm16 2.4-8 6-8-6V18h16V8.4z"/></svg>
+          cerda.domenech@ub.edu
+        </a>
+        <a href="tel:+34934021369">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.7 3.6 4.9 6.3 6.3l2.1-2.1c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1.1l-2.2 2.7z"/></svg>
+          +34 93 402 13 69
+        </a>
+      </div>
+      <div class="socials-row">
+        <a href="https://twitter.com/elpiratavell" target="_blank" rel="noopener" title="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7.1l-5.5-7.2L4.3 22H1.2l8.2-9.3L1 2h7.3l5 6.6L18.9 2zm-1.2 18h1.9L7.4 4H5.3l12.4 16z"/></svg>
+        </a>
+        <a href="https://bsky.app/profile/elpiratavell.bsky.social" target="_blank" rel="noopener" title="Bluesky">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.6C10.6 7.9 7.7 5.1 5.2 4c-1.2-.5-1.7 0-1.7 1v10.5c0 1.4 1.1 2.5 2.5 2.5 1.6 0 3.9.7 5.9 2.3.1.1.3.1.4 0 2-1.6 4.3-2.3 5.9-2.3 1.4 0 2.5-1.1 2.5-2.5V5c0-1-.5-1.5-1.7-1-2.5 1.1-5.4 3.9-6.8 6.6-.1.2-.1.3-.2 0z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/elpiratavell/" target="_blank" rel="noopener" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2 .2 2.4.4.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.3 1.2.4 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 2-.4 2.4-.2.6-.5 1-1 1.5-.4.4-.9.7-1.5 1-.4.2-1.2.3-2.4.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.2-2.4-.4-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-1-1.5-.2-.4-.3-1.2-.4-2.4-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.2-2 .4-2.4.2-.6.5-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1.2-.3 2.4-.4 1.3-.1 1.7-.1 4.9-.1zM12 0C8.7 0 8.3 0 7 .1 5.7.1 4.7.3 3.9.6c-.9.3-1.6.8-2.3 1.5C.9 2.8.4 3.5.1 4.4c-.3.8-.5 1.8-.6 3.1C-.1 8.7 0 9.1 0 12s0 3.3.1 4.6c.1 1.3.3 2.3.6 3.1.3.9.8 1.6 1.5 2.3.7.7 1.4 1.2 2.3 1.5.8.3 1.8.5 3.1.6C8.3 24 8.7 24 12 24s3.3 0 4.6-.1c1.3-.1 2.3-.3 3.1-.6.9-.3 1.6-.8 2.3-1.5.7-.7 1.2-1.4 1.5-2.3.3-.8.5-1.8.6-3.1.1-1.3.1-1.7.1-4.6s0-3.3-.1-4.6c-.1-1.3-.3-2.3-.6-3.1-.3-.9-.8-1.6-1.5-2.3C21.2.9 20.5.4 19.6.1c-.8-.3-1.8-.5-3.1-.6C15.3 0 14.9 0 12 0zm0 5.8A6.2 6.2 0 1 0 12 18.2 6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.5a1.4 1.4 0 1 1-2.9 0 1.4 1.4 0 0 1 2.9 0z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/marc-cerd%C3%A0-i-dom%C3%A8nech-0a748849/" target="_blank" rel="noopener" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.4h-3.6v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.2V9h3.5v1.6h.1c.5-.9 1.7-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.4H3.6V9h3.5v11.4z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="map-embed">
+      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=2.108%2C41.383%2C2.120%2C41.390&layer=mapnik&marker=41.3865%2C2.1146" loading="lazy" title="Facultat de Ciències de la Terra, Universitat de Barcelona"></iframe>
+    </div>
+    <p class="note">Facultat de Ciències de la Terra — C/ Martí Franquès, s/n, 08028 Barcelona. El millor canal per a consultes acadèmiques o de premsa és el correu electrònic institucional.</p>
+
+    <div class="cta-row">
+      <a href="../sobre-mi/index.html">Sobre mi →</a>
+      <a href="../recerca/index.html">Recerca →</a>
+    </div>
+
+    <footer>
+      <a href="../index.html">← Torna al perfil</a>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var rosette = document.getElementById('ctd-rosette');
+      var cable = document.getElementById('ctd-cable');
+      var wake = document.getElementById('ctd-wake');
+      var depth = document.getElementById('ctd-depth');
+      var depthMobile = document.getElementById('ctd-depth-mobile');
+      var sensor = document.getElementById('ctd-sensor');
+      if (!rosette || !cable) return;
+
+      var targetY = 0, currentY = 0;
+
+      function computeTarget() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var frac = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+        var maxDrop = window.innerHeight - 187;
+        targetY = frac * maxDrop;
+        var depthText = Math.round(frac * 1200) + ' m';
+        if (depth) depth.textContent = depthText;
+        if (depthMobile) depthMobile.textContent = depthText;
+      }
+
+      function render() {
+        currentY += (targetY - currentY) * 0.08;
+        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
+        rosette.style.transform = 'translateY(' + currentY + 'px)';
+        cable.style.height = currentY + 'px';
+        if (wake) {
+          var wakeH = Math.min(40, currentY);
+          wake.style.height = wakeH + 'px';
+          wake.style.top = (108 + currentY - wakeH) + 'px';
+        }
+        if (depth) depth.style.transform = 'translateY(' + (currentY + 79) + 'px)';
+        requestAnimationFrame(render);
+      }
+
+      window.addEventListener('scroll', computeTarget, { passive: true });
+      window.addEventListener('resize', computeTarget);
+      computeTarget();
+      requestAnimationFrame(render);
+
+      if (sensor && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              sensor.classList.remove('ctd-sensor-flash');
+              void sensor.getBoundingClientRect();
+              sensor.classList.add('ctd-sensor-flash');
+            }
+          });
+        }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+        document.querySelectorAll('h2.section').forEach(function (h) { io.observe(h); });
+      }
+    })();
+  </script>
+</body>
+</html>

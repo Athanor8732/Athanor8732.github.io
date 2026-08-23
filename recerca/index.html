@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recerca · Marc Cerdà i Domènech</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000705'/%3E%3Ccircle cx='20' cy='20' r='17' fill='none' stroke='%2339ffb0' stroke-width='1.3' opacity='0.6'/%3E%3Cpath d='M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27' fill='none' stroke='%2339ffb0' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root{
+  --bg-deep:#000705; --bg-mid:#04140f;
+  --panel:rgba(255,255,255,0.045); --panel-border:rgba(255,255,255,0.09);
+  --text:#eaf2f4; --muted:#8fa5ac; --cyan:#39ffb0; --cyan-rgb:57,255,176;
+  --coral:#ff7a63; --sand:#d9a441; --indigo:#5b8cff; --seafoam:#39c98f; --gold:#f2c14e;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;
+}
+.wrap{ max-width:648px; margin:0 auto; padding:0 24px 90px; }
+.topbar{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  padding:18px 0; border-bottom:1px solid var(--panel-border); margin-bottom:44px;
+position:sticky;top:0;z-index:5;background:radial-gradient(ellipse 900px 500px at 50% -10%, rgba(var(--cyan-rgb),0.10), transparent 60%),repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 55%, var(--bg-deep) 100%);background-attachment:fixed;}
+.topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; }
+.topbar svg.mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
+.topbar span{
+  font-family:Georgia,'Iowan Old Style',serif; font-style:italic; letter-spacing:0.12em;
+  text-transform:uppercase; font-size:0.78rem; color:var(--muted);
+}
+.topbar strong{ color:var(--text); font-style:normal; }
+.crumbs{ text-align:center; margin-bottom:8px; }
+.crumbs a{ color:var(--cyan); text-decoration:none; font-size:0.85rem; }
+h1.page-title{ font-family:Georgia,serif; font-weight:700; font-size:2rem; text-align:center; margin:8px 0 6px; }
+p.page-sub{ text-align:center; color:var(--muted); font-size:0.92rem; margin:0 auto 36px; max-width:560px; }
+
+.award{
+  display:flex; align-items:center; gap:14px; justify-content:center;
+  background:linear-gradient(150deg, rgba(242,193,78,0.12), rgba(255,255,255,0.025));
+  border:1px solid rgba(242,193,78,0.35); border-radius:999px;
+  padding:11px 22px; margin:0 auto 40px; max-width:fit-content;
+}
+.award svg{ width:22px; height:22px; color:var(--gold); flex:0 0 auto; }
+.award p{ margin:0; font-size:0.86rem; color:#f4e4b8; }
+.award b{ color:var(--gold); }
+
+.gauge{ display:flex; justify-content:center; gap:0; margin:0 0 40px; flex-wrap:wrap; }
+.gauge .stat{ padding:0 22px; text-align:center; border-left:1px solid var(--panel-border); }
+.gauge .stat:first-child{ border-left:none; }
+.gauge .stat b{ display:block; color:var(--cyan); font-family:Georgia,serif; font-size:1.25rem; }
+.gauge .stat span{ display:block; color:var(--muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.07em; margin-top:2px; }
+.gauge-note{ text-align:center; color:var(--muted); font-size:0.78rem; margin:0 0 50px; }
+
+.prose{ background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:26px 28px; margin-bottom:16px; }
+.prose p{ font-size:0.96rem; line-height:1.75; color:#dbe6e8; margin:0 0 16px; }
+.prose p:last-child{ margin-bottom:0; }
+.prose strong{ color:#fff; }
+
+h2.section{ font-family:Georgia,serif; font-weight:700; font-size:1.4rem; margin:52px 0 6px; text-align:center; }
+p.section-sub{ text-align:center; color:var(--muted); font-size:0.85rem; margin:0 0 26px; }
+
+.lines{ display:flex; flex-direction:column; gap:18px; margin-bottom:8px; }
+.line-card{ background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--accent); border-radius:12px; overflow:hidden; display:flex; flex-wrap:wrap; }
+.line-card .line-img{ flex:0 0 100%; height:190px; overflow:hidden; background:#04141d; }
+.line-card .line-img img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.03); }
+.line-card .line-body{ padding:20px 22px; flex:1 1 auto; }
+.line-card .n{ display:block; color:var(--accent); font-family:Georgia,serif; font-size:0.72rem; margin-bottom:6px; letter-spacing:0.06em; }
+.line-card h3{ margin:0 0 10px; font-family:Georgia,serif; font-size:1.15rem; color:#fff; line-height:1.3; }
+.line-card p{ margin:0; color:var(--muted); font-size:0.88rem; line-height:1.7; }
+.line-card p + p{ margin-top:10px; }
+.line-card.c1{ --accent:var(--coral); }
+.line-card.c2{ --accent:var(--cyan); }
+.line-card.c3{ --accent:var(--sand); }
+.line-card.c4{ --accent:var(--seafoam); }
+
+.mct-card{ background:var(--panel); border:1px solid var(--panel-border); border-left:3px solid var(--indigo); border-radius:12px; overflow:hidden; margin-top:18px; }
+.mct-card .line-img{ height:220px; overflow:hidden; background:#04141d; }
+.mct-card .line-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+.mct-card .line-body{ padding:20px 22px; }
+.mct-card h3{ margin:0 0 10px; font-family:Georgia,serif; font-size:1.15rem; color:#fff; }
+.mct-card p{ margin:0 0 10px; color:var(--muted); font-size:0.88rem; line-height:1.7; }
+.video-note{
+  display:flex; align-items:center; gap:10px; margin-top:14px; padding:12px 16px;
+  background:rgba(91,140,255,0.08); border:1px dashed rgba(91,140,255,0.4); border-radius:8px;
+  color:var(--indigo); font-size:0.82rem;
+}
+.video-note svg{ width:20px; height:20px; flex:0 0 auto; }
+
+.map-panel{ background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:20px; margin-bottom:18px; }
+.map-panel h3{ margin:0 0 4px; font-family:Georgia,serif; font-size:1rem; color:#fff; text-align:center; }
+.map-panel .map-note{ text-align:center; color:var(--muted); font-size:0.72rem; margin:0 0 14px; }
+#campaign-map{ width:100%; height:440px; border-radius:8px; background:#05141e; }
+.leaflet-popup-content-wrapper{ background:#0b1e2b; color:#eaf2f4; border-radius:8px; }
+.leaflet-popup-content b{ color:var(--cyan); }
+.leaflet-popup-tip{ background:#0b1e2b; }
+.leaflet-container a.leaflet-popup-close-button{ color:#8fa5ac; }
+
+.campaign-table{ width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px; }
+.campaign-table th{ text-align:left; color:var(--cyan); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px; border-bottom:1px solid var(--panel-border); }
+.campaign-table td{ padding:9px 10px; border-bottom:1px solid var(--panel-border); color:#dbe6e8; }
+.campaign-table td.muted{ color:var(--muted); }
+.table-wrap{ overflow-x:auto; border-radius:10px; background:var(--panel); border:1px solid var(--panel-border); }
+p.table-footnote{ color:var(--muted); font-size:0.76rem; text-align:center; margin:12px 0 0; }
+
+.proj-card{ background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:18px 20px; margin-bottom:12px; }
+.proj-card .proj-title{ font-weight:700; color:#fff; font-size:0.96rem; margin:0 0 6px; }
+.proj-card .proj-meta{ color:var(--muted); font-size:0.82rem; margin:2px 0; }
+.proj-card .pi-badge{ display:inline-block; background:rgba(var(--cyan-rgb),0.15); color:var(--cyan); font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:3px 9px; border-radius:999px; margin-top:8px; }
+.proj-group-label{ color:var(--muted); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.09em; margin:26px 0 10px; }
+.proj-group-label:first-child{ margin-top:0; }
+
+.cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:40px; }
+.cta-row a{
+  display:inline-block; padding:11px 22px; border-radius:999px; text-decoration:none;
+  font-size:0.86rem; font-weight:700; border:1px solid var(--panel-border); color:var(--cyan);
+  background:var(--panel);
+}
+.cta-row a:hover{ border-color:var(--cyan); }
+
+footer{ margin-top:56px; text-align:center; color:var(--muted); font-size:0.76rem; }
+footer a{ color:var(--cyan); text-decoration:none; }
+
+  /* ---- CTD rosette scroll illustration ---- */
+  .ctd-rig{
+    position:fixed;
+    left:calc(50% + 306px);
+    top:0;
+    height:100vh;
+    width:56px;
+    pointer-events:none;
+    z-index:3;
+    color:var(--cyan);
+    opacity:0.55;
+  }
+  .ctd-davit{ position:absolute; top:86px; left:0; width:46px; height:24px; }
+  .ctd-cable{
+    position:absolute;
+    top:108px;
+    left:30px;
+    width:1.3px;
+    height:0;
+    background:linear-gradient(180deg, var(--cyan), rgba(var(--cyan-rgb),0.15));
+    box-shadow:0 0 4px rgba(var(--cyan-rgb),0.55);
+  }
+  .ctd-wake{
+    position:absolute;
+    left:28.65px;
+    top:108px;
+    width:4px;
+    height:0;
+    border-radius:3px;
+    background:linear-gradient(180deg, transparent, rgba(var(--cyan-rgb),0.5) 55%, rgba(var(--cyan-rgb),0.1));
+    filter:blur(1.5px);
+    pointer-events:none;
+  }
+  .ctd-rosette{
+    position:absolute;
+    top:108px;
+    left:6px;
+    width:48px;
+    height:75px;
+  }
+  #ctd-sensor{ transform-box:fill-box; transform-origin:center; }
+  .ctd-sensor-flash{ animation:sensor-flash .55s ease-out; }
+  @keyframes sensor-flash{
+    0%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
+    35%{ filter:drop-shadow(0 0 5px var(--cyan)); transform:scale(1.6); }
+    100%{ filter:drop-shadow(0 0 0px var(--cyan)); transform:scale(1); }
+  }
+  .ctd-bubbles .bub{
+    opacity:0;
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:bub-rise 3.6s ease-in infinite;
+  }
+  .ctd-bubbles .b1{ animation-delay:0s; }
+  .ctd-bubbles .b2{ animation-delay:1.2s; }
+  .ctd-bubbles .b3{ animation-delay:2.4s; }
+  @keyframes bub-rise{
+    0%{ transform:translateY(0); opacity:0; }
+    12%{ opacity:0.8; }
+    90%{ opacity:0.15; }
+    100%{ transform:translateY(-46px); opacity:0; }
+  }
+  .ctd-sway{
+    transform-box:fill-box;
+    transform-origin:50% 0%;
+    animation:ctd-sway 4.5s ease-in-out infinite;
+  }
+  @keyframes ctd-sway{
+    0%,100%{ transform:rotate(-2.5deg); }
+    50%{ transform:rotate(2.5deg); }
+  }
+  .ctd-depth{
+    position:absolute;
+    top:108px;
+    left:2px;
+    width:55px;
+    text-align:center;
+    font-size:0.86rem;
+    font-weight:600;
+    font-family:Georgia,serif;
+    color:var(--cyan);
+    opacity:0.8;
+    white-space:nowrap;
+  }
+  @media (max-width:880px){ .ctd-rig{ display:none; } }
+  .ctd-depth-mobile{
+    display:none;
+    position:fixed;
+    right:14px;
+    bottom:14px;
+    z-index:4;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:999px;
+    padding:6px 14px;
+    font-family:Georgia,serif;
+    font-size:0.8rem;
+    font-weight:600;
+    color:var(--cyan);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    pointer-events:none;
+  }
+  @media (max-width:880px){ .ctd-depth-mobile{ display:block; } }
+
+/* ---- side promo: quick link to IMPAS-Garraf ---- */
+.side-promo{
+  position:fixed; left:0; top:50%; transform:translateY(-50%);
+  z-index:6; display:flex; align-items:center; gap:11px;
+  background:var(--panel); border:1px solid var(--panel-border); border-left:none;
+  border-radius:0 16px 16px 0; padding:9px 18px 9px 9px; text-decoration:none;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  box-shadow:8px 0 26px -10px rgba(0,0,0,0.6);
+  transition:transform .2s ease, box-shadow .2s ease;
+  max-width:190px;
+  animation:side-promo-fade .6s ease .35s backwards;
+}
+.side-promo:hover{ transform:translateY(-50%) translateX(5px); box-shadow:10px 0 30px -8px rgba(var(--cyan-rgb),0.35); }
+.side-promo-thumb{
+  position:relative; flex:0 0 auto; width:46px; height:46px; border-radius:50%; overflow:hidden;
+  border:1.5px solid rgba(var(--cyan-rgb),0.55); box-shadow:0 0 0 3px rgba(0,7,5,0.9), 0 4px 12px rgba(0,0,0,0.5);
+}
+.side-promo-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.side-promo-ring{
+  position:absolute; inset:-5px; border-radius:50%; border:1px solid rgba(var(--cyan-rgb),0.45);
+  opacity:0; animation:side-promo-ping 3.2s cubic-bezier(0.2,0.6,0.35,1) infinite;
+}
+@keyframes side-promo-ping{ 0%{ transform:scale(0.82); opacity:0.55; } 70%{ opacity:0.12; } 100%{ transform:scale(1.28); opacity:0; } }
+@keyframes side-promo-fade{ from{ opacity:0; } to{ opacity:1; } }
+.side-promo-text{ display:flex; flex-direction:column; gap:1px; }
+.side-promo-tag{ font-size:0.58rem; text-transform:uppercase; letter-spacing:0.09em; color:#d9a441; font-weight:700; }
+.side-promo-title{ font-family:Georgia,serif; font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
+@media (max-width:640px){
+  .side-promo{ top:auto; bottom:14px; left:14px; transform:none; padding:0; width:52px; height:52px; border-radius:50%; justify-content:center; max-width:none; }
+  .side-promo:hover{ transform:scale(1.06); }
+  .side-promo-thumb{ width:100%; height:100%; }
+  .side-promo-text{ display:none; }
+}
+</style>
+</head>
+<body>
+  <a class="side-promo" href="../impas-garraf/index.html" aria-label="Projecte IMPAS-Garraf">
+    <span class="side-promo-thumb">
+      <span class="side-promo-ring"></span>
+      <img src="../img/impas/thumb-impas.jpg" alt="" />
+    </span>
+    <span class="side-promo-text">
+      <span class="side-promo-tag">Projecte actiu</span>
+      <span class="side-promo-title">IMPAS-Garraf</span>
+    </span>
+  </a>
+
+
+  <div class="ctd-depth-mobile" id="ctd-depth-mobile" aria-hidden="true">0 m</div>
+
+  <div class="ctd-rig" aria-hidden="true">
+    <svg class="ctd-davit" viewBox="0 0 46 24" fill="none" stroke="currentColor">
+      <path d="M2 5 h21 a7 7 0 0 1 7 7 v7" stroke-width="1.4"/>
+      <circle cx="30" cy="19" r="3" stroke-width="1.1"/>
+    </svg>
+    <div class="ctd-cable" id="ctd-cable"></div>
+    <div class="ctd-wake" id="ctd-wake"></div>
+    <svg class="ctd-rosette" id="ctd-rosette" viewBox="0 0 48 74" fill="none" stroke="currentColor">
+      <defs>
+        <linearGradient id="niskin-fill" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" style="stop-color:rgba(var(--cyan-rgb),0.35)"/>
+          <stop offset="42%" style="stop-color:rgba(var(--cyan-rgb),1)"/>
+          <stop offset="58%" style="stop-color:rgba(var(--cyan-rgb),0.75)"/>
+          <stop offset="100%" style="stop-color:rgba(var(--cyan-rgb),0.3)"/>
+        </linearGradient>
+      </defs>
+      <g class="ctd-sway">
+        <circle id="ctd-sensor" cx="24" cy="4" r="2" fill="currentColor" stroke="none" opacity="0.85"/>
+        <line x1="24" y1="6" x2="24" y2="11" stroke-width="1.2"/>
+        <ellipse cx="24" cy="11" rx="18" ry="5" stroke-width="1.4"/>
+        <ellipse cx="24" cy="53" rx="18" ry="5" stroke-width="1.4"/>
+        <line x1="6" y1="11" x2="6" y2="53" stroke-width="1.2"/>
+        <line x1="42" y1="11" x2="42" y2="53" stroke-width="1.2"/>
+        <rect x="7" y="16" width="3.2" height="33" rx="1.6" fill="url(#niskin-fill)" fill-opacity="0.85" stroke-width="0.8" opacity="0.7"/>
+        <rect x="14" y="14" width="4" height="36" rx="2" fill="url(#niskin-fill)" fill-opacity="0.9" stroke-width="0.9" opacity="0.82"/>
+        <rect x="21.2" y="13" width="5.6" height="38" rx="2.5" fill="url(#niskin-fill)" fill-opacity="0.95" stroke-width="1" opacity="1"/>
+        <rect x="30" y="14" width="4" height="36" rx="2" fill="url(#niskin-fill)" fill-opacity="0.9" stroke-width="0.9" opacity="0.82"/>
+        <rect x="37.8" y="16" width="3.2" height="33" rx="1.6" fill="url(#niskin-fill)" fill-opacity="0.85" stroke-width="0.8" opacity="0.7"/>
+        <line x1="24" y1="53" x2="24" y2="60" stroke-width="1.2"/>
+        <rect x="19" y="60" width="10" height="10" rx="2" fill="currentColor" fill-opacity="0.15" stroke-width="1"/>
+        <line x1="24" y1="70" x2="24" y2="74" stroke-width="1.2"/>
+        <g class="ctd-bubbles" fill="currentColor" stroke="none">
+          <circle class="bub b1" cx="10" cy="20" r="1.1"/>
+          <circle class="bub b2" cx="35" cy="30" r="0.9"/>
+          <circle class="bub b3" cx="18" cy="9" r="1.3"/>
+        </g>
+      </g>
+    </svg>
+    <div class="ctd-depth" id="ctd-depth">0 m</div>
+  </div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="../index.html">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
+          <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+          <g stroke-width="1.1" opacity="0.5">
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+          </g>
+          <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+      </a>
+    </div>
+
+    <p class="crumbs"><a href="../index.html">← Torna al perfil</a></p>
+    <h1 class="page-title">Recerca</h1>
+    <p class="page-sub">Fluxos de metalls, hidrogeologia costanera i governança marina, des del Mediterrani fins a l'Antàrtida</p>
+
+    <div class="award">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.4 5.5 6 .5-4.5 4 1.4 6-5.3-3.2-5.3 3.2 1.4-6-4.5-4 6-.5z"/></svg>
+      <p><b>Premi Carmina Virgili 2025</b> — Secció de Ciències i Tecnologia, Institut d'Estudis Catalans</p>
+    </div>
+
+    <div class="gauge">
+      <div class="stat"><b data-stat="publications">14</b><span>publicacions</span></div>
+      <div class="stat"><b data-stat="projects">14</b><span>projectes</span></div>
+      <div class="stat"><b data-stat="campaigns">14</b><span>campanyes</span></div>
+      <div class="stat"><b data-stat="seaDays">160+</b><span>dies de mar</span></div>
+    </div>
+    <p class="gauge-note"><span data-stat="citations">213</span> citacions · índex h de <span data-stat="hIndex">6</span> · <span data-stat="intlCoauthorship">55,6%</span> de coautoria internacional (Scopus)</p>
+
+    <div class="prose">
+      <p>Investigador en <strong>Geociències Marines</strong> i professor lector a la Universitat de Barcelona. La meva recerca pivota sobre dos eixos complementaris: la caracterització dels fluxos i distribució espaciotemporal de <strong>metalls i metal·loides d'origen antropogènic</strong> a la columna d'aigua i al sediment —incloent-hi la seva remobilització en escenaris de canvi climàtic— i la dinàmica dels <strong>residus flotants</strong>, amb especial atenció als plàstics, microplàstics i tovalloletes humides, des de rius i clavegueram fins a platges i sistemes costaners.</p>
+      <p>Metodològicament integro la sedimentologia, tècniques no destructives, la geoquímica elemental i la geocronologia, complementades amb instrumentació de fondejos marins. Paral·lelament, contribueixo de manera continuada a la <strong>hidrogeologia costanera</strong>, utilitzant isòtops de radi i radó com a traçadors per quantificar fluxos de nutrients, metalls i compostos emergents cap al mar.</p>
+      <p>El 2025 vaig obtenir la plaça de professor lector a la UB i vaig iniciar el meu primer projecte com a investigador principal, <strong>IMPAS-Garraf</strong>, finançat per l'Agència Catalana de l'Aigua.</p>
+    </div>
+
+    <h2 class="section">Línies de recerca</h2>
+    <p class="section-sub" data-stat="researchLinesLabel">Tres eixos complementaris, des del sediment fins a la costa</p>
+    <div class="lines">
+      <div class="line-card c1">
+        <div class="line-img"><img src="https://cerdadomenech.blog/wp-content/uploads/2025/11/20250212_104550.jpg?w=800" alt="Extracció d'un testimoni de sediment durant una campanya a l'Antàrtida" loading="lazy" /></div>
+        <div class="line-body">
+          <span class="n">01</span>
+          <h3>Metalls i metal·loides antropogènics</h3>
+          <p>Caracteritzo els fluxos i la distribució espaciotemporal de metalls i metal·loides d'origen antropogènic a la columna d'aigua i al sediment, des dels ambients costaners fins a l'oceà profund.</p>
+          <p>Especial atenció a com els esdeveniments meteorològics extrems associats al canvi climàtic desencadenen la remobilització de grans volums d'aquests elements des de dipòsits costaners contaminats —com els runams miners de Portmán— cap al mar obert, a través dels marges continentals.</p>
+        </div>
+      </div>
+      <div class="line-card c3">
+        <div class="line-img"><img src="https://cerdadomenech.blog/wp-content/uploads/2024/04/img-20230730-wa0008.jpg?w=800" alt="Desplegament d'un rosette CTD durant un mostreig oceanogràfic" loading="lazy" /></div>
+        <div class="line-body">
+          <span class="n">02</span>
+          <h3>Hidrogeologia costanera</h3>
+          <p>Utilitzo isòtops de radi i radó com a traçadors naturals per quantificar la descàrrega d'aigua subterrània (SGD) i els fluxos de nutrients, metalls i compostos emergents que arriben al mar per aquesta via, sovint invisible als balanços costaners.</p>
+        </div>
+      </div>
+      <div class="line-card c4">
+        <div class="line-img"><img src="https://cerdadomenech.blog/wp-content/uploads/2024/04/vistashotelvela.jpg?w=800" alt="Vista aèria del litoral de Barcelona" loading="lazy" /></div>
+        <div class="line-body">
+          <span class="n">03</span>
+          <h3>Governança i transferència</h3>
+          <p>Trasllado els resultats de recerca a la gestió pública: he donat suport tècnic a la Direcció de Platges de Barcelona i he participat com a expert en processos legislatius al Parlament de Catalunya i en informes del Consell de Treball, Econòmic i Social de Catalunya.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mct-card">
+      <div class="line-img"><img src="https://cerdadomenech.blog/wp-content/uploads/2024/04/whatsapp-image-2025-06-20-at-13.10.09.jpeg?w=900" alt="Reconstrucció 3D per micro-tomografia computeritzada d'una colònia de briozous" loading="lazy" /></div>
+      <div class="line-body">
+        <h3>Micro-tomografia computeritzada (μCT)</h3>
+        <p>Des del Laboratori CORELAB de la Facultat de Ciències de la Terra (UB), utilitzo l'equip de micro-CT per raig X (MultiTom) per obtenir i analitzar models 3D de testimonis de roca i sediment, amb el programari Avizo®, ImageJ i Matlab.</p>
+        <p>Una aplicació destacada és l'estudi de l'impacte de l'acidificació i l'escalfament oceànic sobre la calcificació i el microbioma de colònies de briozous —organismes sentinella del canvi global— publicat a <i>Communications Biology</i> (2025).</p>
+        <a class="video-note" href="https://www.youtube.com/@Athosdel" target="_blank" rel="noopener" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 15.5l6-3.5-6-3.5v7zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/></svg>
+          <span>Vídeos de reconstruccions 3D al meu canal de YouTube →</span>
+        </a>
+      </div>
+    </div>
+
+    <h2 class="section">Campanyes oceanogràfiques</h2>
+    <p class="section-sub">14 campanyes · més de 160 dies a bord de vaixells científics nacionals i internacionals</p>
+
+    <div class="map-panel">
+      <h3>On he embarcat</h3>
+      <p class="map-note">Imatge de satèl·lit (Esri World Imagery, sobre l'ecosistema OpenStreetMap/Leaflet) · fes zoom i clica els punts</p>
+      <div id="campaign-map"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="campaign-table">
+        <thead>
+          <tr><th>Campanya</th><th>Zona</th><th>Període</th><th>Vaixell</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CHALLENGE-2</td><td class="muted">Antàrtida</td><td class="muted">12/01/25 – 20/02/25</td><td class="muted">B/O Hespérides</td></tr>
+          <tr><td>FAR-DWO-DS2</td><td class="muted">Estret de Dinamarca</td><td class="muted">16/09/24 – 26/09/24</td><td class="muted">R/V Sarmiento de Gamboa</td></tr>
+          <tr><td>FAR-DWO-DS1</td><td class="muted">Estret de Dinamarca</td><td class="muted">15/07/23 – 13/08/23</td><td class="muted">R/V Sarmiento de Gamboa</td></tr>
+          <tr><td>BACT-2</td><td class="muted">Plataforma de Barcelona</td><td class="muted">12/10/21 – 13/10/21</td><td class="muted">R/V García del Cid</td></tr>
+          <tr><td>TRANSMOW</td><td class="muted">Marge ibèric (Esp.-Port.)</td><td class="muted">27/04/21 – 16/05/21</td><td class="muted">B/O Hespérides</td></tr>
+          <tr><td>FAR-DWO-CC1</td><td class="muted">Cap de Creus</td><td class="muted">23/02/21 – 03/03/21</td><td class="muted">R/V García del Cid</td></tr>
+          <tr><td>NUREIEVA</td><td class="muted">Badia de Portmán</td><td class="muted">26/06/18 – 11/07/18</td><td class="muted">R/V Ángeles Alvariño</td></tr>
+          <tr><td>NUREIEV-3</td><td class="muted">Badia de Portmán</td><td class="muted">23/04/16 – 29/04/16</td><td class="muted">R/V Ángeles Alvariño</td></tr>
+          <tr><td>GHASS-MIDAS</td><td class="muted">Mar Negre, Romania</td><td class="muted">14/09/15 – 30/09/15</td><td class="muted">R/V Pourquoi pas?</td></tr>
+          <tr><td>NUREIEV-2</td><td class="muted">Badia de Portmán</td><td class="muted">29/08/15 – 05/09/15</td><td class="muted">R/V Ángeles Alvariño</td></tr>
+          <tr><td>NUREIEV-1</td><td class="muted">Badia de Portmán</td><td class="muted">13/03/15 – 24/03/15</td><td class="muted">R/V Ángeles Alvariño</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-footnote">Detall complet de les 11 campanyes més documentades. El resum més recent del CV en compta 14 en total.</p>
+
+    <h2 class="section">Projectes de recerca</h2>
+    <p class="section-sub">14 aportacions en projectes competitius, del 2014 a l'actualitat</p>
+
+    <p class="proj-group-label">Com a investigador principal</p>
+    <a class="proj-card" href="../impas-garraf/index.html" style="display:block; text-decoration:none; color:inherit; transition:transform .15s ease, box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      <p class="proj-title">IMPactes de la descàrrega d'Aigua Subterrània als ecosistemes mediterranis marins: identificació i quantificació dels fluxos de contaminants a les aigües costaneres del Garraf (IMPAS-Garraf)</p>
+      <p class="proj-meta">Agència Catalana de l'Aigua (ACA) · RDI001/24/000039 · 2024–2027</p>
+      <span class="pi-badge">Investigador principal</span>
+      <span style="display:block; margin-top:8px; color:var(--cyan); font-size:0.78rem; font-weight:700;">Pàgina del projecte →</span>
+    </a>
+    <a class="proj-card" href="../emicreuer-bcn/index.html" style="display:block; text-decoration:none; color:inherit; transition:transform .15s ease, box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      <p class="proj-title">EMIssions atmosfèriques dels CREUERs al port de Barcelona (EMICREUER-BCN)</p>
+      <p class="proj-meta">Projecte propi del GMAR-UB · sense finançament extern · 2012–2025</p>
+      <span class="pi-badge">Projecte propi</span>
+      <span style="display:block; margin-top:8px; color:var(--cyan); font-size:0.78rem; font-weight:700;">Pàgina del projecte →</span>
+    </a>
+
+    <p class="proj-group-label">Projectes en curs</p>
+    <div class="proj-card">
+      <p class="proj-title">EsTRAtegias participativas para la gestión de la contaminación por Plástico del litoral transfronterizo (TRAP)</p>
+      <p class="proj-meta">Programa INTERREG · EFA0147/03 · 2024–2027 · IP: Anna Sanchez Vidal</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Integrated Analysis of southEast Greenland ocean dynamics Influenced by bathymetric Relief — Kangerlussuaq Trough pilot study</p>
+      <p class="proj-meta">Ministeri de Ciència, Innovació i Universitats · PID2024-157676OB-I00 · 4 anys · IP: David Amblàs Novellas</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Denmark Strait – Mixing and Sediment Dynamics (DS-MIXSED)</p>
+      <p class="proj-meta">Agencia Estatal de Investigación · PCI2024-155022-2 · 3 anys · IP: David Amblàs Novellas</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Presiones humanas y riesgos naturales: retos en ecosistemas marinos antárticos (CHALLENGE-2)</p>
+      <p class="proj-meta">Ministeri de Ciència, Innovació i Universitats · PID2022-141628NB-I00 · 2023–2027 · IP: Elisenda Ballesté</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Xarxa d'R+D+I Marítima de Catalunya (BlueNetCat)</p>
+      <p class="proj-meta">AGAUR · 2021 XARDI 000111 · 2023–2025 · IP: M. Lourdes Reig Puig</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">GRC Geociències Marines (G-MAR)</p>
+      <p class="proj-meta">AGAUR · 2021 SGR 01195 · 2022–2026 · IP: Eva Isabel Cacho Lascorz</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Impactos de largo alcance de las cascadas de agua densa en el Océano Atlántico Norte y el Mar Mediterráneo (FAR-DWO)</p>
+      <p class="proj-meta">Ministeri de Ciència, Innovació i Universitats · PID2020-114322RB-I00 · 2021–2026 (prorrogat) · IP: Anna Sanchez Vidal</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Biblioteca digital de mostres de mà en ciències de la terra</p>
+      <p class="proj-meta">Universitat de Barcelona (innovació docent) · 2024PEDC-CTT/001 · IP: Josep Oriol Ferrer García</p>
+    </div>
+
+    <p class="proj-group-label">Projectes anteriors</p>
+    <div class="proj-card">
+      <p class="proj-title">Tools for a better management of marine litter — tRAnsition to a Circular plastic Economy (TRACE)</p>
+      <p class="proj-meta">Ministeri de Ciència, Innovació i Universitat · TED2021-130515B-I00 · 2022–2024 · IP: José Alsina Torrent</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Xarxa d'R+D+I Marítima de Catalunya (BlueNetCat)</p>
+      <p class="proj-meta">AGAUR · 2018 XARDI 00005 · 2018–2022 · IP: M. Lourdes Reig Puig</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">The As, Fe and S speciation in the sulphide mine tailings infill of Portmán Bay, SE Spain</p>
+      <p class="proj-meta">Sincrotró ALBA · 2017072277 · 2018 · IP: Josep Roqué Rosell</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Grup de Recerca en Geociències Marines (GRCGM)</p>
+      <p class="proj-meta">AGAUR · 2017SGR315 · 2017–2021 · IP: Miquel Canals Artigas</p>
+    </div>
+    <div class="proj-card">
+      <p class="proj-title">Grup de Recerca en Geociències Marines (GRCGM)</p>
+      <p class="proj-meta">AGAUR · 2014SGR1068 · 2014–2017 · IP: Miquel Canals Artigas</p>
+    </div>
+
+    <div class="cta-row">
+      <a href="../publicacions/index.html">Publicacions científiques →</a>
+      <a href="https://orcid.org/0000-0001-5053-755X" target="_blank" rel="noopener">ORCID →</a>
+    </div>
+
+    <footer>
+      <a href="../index.html">← Torna al perfil</a> · Font: Curriculum vitae AQU Catalunya, gener 2026
+    </footer>
+  </div>
+
+  <script src="../js/stats.js" data-path="../data/stats.json"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    var sites = [
+      { name: "Antàrtida", lat: -62.5, lon: -60.5, info: "CHALLENGE-2 · 12/01/25–20/02/25 · B/O Hespérides" },
+      { name: "Estret de Dinamarca", lat: 66.0, lon: -27.0, info: "FAR-DWO-DS1 (2023) i FAR-DWO-DS2 (2024) · R/V Sarmiento de Gamboa" },
+      { name: "Mar Negre, Romania", lat: 44.0, lon: 29.5, info: "GHASS-MIDAS · 14–30/09/15 · R/V Pourquoi pas?" },
+      { name: "Cap de Creus", lat: 42.32, lon: 3.32, info: "FAR-DWO-CC1 · 23/02/21–03/03/21 · R/V García del Cid" },
+      { name: "Plataforma de Barcelona", lat: 41.3, lon: 2.2, info: "BACT-2 · 12–13/10/21 · R/V García del Cid" },
+      { name: "Marge ibèric (Esp.-Port.)", lat: 36.2, lon: -7.2, info: "TRANSMOW · 27/04/21–16/05/21 · B/O Hespérides" },
+      { name: "Badia de Portmán, Múrcia", lat: 37.58, lon: -0.84, info: "NUREIEV-1 (2015), NUREIEV-2 (2015), NUREIEV-3 (2016), NUREIEVA (2018) · R/V Ángeles Alvariño" }
+    ];
+    var map = L.map('campaign-map', { scrollWheelZoom: false }).setView([30, -15], 2);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics | Map data via OpenStreetMap/Leaflet',
+      maxZoom: 12
+    }).addTo(map);
+    var bounds = [];
+    sites.forEach(function(s){
+      L.circleMarker([s.lat, s.lon], { radius: 7, color: '#000705', weight: 1.5, fillColor: '#39ffb0', fillOpacity: 0.95 })
+        .addTo(map)
+        .bindPopup('<b>' + s.name + '</b><br>' + s.info);
+      bounds.push([s.lat, s.lon]);
+    });
+    map.fitBounds(bounds, { padding: [30, 30] });
+  </script>
+
+  <script>
+    (function () {
+      var rosette = document.getElementById('ctd-rosette');
+      var cable = document.getElementById('ctd-cable');
+      var wake = document.getElementById('ctd-wake');
+      var depth = document.getElementById('ctd-depth');
+      var depthMobile = document.getElementById('ctd-depth-mobile');
+      var sensor = document.getElementById('ctd-sensor');
+      if (!rosette || !cable) return;
+
+      var targetY = 0, currentY = 0;
+
+      function computeTarget() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var frac = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+        var maxDrop = window.innerHeight - 187;
+        targetY = frac * maxDrop;
+        var depthText = Math.round(frac * 1200) + ' m';
+        if (depth) depth.textContent = depthText;
+        if (depthMobile) depthMobile.textContent = depthText;
+      }
+
+      function render() {
+        currentY += (targetY - currentY) * 0.08;
+        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
+        rosette.style.transform = 'translateY(' + currentY + 'px)';
+        cable.style.height = currentY + 'px';
+        if (wake) {
+          var wakeH = Math.min(40, currentY);
+          wake.style.height = wakeH + 'px';
+          wake.style.top = (108 + currentY - wakeH) + 'px';
+        }
+        if (depth) depth.style.transform = 'translateY(' + (currentY + 79) + 'px)';
+        requestAnimationFrame(render);
+      }
+
+      window.addEventListener('scroll', computeTarget, { passive: true });
+      window.addEventListener('resize', computeTarget);
+      computeTarget();
+      requestAnimationFrame(render);
+
+      if (sensor && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              sensor.classList.remove('ctd-sensor-flash');
+              void sensor.getBoundingClientRect();
+              sensor.classList.add('ctd-sensor-flash');
+            }
+          });
+        }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+        document.querySelectorAll('h2.section').forEach(function (h) { io.observe(h); });
+      }
+    })();
+  </script>
+</body>
+</html>
