@@ -160,6 +160,114 @@ def pages_str(biblio):
     return fp or lp
 
 
+# ---- Fallback estàtic de la llista de publicacions ----
+# Regenera el bloc <div class="pub-list">...</div> de publicacions/index.html
+# a partir del JSON, perquè la pàgina es vegi correcta fins i tot sense JS
+# (o si falla el fetch). El format replica exactament el que pinta js/publications.js.
+PUBS_HTML = os.path.join(ROOT, "publicacions", "index.html")
+
+
+def hesc(s):
+    """Escapa HTML per a text (no per a authors, que és HTML curat)."""
+    return (str(s) if s is not None else "").replace("&", "&amp;") \
+        .replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def render_static_card(p):
+    journal = hesc(p.get("journal", ""))
+    vol = p.get("volume", "") or ""
+    issue = p.get("issue", "") or ""
+    pages = p.get("pages", "") or ""
+    jline = "<b>" + journal + "</b>"
+    if vol:
+        jline += ", " + hesc(vol)
+    if issue:
+        jline += "(" + hesc(issue) + ")"
+    if pages:
+        jline += ", " + hesc(pages)
+    year = hesc(p.get("year", ""))
+    jif = p.get("jif", "") or ""
+    quartile = p.get("quartile", "") or ""
+    q = ""
+    if jif and quartile:
+        q = "JIF " + hesc(jif) + " · " + hesc(quartile)
+    elif quartile:
+        q = hesc(quartile)
+    elif jif:
+        q = "JIF " + hesc(jif)
+    cites = hesc(p.get("citations", 0))
+    doi = (p.get("doi", "") or "").strip()
+    out = [
+        '      <div class="pub-card">',
+        '        <p class="authors">' + (p.get("authors", "") or "") + '</p>',
+        '        <p class="title">' + hesc(p.get("title", "")) + '</p>',
+        '        <div class="meta">',
+        '          <span>' + jline + '</span>',
+    ]
+    qspan = '<span>' + q + '</span>' if q else ''
+    out.append('          <span>' + year + '</span>' + qspan + '<span>cites: ' + cites + '</span>')
+    if doi:
+        out.append('          <a class="doi" href="https://doi.org/' + hesc(doi) +
+                   '" target="_blank" rel="noopener">DOI →</a>')
+    out.append('        </div>')
+    out.append('      </div>')
+    return "\n".join(out)
+
+
+def update_publications_html(pubs):
+    """Torna a generar el bloc .pub-list dins publicacions/index.html."""
+    if not os.path.exists(PUBS_HTML):
+        return
+    with open(PUBS_HTML, encoding="utf-8") as f:
+        html = f.read()
+    cards = "\n\n".join(render_static_card(p) for p in pubs)
+    block = '<div class="pub-list">\n\n' + cards + '\n\n    </div>'
+    pattern = re.compile(r'<div class="pub-list">.*?\n    </div>', re.DOTALL)
+    new_html, n = pattern.subn(lambda m: block, html, count=1)
+    if n != 1:
+        print("  AVÍS: no s'ha trobat el bloc .pub-list a publicacions/index.html "
+              "(no s'ha modificat el HTML).", file=sys.stderr)
+        return
+    with open(PUBS_HTML, "w", encoding="utf-8") as f:
+        f.write(new_html)
+    print(f"    HTML: regenerades {len(pubs)} targetes a publicacions/index.html")
+
+
+# Pàgines amb gauge de stats: s'hi refresquen els valors de fallback (sense JS).
+GAUGE_HTML = [
+    os.path.join(ROOT, "index.html"),
+    os.path.join(ROOT, "recerca", "index.html"),
+    os.path.join(ROOT, "publicacions", "index.html"),
+]
+# Camps automàtics que apareixen com a fallback numèric al gauge.
+GAUGE_KEYS = ("publications", "citations", "hIndex")
+
+
+def update_gauge_fallbacks(stats):
+    """Actualitza els valors de fallback del gauge a les 3 pàgines principals."""
+    changed = 0
+    for path in GAUGE_HTML:
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8") as f:
+            html = f.read()
+
+        def repl(m):
+            key = m.group(1)
+            val = stats.get(key, m.group(2))
+            return f'data-stat="{key}">{val}<'
+
+        new_html, n = re.subn(
+            r'data-stat="(publications|citations|hIndex)">([^<]*)<', repl, html)
+        if n and new_html != html:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new_html)
+            changed += n
+    if changed:
+        print(f"    HTML: refrescats {changed} fallbacks de gauge "
+              "(publications/citations/hIndex)")
+
+
 # ---- Merge ----
 def main():
     print(">>> Mètriques globals de l'autor (OpenAlex)...")
@@ -227,6 +335,9 @@ def main():
         json.dump(out_pubs, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
+    # Regenera el fallback estàtic de la llista a publicacions/index.html
+    update_publications_html(merged)
+
     # Actualitza stats.json (només camps automàtics)
     stats = {}
     if os.path.exists(STATS_PATH):
@@ -240,6 +351,9 @@ def main():
     with open(STATS_PATH, "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+    # Refresca els valors de fallback del gauge a les 3 pàgines
+    update_gauge_fallbacks(stats)
 
     print(f"<<< Fet. Publicacions: {len(merged)} (noves: {len(new_entries)}). "
           f"stats -> pubs={len(merged)} cites={m['citations']} h={m['hIndex']}")
