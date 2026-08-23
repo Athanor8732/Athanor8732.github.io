@@ -23,6 +23,7 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date
@@ -58,14 +59,24 @@ def _headers():
 
 
 def get(url, tries=3):
-    """GET JSON amb reintent i backoff."""
+    """GET JSON amb reintent i backoff. Inclou el cos de l'error HTTP."""
     last = None
     for i in range(tries):
         try:
             req = urllib.request.Request(url, headers=_headers())
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.loads(r.read().decode("utf-8"))
-        except Exception as e:  # xarxa, 429, 5xx...
+        except urllib.error.HTTPError as e:
+            body = ""
+            try:
+                body = e.read().decode("utf-8", "replace")
+            except Exception:
+                pass
+            last = RuntimeError(f"HTTP {e.code} a {url}: {body[:400]}")
+            if e.code in (401, 403):
+                raise last  # autenticació/entitlement: no val la pena reintentar
+            time.sleep(1.0 * (i + 1))
+        except Exception as e:  # xarxa, timeout...
             last = e
             time.sleep(1.0 * (i + 1))
     raise RuntimeError(f"no s'ha pogut obtenir {url}: {last}")
