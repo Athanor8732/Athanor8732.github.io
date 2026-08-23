@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Què és això
 
-Web personal estàtic de Marc Cerdà i Domènech (geocientífic marí, UB). HTML/CSS/JS fet a mà, sense framework ni generador de site global — cada pàgina és un `index.html` autosuficient. Repo **privat** (`Athanor8732/marc-links`); GitHub Pages **desactivat** per decisió (pendent de re-publicar com a `Athanor8732.github.io` quan la versió estigui acabada).
+Web personal estàtic de Marc Cerdà i Domènech (geocientífic marí, UB). HTML/CSS/JS fet a mà, sense framework ni generador de site global — cada pàgina és un `index.html` autosuficient. Repo **públic** (`Athanor8732/Athanor8732.github.io`); publicat a **https://athanor8732.github.io/** via GitHub Pages (branch `main`, arrel).
 
 ## Arquitectura (actualitzada agost 2026)
 
@@ -95,7 +95,7 @@ El workflow fa commit dels 5 fitxers (bot `github-actions[bot]`) i és **idempot
 - Els JIF s'escriuen amb **coma decimal** (`"10,0"`, `"2,6"`) seguint el format del CV.
 - `intlCoauthorship` (55,6%) és un camp manual del CV derivat de Scopus; a `recerca/index.html` va etiquetat `(Scopus)`, no prové d'OpenAlex.
 - Els claims estàtics tipus «articles Q1» o «Totes en el 25% superior» **no** s'actualitzen sols: si la composició de publicacions canvia, revisa-los a mà.
-- Pages desactivat: la URL pública no està publicada. Per reactivar: renombrar el repo a `Athanor8732.github.io` + activar Pages + actualitzar el remot local.
+- Publicació: el repo és `Athanor8732.github.io` (públic) i Pages serveix la branch `main` a https://athanor8732.github.io/. Cada push a `main` es publica sol (build ~1 min).
 
 ## SEO i metadades (Fase 4)
 
@@ -131,4 +131,4 @@ Tots els camps són sempre presents (cap és `null`): `doi`, `authors`, `title`,
 
 ## Memòria entre sessions
 
-Hi ha una memòria de projecte (`project_web_personal_marc_links`) a nivell d'usuari que registra el context no obvi d'aquest repo (decisió OpenAlex vs Scopus, pendent de re-publicar, valors actuals). Si canvien decisions de fons, actualitza-la.
+Hi ha una memòria de projecte (`project_web_personal_marc_links`) a nivell d'usuari que registra el context no obvi d'aquest repo (decisió OpenAlex vs Scopus, valors actuals). Si canvien decisions de fons, actualitza-la.
