@@ -42,14 +42,14 @@ CSS = """
 .post-card:hover{ transform:translateY(-2px); box-shadow:0 10px 26px -10px var(--cyan); }
 .post-card img{ width:110px; height:110px; object-fit:cover; border-radius:8px; flex:0 0 auto; }
 .post-card .meta{ text-transform:uppercase; letter-spacing:0.08em; font-size:0.66rem; color:var(--cyan); font-weight:700; margin:0 0 6px; }
-.post-card h2{ font-family:var(--serif); font-size:1.1rem; margin:0 0 6px; color:#fff; }
+.post-card h2{ font-family:var(--sans); font-size:1.1rem; margin:0 0 6px; color:#fff; }
 .post-card p.excerpt{ margin:0; color:var(--muted); font-size:0.85rem; line-height:1.5; }
 .article-hero{ width:100%; max-height:340px; object-fit:cover; border-radius:12px; margin-bottom:26px; }
 .article-meta{ text-align:center; color:var(--muted); font-size:0.8rem; margin:0 0 34px; text-transform:uppercase; letter-spacing:0.06em; }
 .article-body p{ font-size:1.02rem; line-height:1.75; color:#dbe6e8; margin:0 0 22px; }
 .article-body blockquote{
   margin:32px 0; padding:4px 0 4px 22px; border-left:3px solid var(--cyan);
-  font-family:var(--serif); font-style:italic; font-size:1.2rem; color:#fff;
+  font-family:var(--sans); font-style:italic; font-size:1.2rem; color:#fff;
 }
 .source-note{
   margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border);

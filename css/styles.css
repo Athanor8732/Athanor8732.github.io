@@ -8,6 +8,9 @@
 :root{
   --bg-deep:#000705;
   --bg-mid:#04140f;
+  --surface:#04140f;
+  --surface-map:#05140f;
+  --surface-popup:#0b1e14;
   --panel:rgba(255,255,255,0.045);
   --panel-border:rgba(255,255,255,0.09);
   --text:#eaf2f4;
@@ -28,7 +31,6 @@
   --metal-1:#9aa2ab;
   --metal-2:#e7ebef;
   --metal-3:#6b7178;
-  --serif:'EB Garamond',Georgia,'Iowan Old Style',serif;
   --sans:'Inter','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   --wrap:648px;
 }
@@ -57,7 +59,7 @@ body{
   top:0;
   z-index:100;
   background:var(--cyan);
-  color:#04141d;
+  color:#04140f;
   padding:10px 18px;
   font-size:0.88rem;
   font-weight:700;
@@ -98,7 +100,7 @@ body{
 .topbar a.brand{ text-decoration:none; display:flex; align-items:center; gap:12px; justify-content:center; }
 .topbar svg.mark{ width:34px; height:34px; color:var(--cyan); flex:0 0 auto; }
 .topbar .brand-text{
-  font-family:var(--serif);
+  font-family:var(--sans);
   font-style:italic;
   letter-spacing:0.12em;
   text-transform:uppercase;
@@ -178,7 +180,7 @@ body{
 
 /* ---- Títols de pàgina ---- */
 h1.page-title{
-  font-family:var(--serif);
+  font-family:var(--sans);
   font-weight:700;
   font-size:2rem;
   margin:8px 0 6px;
@@ -211,7 +213,7 @@ p.page-sub{
 
 /* ---- Seccions ---- */
 h2.section{
-  font-family:var(--serif);
+  font-family:var(--sans);
   font-weight:700;
   font-size:1.4rem;
   margin:52px 0 6px;
@@ -243,7 +245,7 @@ p.section-sub{
 .gauge .stat b{
   display:block;
   color:var(--cyan);
-  font-family:var(--serif);
+  font-family:var(--sans);
   font-size:1.25rem;
 }
 .gauge .stat span{
@@ -278,7 +280,7 @@ p.section-sub{
   box-shadow:0 0 0 1px var(--cyan);
 }
 .tl-item .tl-date{ color:var(--cyan); font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; }
-.tl-item h3{ margin:2px 0 4px; font-family:var(--serif); font-size:1rem; color:#fff; }
+.tl-item h3{ margin:2px 0 4px; font-family:var(--sans); font-size:1rem; color:#fff; }
 .tl-item p{ margin:0; color:var(--muted); font-size:0.85rem; line-height:1.55; }
 
 /* ---- Cards (home) ---- */
@@ -439,7 +441,7 @@ footer .cc-notice{ max-width:380px; margin:0 auto 6px; line-height:1.5; }
   text-align:center;
   font-size:0.86rem;
   font-weight:600;
-  font-family:var(--serif);
+  font-family:var(--sans);
   color:var(--cyan);
   opacity:0.8;
   white-space:nowrap;
@@ -455,7 +457,7 @@ footer .cc-notice{ max-width:380px; margin:0 auto 6px; line-height:1.5; }
   border:1px solid var(--panel-border);
   border-radius:999px;
   padding:6px 14px;
-  font-family:var(--serif);
+  font-family:var(--sans);
   font-size:0.8rem;
   font-weight:600;
   color:var(--cyan);
@@ -495,7 +497,7 @@ footer .cc-notice{ max-width:380px; margin:0 auto 6px; line-height:1.5; }
 @keyframes side-promo-fade{ from{ opacity:0; } to{ opacity:1; } }
 .side-promo-text{ display:flex; flex-direction:column; gap:1px; }
 .side-promo-tag{ font-size:0.58rem; text-transform:uppercase; letter-spacing:0.09em; color:var(--sand); font-weight:700; }
-.side-promo-title{ font-family:var(--serif); font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
+.side-promo-title{ font-family:var(--sans); font-weight:700; font-size:0.86rem; color:#fff; line-height:1.2; }
 @media (max-width:640px){
   .side-promos{ top:auto; bottom:14px; left:14px; transform:none; flex-direction:row; gap:10px; }
   .side-promo{ padding:0; width:52px; height:52px; border-radius:50%; justify-content:center; max-width:none; }
@@ -527,9 +529,9 @@ a:focus-visible, button:focus-visible{ outline-offset:3px; }
 html{ scrollbar-color:rgba(var(--cyan-rgb),0.25) var(--bg-deep); scrollbar-width:thin; }
 
 /* ---- Leaflet (self-hosted, override colors) ---- */
-.leaflet-popup-content-wrapper{ background:#0b1e2b; color:var(--text); border-radius:8px; }
+.leaflet-popup-content-wrapper{ background:var(--surface-popup); color:var(--text); border-radius:8px; }
 .leaflet-popup-content b{ color:var(--cyan); }
-.leaflet-popup-tip{ background:#0b1e2b; }
+.leaflet-popup-tip{ background:var(--surface-popup); }
 .leaflet-container a.leaflet-popup-close-button{ color:var(--muted); }
 
 /* ---- Prefers-reduced-motion ---- */
@@ -568,7 +570,7 @@ h2.section{ margin-top:56px; }
 
 /* ---- Tipografia: millorar renderització ---- */
 h1.page-title, h2.section, .gauge .stat b, .award b{
-  font-family:var(--serif);
+  font-family:var(--sans);
   letter-spacing:-0.01em;
 }
 body{ font-size:16px; line-height:1.6; }
