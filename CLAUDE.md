@@ -11,7 +11,7 @@ Web personal estàtic de Marc Cerdà i Domènech (geocientífic marí, UB). HTML
 La web abans tenia tot el CSS i JS inline duplicat a cada pàgina (~260 línies × 8). Després de la consolidació i la reestructuració d'agost 2026:
 
 - **`css/styles.css`** — full d'estils base compartit (variables, reset, topbar+nav, gauge, prose, timeline, cards, CTD rig, side-promo, reveal, focus-visible, skip-link, prefers-reduced-motion, print). Carregat per totes les pàgines via `<link>`.
-- **`css/fonts.css`** — `@font-face` per EB Garamond (títols) i Inter (body), self-hosted a `/fonts/*.woff2` (variable fonts, ~300KB total).
+- **`css/fonts.css`** — `@font-face` per Inter (body i títols), self-hosted a `/fonts/*.woff2` (variable font).
 - **`js/ctd-rig.js`** — animació del CTD rosette (abans inline a 7 pàgines). Pausa el RAF quan el rig no és visible. Respecta `prefers-reduced-motion`.
 - **`js/reveal.js`** — observador de scroll-reveal per als elements `.reveal`.
 - **`vendor/leaflet/`** — Leaflet 1.9.4 self-hosted (CSS + JS + imatges), en lloc de CDN unpkg.
@@ -20,14 +20,15 @@ La web abans tenia tot el CSS i JS inline duplicat a cada pàgina (~260 línies 
 
 ### Topbar (dues files)
 - **Fila superior**: nom centrat ("Marc Cerdà i Domènech · Geociències Marines") amb logo SVG; hamburger a la dreta (només mòbil, `position:absolute` dins `.topbar-brand-row`).
-- **Fila inferior**: nav horitzontal (Recerca, Publicacions, Docència, Premsa, Bloc, Contacte) amb `justify-content:space-between` ocupant tot l'ample (`--wrap`, 648px), lletra 0.92rem.
+- **Fila inferior**: nav horitzontal (Sobre mi, Recerca, Publicacions, Docència, Mitjans, Bloc, Contacte) amb `justify-content:space-between` ocupant tot l'ample (`--wrap`, 648px), lletra 0.82rem.
+- **Submenus**: Recerca i Docència tenen submenus desplegables (hover a escriptori, tap a mòbil). Estructura: `<div class="nav-item has-submenu"><a>…</a><div class="submenu">…</div></div>`. El JS `hamburger-init` (injectat per `build_pages.py`/`build_blog.py`) gestiona el toggle mòbil amb la classe `.mobile-open`.
 - El link de la pàgina actual es marca amb `aria-current="page"` (`build_pages.py` comprova si ja existeix abans d'injectar-lo — mai duplicar).
 
 ### Footer unificat
 Totes les pàgines comparteixen el mateix footer: logos UB/GMAR + "← Torna al perfil" + llicència CC BY-NC-SA 4.0. Els estils són globals a `styles.css` (`footer .affil`, `.footer-mark`, `.cc-notice`). No afegir text de font per pàgina.
 
 ### Side-promos (bàners de projectes)
-Els bàners laterals d'IMPAS-Garraf van SEMPRE dins del contenidor `.side-promos` (fixat a l'esquerra, `flex-direction:column`). Sense wrapper, el `.side-promo` surt al flux normal damunt la topbar. La home a més té EMICREUER-BCN amb tag `.alt`.
+Els bàners laterals de projectes (IMPAS-Garraf i EMICREUER-BCN) **només surten a la home** (`index.html`). Van SEMPRE dins del contenidor `.side-promos` (fixat a l'esquerra, `flex-direction:column`). Sense wrapper, el `.side-promo` surt al flux normal damunt la topbar. La home té IMPAS-Garraf (tag "Projecte actiu") i EMICREUER-BCN (tag `.alt` "Nou projecte"). ❌ No afegir side-promos a cap altra pàgina.
 
 ### Skip-link i accessibilitat
 Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="main">`. Focus-visible global. `prefers-reduced-motion` desactiva totes les animacions (inclosos rigs DAS/liner dels projectes). `@media print` amaga rigs, side-promos i nav vertical.
@@ -36,7 +37,7 @@ Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="m
 
 Decisions estructurals aplicades — no reintroduir els blocs eliminats:
 
-- **Home**: només portal d'entrada (profile+porthole, gauge data-driven, bio, quote, 6 cards de seccions, últim article, subscribe). ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer).
+- **Home**: només portal d'entrada (profile+porthole, gauge data-driven, bio, quote, últim article, subscribe). ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer) ni la secció de cards "Seccions" (redundant amb la topbar).
 - **Sobre mi**: bio llarga, award Premi Carmina Virgili, timelines Formació/Trajectòria, i secció **"Perfil a bases de dades"** (ORCID, ResearchGate, Scopus, GitHub). ❌ SENSE secció "Docència" (duplicava la pàgina; l'enllaç va al cta-row).
 - **Docència**: stats amb el patró global **`.gauge`** (mai `.teach-stats`, eliminat).
 - **Projectes** (impas-garraf, emicreuer-bcn): estructura pròpia rica (hero, nav vertical scroll-spy, mapes Leaflet); footer unificat sense logos duplicats (la banda `.affil-title` temàtica ja els porta).
@@ -50,7 +51,7 @@ Dos subagents de revisió, mode `subagent`, `edit: deny` (només llegeixen i pro
 
 Invocació: `task(prompt="...", subagent_type="...")`. Cal reiniciar opencode perquè els detecti si es modifiquen.
 
-Convencions visuals derivades de l'auditoria: usar sempre `var(--serif)` (mai `Georgia,serif` directe), variables de color amb triplet `-rgb` a `:root` (`--coral-rgb`, `--sand-rgb`, `--gold-rgb`, `--indigo-rgb`, `--karst(-rgb)`, `--cyan-rgb`), grids de projecte col·lapsen a 1 columna <640px, microtextos amb opacity ≥0.85 sobre `--muted` (contrast AA).
+Convencions visuals derivades de l'auditoria: usar sempre `var(--sans)` (mai `Georgia,serif` directe), variables de color amb triplet `-rgb` a `:root` (`--coral-rgb`, `--sand-rgb`, `--gold-rgb`, `--indigo-rgb`, `--karst(-rgb)`, `--cyan-rgb`), grids de projecte col·lapsen a 1 columna <640px, microtextos amb opacity ≥0.85 sobre `--muted` (contrast AA).
 
 ## Comandes
 
@@ -80,7 +81,7 @@ No hi ha build global, ni tests, ni linter. Els scripts són stdlib-only (cap `p
 ## Arquitectura
 
 ### Pàgines
-Cada secció és un directori amb `index.html`: `index.html` (home), `sobre-mi/`, `recerca/`, `publicacions/`, `docencia/`, `premsa/`, `contacte/`, `blog/` (generat), `impas-garraf/`, `emicreuer-bcn/`. Tots comparteixen el tema submarí (fons negre, accent `#39ffb0`, tipografia EB Garamond pels títols, Inter pel cos) definit a `css/styles.css`. El CSS específic de cada pàgina es manté inline al seu `<style>`.
+Cada secció és un directori amb `index.html`: `index.html` (home), `sobre-mi/`, `recerca/`, `publicacions/`, `docencia/`, `docencia/recursos-docents/`, `mitjans/`, `contacte/`, `blog/` (generat), `impas-garraf/`, `emicreuer-bcn/`. Tots comparteixen el tema submarí (fons negre, accent `#39ffb0`, tipografia Inter) definit a `css/styles.css`. El CSS específic de cada pàgina es manté inline al seu `<style>`.
 
 ### Stats data-driven (bloc inline `#stats-inline` + `update_scholarly_data.py`)
 Qualsevol element `<... data-stat="KEY">` s'omple en runtime des d'un bloc JS inline (`<script id="stats-inline">`) que `update_scholarly_data.py` escriu directament al HTML de les 3 pàgines amb gauge (home, recerca, publicacions). El valor que hi ha a l'HTML entre les etiquetes és el **fallback estàtic** (es mostra sense JS). Convenció: el fallback ha de ser un valor realista, no un placeholder.

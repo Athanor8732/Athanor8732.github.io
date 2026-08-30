@@ -124,10 +124,8 @@ def add_reveal_script(html, depth):
 
 
 def add_hamburger_script(html):
-    """Afegeix un petit script inline per al hamburger menu."""
+    """Afegeix o actualitza el script inline del hamburger menu i submenus."""
     if "topbar-toggle" not in html:
-        return html
-    if "hamburger-init" in html:
         return html
     script = """<script id="hamburger-init">
     (function(){
@@ -137,9 +135,26 @@ def add_hamburger_script(html):
         var open=nav.classList.toggle('open');
         btn.setAttribute('aria-expanded',open);
       });
+      document.querySelectorAll('.nav-item.has-submenu > a').forEach(function(link){
+        link.addEventListener('click',function(e){
+          if(window.innerWidth <= 680){
+            e.preventDefault();
+            link.parentElement.classList.toggle('mobile-open');
+          }
+        });
+      });
     })();
   </script>
   """
+    if "hamburger-init" in html:
+        # Substitueix el script existent pel nou (amb suport de submenus)
+        html = re.sub(
+            r'<script id="hamburger-init">.*?</script>',
+            script,
+            html,
+            flags=re.DOTALL,
+        )
+        return html
     html = html.replace("</body>", script + "</body>", 1)
     return html
 

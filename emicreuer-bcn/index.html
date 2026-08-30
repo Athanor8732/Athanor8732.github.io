@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>EMICREUER-BCN · Marc Cerdà i Domènech</title>
-<meta name="description" content="EMICREUER-BCN: inventari 2012-2025 de les emissions atmosfèriques dels creuers al Port de Barcelona. Projecte propi del GMAR-UB, nascut d'un TFG, sense finançament extern." />
 
   <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png" />
@@ -286,45 +285,60 @@
   </nav>
 
   <div class="wrap" id="main">
-      <div class="topbar">
+        <div class="topbar">
     <div class="topbar-inner">
       <div class="topbar-brand-row">
-          <a class="brand" href="../index.html">
-        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
-          <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
-          <g stroke-width="1.1" opacity="0.5">
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
-            <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
-          </g>
-          <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
-        </svg>
-        <span class="brand-text"><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
-      </a>
-      <button class="topbar-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="topbar-nav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
+        <a class="brand" href="../index.html">
+          <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor">
+            <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
+            <g stroke-width="1.1" opacity="0.5">
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(0 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(30 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(60 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(90 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(120 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(150 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(180 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(210 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(240 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(270 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(300 20 20)"/>
+              <line x1="20" y1="3" x2="20" y2="6" transform="rotate(330 20 20)"/>
+            </g>
+            <path d="M12,27 L12,13 Q16,20 20,23 Q24,20 28,13 L28,27" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="4.5" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="brand-text"><strong>Marc Cerdà i Domènech</strong> · Geociències Marines</span>
+        </a>
+        <button class="topbar-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="topbar-nav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+      <nav class="topbar-nav" id="topbar-nav">
+        <a href="../sobre-mi/index.html" data-nav="sobre-mi">Sobre mi</a>
+        <div class="nav-item has-submenu">
+          <a href="../recerca/index.html" data-nav="recerca">Recerca <span class="submenu-indicator">▾</span></a>
+          <div class="submenu">
+            <a href="../recerca/index.html#linies-recerca">Línies de recerca</a>
+            <a href="../recerca/index.html#campanyes-oceanografiques">Campanyes oceanogràfiques</a>
+            <a href="../recerca/index.html#projectes-recurs">Projectes de recerca</a>
+          </div>
         </div>
-        <nav class="topbar-nav" id="topbar-nav">
-        <a href="../recerca/index.html" data-nav="recerca">Recerca</a>
         <a href="../publicacions/index.html" data-nav="publicacions">Publicacions</a>
-        <a href="../docencia/index.html" data-nav="docencia">Docència</a>
-        <a href="../premsa/index.html" data-nav="premsa">Premsa</a>
+        <div class="nav-item has-submenu">
+          <a href="../docencia/index.html" data-nav="docencia">Docència <span class="submenu-indicator">▾</span></a>
+          <div class="submenu">
+            <a href="../docencia/index.html#assignatures">Assignatures impartides</a>
+            <a href="../docencia/recursos-docents/index.html">Recursos docents</a>
+          </div>
+        </div>
+        <a href="../mitjans/index.html" data-nav="mitjans">Mitjans</a>
         <a href="../blog/index.html" data-nav="blog">Bloc</a>
         <a href="../contacte/index.html" data-nav="contacte">Contacte</a>
       </nav>
     </div>
   </div>
+
 
     <p class="crumbs"><a href="../index.html">← Perfil</a><span>/</span><a href="../recerca/index.html">Recerca</a><span>/</span>EMICREUER-BCN</p>
 
@@ -630,8 +644,17 @@
         var open=nav.classList.toggle('open');
         btn.setAttribute('aria-expanded',open);
       });
+      document.querySelectorAll('.nav-item.has-submenu > a').forEach(function(link){
+        link.addEventListener('click',function(e){
+          if(window.innerWidth <= 680){
+            e.preventDefault();
+            link.parentElement.classList.toggle('mobile-open');
+          }
+        });
+      });
     })();
   </script>
+  
   <script src="../js/reveal.js" defer></script>
   </body>
 </html>

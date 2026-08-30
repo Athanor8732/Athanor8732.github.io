@@ -54,8 +54,14 @@ PAGES = {
         "type": "website",
         "image": "img/marc.png",
     },
-    "premsa/index.html": {
-        "title": "Premsa i divulgació · Marc Cerdà i Domènech",
+    "docencia/recursos-docents/index.html": {
+        "title": "Recursos docents · Marc Cerdà i Domènech",
+        "description": "Recursos i materials per a la docència en ciències del mar i geociències marines: repositoris, eines i referències.",
+        "type": "website",
+        "image": "img/marc.png",
+    },
+    "mitjans/index.html": {
+        "title": "Mitjans · Marc Cerdà i Domènech",
         "description": "Articles d'opinió, entrevistes i xerrades sobre ciència, clima i polítiques ambientals. Columna a Línia Xarxa des de 2019.",
         "type": "website",
         "image": "img/marc.png",

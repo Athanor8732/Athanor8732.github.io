@@ -81,25 +81,15 @@ LOGO_SVG = """<svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentC
 
 def topbar(depth):
     prefix = "../" * depth
-    return f"""<div class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="{prefix}index.html">
-        {LOGO_SVG}
-        <span class="brand-text"><strong>Marc Cerdà i Domènech</strong><br>Geociències Marines</span>
-      </a>
-      <button class="topbar-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="topbar-nav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <nav class="topbar-nav" id="topbar-nav">
-        <a href="{prefix}recerca/index.html" data-nav="recerca">Recerca</a>
-        <a href="{prefix}publicacions/index.html" data-nav="publicacions">Publicacions</a>
-        <a href="{prefix}docencia/index.html" data-nav="docencia">Docència</a>
-        <a href="{prefix}premsa/index.html" data-nav="premsa">Premsa</a>
-        <a href="{prefix}blog/index.html" data-nav="blog" aria-current="page">Bloc</a>
-        <a href="{prefix}contacte/index.html" data-nav="contacte">Contacte</a>
-      </nav>
-    </div>
-  </div>"""
+    template_path = ROOT / "templates" / "topbar.html"
+    tmpl = template_path.read_text(encoding="utf-8")
+    tmpl = tmpl.replace("{DEPTH}", prefix)
+    # Marca el link del bloc com a pàgina actual
+    tmpl = tmpl.replace(
+        f'<a href="{prefix}blog/index.html" data-nav="blog">',
+        f'<a href="{prefix}blog/index.html" data-nav="blog" aria-current="page">',
+    )
+    return tmpl
 
 
 HEAD_LINKS = '<link rel="stylesheet" href="{prefix}css/fonts.css" />\n<link rel="stylesheet" href="{prefix}css/styles.css" />'
@@ -111,6 +101,14 @@ HAMBURGER_SCRIPT = """<script id="hamburger-init">
       btn.addEventListener('click',function(){
         var open=nav.classList.toggle('open');
         btn.setAttribute('aria-expanded',open);
+      });
+      document.querySelectorAll('.nav-item.has-submenu > a').forEach(function(link){
+        link.addEventListener('click',function(e){
+          if(window.innerWidth <= 680){
+            e.preventDefault();
+            link.parentElement.classList.toggle('mobile-open');
+          }
+        });
       });
     })();
   </script>"""
