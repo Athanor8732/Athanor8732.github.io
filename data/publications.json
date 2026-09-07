@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-31",
+  "updated": "2026-09-07",
   "publications": [
     {
       "doi": "10.1371/journal.pone.0350484",
@@ -114,7 +114,7 @@
       "year": 2025,
       "jif": "10,0",
       "quartile": "Q1",
-      "citations": 0,
+      "citations": 1,
       "openalexId": "",
       "scopusId": "",
       "issn": "",
@@ -182,7 +182,7 @@
       "year": 2022,
       "jif": "7,3",
       "quartile": "Q1",
-      "citations": 57,
+      "citations": 58,
       "openalexId": "",
       "scopusId": "",
       "issn": "",
