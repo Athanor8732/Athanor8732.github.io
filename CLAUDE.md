@@ -53,7 +53,7 @@ Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="m
 
 Decisions estructurals aplicades — no reintroduir els blocs eliminats:
 
-- **Home**: només portal d'entrada (profile+porthole, gauge data-driven, bio, quote, franja de fotos «Al terreny», articles del bloc, subscribe). ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer) ni la secció de cards "Seccions" (redundant amb la topbar).
+- **Home**: només portal d'entrada (profile+porthole, gauge data-driven, bio, quote, últim article, subscribe). ❌ SENSE franja de fotos ni llista d'articles secundaris: es van provar el 18-09-2026 i es van descartar. ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer) ni la secció de cards "Seccions" (redundant amb la topbar).
 - **Sobre mi**: bio llarga, award Premi Carmina Virgili, timelines Formació/Trajectòria, i secció **"Perfil a bases de dades"** (ORCID, ResearchGate, Scopus, GitHub). ❌ SENSE secció "Docència" (duplicava la pàgina; l'enllaç va al cta-row).
 - **Docència**: stats amb el patró global **`.gauge`** (mai `.teach-stats`, eliminat).
 - **Projectes** (impas-garraf, emicreuer-bcn): estructura pròpia rica (hero, nav vertical scroll-spy, mapes Leaflet); footer unificat sense logos duplicats (la banda `.affil-title` temàtica ja els porta).
@@ -113,10 +113,8 @@ El bloc `#stats-inline` s'inclou a les **6 pàgines amb gauge**: `index.html`, `
 ### Publicacions data-driven (`data/publications.json` + `js/publications.js`)
 `publicacions/index.html` i `en/publications/index.html` tenen una llista `<div class="pub-list">` que `js/publications.js` substitueix en runtime per les targetes del JSON. El JS mira `document.documentElement.lang`: en anglès, etiqueta «cited by:» (en comptes de «cites:») i JIF amb punt decimal. El bloc `.pub-list` del HTML és **fallback estàtic** i, a diferència dels stats, **és regenerat automàticament per `update_scholarly_data.py`** (mateix format que el JS). No l'editis a mà: els canvis van a `publications.json` i es propaguen executant l'script.
 
-### Portada: franja de fotos i articles del bloc
-- **`.field-strip`** («Al terreny» / «In the field»): 4 fotos de camp que enllacen a les pàgines de projecte. És una **franja estàtica, no un carrusel** — decisió deliberada: un carrusel amagaria contingut, demanaria JS i controls de teclat/pausa, i xocaria amb `prefers-reduced-motion`. Col·lapsa a 2 columnes <680px i a 1 <420px.
-- **Bloc d'articles**: entre els marcadors `<!-- @blog-highlights:start|end -->` de `index.html` i `en/index.html`, i el genera **`build_blog.py`** (destacat gran + `HIGHLIGHT_EXTRA` articles compactes a `.post-more` + enllaç a tot el bloc). Abans estava escrit a mà i calia recordar-se'n a cada article nou. **No editar-lo a mà**: es regenera.
-- El CSS de tots dos components viu a `css/styles.css` (no inline), perquè el comparteixen les dues portades, la catalana i l'anglesa.
+### Portada: el darrer article es genera
+El bloc de l'últim article viu entre els marcadors `<!-- @blog-highlights:start|end -->` de `index.html` i `en/index.html` i el genera **`build_blog.py`** a partir dels Markdown (`HIGHLIGHT_EXTRA` articles compactes addicionals; **0** = només el destacat, que és com ha de quedar). Abans estava escrit a mà i calia recordar-se'n a cada article nou. **No editar-lo a mà**: es regenera.
 
 ### Bloc (`content/posts/*.md` → `scripts/build_blog.py`)
 Els articles viuen com a Markdown amb frontmatter a `content/posts/YYYY-MM-DD-slug.md`. Camps del frontmatter: `title`, `slug`, `date`, `date_display`, `excerpt`, `image`, `image_alt`, `source_url`, `source_note`, i els **opcionals `title_en` i `excerpt_en`**, que només fa servir la portada anglesa per explicar de què va l'article (els articles no es tradueixen). Si no hi són, la portada anglesa cau al títol i l'entradeta en català. Al cos, els paràgrafs separats per línia en blanc esdevenen `<p>`; una línia que comenci per `> ` es renderitza com a `<blockquote>`. `build_blog.py` regenera `blog/index.html` i `blog/<slug>/index.html`. No hi ha fallback estàtic del bloc — cal executar l'script per veure els canvis.

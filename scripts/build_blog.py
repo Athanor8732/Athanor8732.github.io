@@ -242,13 +242,11 @@ MONTHS_CA = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny",
              "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"]
 HIGHLIGHT_STRINGS = {
     "ca": {"heading": "Últim article del bloc", "read": "Llegeix l'article →",
-           "all": "Tots els articles →",
            "tag": lambda p: f'{MONTHS_CA[p["date"].month - 1]} {p["date"].year}'},
     "en": {"heading": "Latest blog post", "read": "Read the post (Catalan) →",
-           "all": "All posts (in Catalan) →",
            "tag": lambda p: f'{MONTHS_EN[p["date"].month - 1]} {p["date"].year} · in Catalan'},
 }
-HIGHLIGHT_EXTRA = 2  # articles compactes sota el destacat
+HIGHLIGHT_EXTRA = 0  # articles compactes sota el destacat (0 = només el darrer)
 
 
 def field(post, key, lang):
@@ -287,7 +285,6 @@ def render_home_highlights(posts, lang, prefix):
                        f'<span class="pm-title">{esc(field(p, "title", lang))}</span>'
                        f'<span class="pm-date">{esc(t["tag"](p))}</span></a></li>')
         out.append('      </ul>')
-    out.append(f'      <a class="all-posts" href="{prefix}blog/index.html">{t["all"]}</a>')
     out.append('    </div>')
     return "\n".join(out) + "\n"
 
