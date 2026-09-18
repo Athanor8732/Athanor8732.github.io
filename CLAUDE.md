@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Què és això
 
-Web personal estàtic de Marc Cerdà i Domènech (geocientífic marí, UB). HTML/CSS/JS fet a mà, sense framework ni generador de site global — cada pàgina és un `index.html` autosuficient. Repo **públic** (`Athanor8732/Athanor8732.github.io`); publicat a **https://athanor8732.github.io/** via GitHub Pages (branch `main`, arrel).
+Web personal estàtic de Marc Cerdà i Domènech (geocientífic marí, UB). HTML/CSS/JS fet a mà, sense framework ni generador de site global — cada pàgina és un `index.html` autosuficient. Repo **públic** (`Athanor8732/Athanor8732.github.io`); publicat a **https://cerdadomenech.cat/** via GitHub Pages (branch `main`, arrel). `athanor8732.github.io` hi continua redirigint.
 
 ## Arquitectura (actualitzada agost 2026)
 
@@ -154,7 +154,7 @@ El workflow fa commit de 8 fitxers —`data/stats.json`, `data/publications.json
 - Els JIF s'escriuen amb **coma decimal** (`"10,0"`, `"2,6"`) seguint el format del CV.
 - `intlCoauthorship` (55,6%) és un camp manual del CV derivat de Scopus; a `recerca/index.html` va etiquetat `(Scopus)`, no prové d'OpenAlex.
 - Els claims estàtics tipus «articles Q1» o «Totes en el 25% superior» **no** s'actualitzen sols: si la composició de publicacions canvia, revisa-los a mà.
-- Publicació: el repo és `Athanor8732.github.io` (públic) i Pages serveix la branch `main` a https://athanor8732.github.io/. Cada push a `main` es publica sol (build ~1 min).
+- Publicació: el repo és `Athanor8732.github.io` (públic) i Pages serveix la branch `main` a https://cerdadomenech.cat/. Cada push a `main` es publica sol (build ~1 min).
 
 ## SEO i metadades (Fase 4)
 
@@ -162,7 +162,7 @@ El workflow fa commit de 8 fitxers —`data/stats.json`, `data/publications.json
 - `<meta name="description">` (descripció específica per pàgina, definida al propi script)
 - Open Graph (`og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `og:locale=ca_ES`)
 - Twitter Card (`summary_large_image`)
-- `<link rel="canonical">` (URL base: `https://athanor8732.github.io`)
+- `<link rel="canonical">` (URL base: `https://cerdadomenech.cat`, a `BASE_URL`)
 - JSON-LD structured data: `Person` a la home, `ItemList`+`ScholarlyArticle` a publicacions, `ResearchProject` a les pàgines de projecte
 - `<link rel="alternate" hreflang="ca|en|x-default">` a cada parella CA/EN i `og:locale:alternate`
 - `sitemap.xml` (21 URLs: 11 catalanes + 10 angleses) i `robots.txt` a l'arrel
@@ -193,7 +193,8 @@ Tots els camps són sempre presents (cap és `null`): `doi`, `authors`, `title`,
 
 ## Publicació
 
-- **URL pública**: https://athanor8732.github.io/ (GitHub Pages, branch `main`, arrel).
+- **URL pública**: https://cerdadomenech.cat/ (GitHub Pages, branch `main`, arrel). Domini propi des del 18-09-2026, registrat a DonDominio; `athanor8732.github.io` hi redirigeix i cap enllaç antic es trenca.
+- **El fitxer `CNAME`** de l'arrel (una línia: `cerdadomenech.cat`) el va crear GitHub en desar el domini a Settings → Pages i és el que lliga el domini amb el repo. **No esborrar-lo mai**: sense ell, Pages torna a servir només a `athanor8732.github.io`. Cap script de build el toca (només processen `.html`, `.css`, `.js` i `.json`).
 - Cada `git push` a `main` es publica automàticament (~1 min de build). Verificar amb `gh api repos/Athanor8732/Athanor8732.github.io/pages -q .status`.
 - Previsualització local abans de pujar: `python3 -m http.server 8000 --bind 127.0.0.1`.
 - El repo va canviar de nom de `marc-links` a `Athanor8732.github.io` (agost 2026) i és públic; el remot local ja apunta al nou nom.

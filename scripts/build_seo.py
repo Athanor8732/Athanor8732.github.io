@@ -22,7 +22,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_pages import PAGE_MAP  # noqa: E402  (correspondència CA↔EN)
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE_URL = "https://athanor8732.github.io"
+# Domini propi des del 18-09-2026 (abans: https://athanor8732.github.io, que
+# continua servint la web i hi redirigeix). El fitxer CNAME de l'arrel és el que
+# lliga el domini amb Pages: cap script el pot tocar ni esborrar.
+BASE_URL = "https://cerdadomenech.cat"
 
 # ---- Metadades per pàgina ----
 PAGES = {
