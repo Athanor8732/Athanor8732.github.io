@@ -31,6 +31,24 @@ ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES = ROOT / "templates"
 SKIP_PAGES = {"blog"}  # blog/ és generat per build_blog.py
 
+# Correspondència entre la versió catalana i l'anglesa de cada pàgina.
+# Clau = ruta relativa a l'arrel (català), valor = equivalent en anglès.
+PAGE_MAP = {
+    "index.html": "en/index.html",
+    "sobre-mi/index.html": "en/about/index.html",
+    "recerca/index.html": "en/research/index.html",
+    "publicacions/index.html": "en/publications/index.html",
+    "docencia/index.html": "en/teaching/index.html",
+    "docencia/recursos-docents/index.html": "en/teaching/resources/index.html",
+    "mitjans/index.html": "en/media/index.html",
+    "contacte/index.html": "en/contact/index.html",
+    "impas-garraf/index.html": "en/impas-garraf/index.html",
+    "emicreuer-bcn/index.html": "en/emicreuer-bcn/index.html",
+}
+EN_TO_CA = {v: k for k, v in PAGE_MAP.items()}
+
+SKIP_LINK_TEXT = {"ca": "Salta al contingut", "en": "Skip to content"}
+
 # ---- Partials ----
 def load_template(name):
     p = TEMPLATES / f"{name}.html"
@@ -47,26 +65,104 @@ def depth_for(page_path):
 
 
 def page_id_for(page_path):
-    """Retorna l'identificador de pàgina per a aria-current (ex: 'recerca', 'publicacions')."""
-    rel = page_path.relative_to(ROOT)
-    if len(rel.parts) == 1:
+    """Retorna l'identificador de pàgina per a aria-current (ex: 'recerca', 'research')."""
+    parts = page_path.relative_to(ROOT).parts
+    if parts and parts[0] == "en":
+        parts = parts[1:]  # en/research/index.html → research
+    if len(parts) <= 1:
         return "home"
-    return rel.parts[0]
+    return parts[0]
 
 
-def inject_partials(html, depth, page_id):
+def lang_for(page_path):
+    """'en' per a les pàgines sota en/, 'ca' per a la resta."""
+    rel = page_path.relative_to(ROOT).as_posix()
+    return "en" if rel.startswith("en/") else "ca"
+
+
+def counterpart_for(page_path):
+    """Ruta (relativa a l'arrel) de la mateixa pàgina en l'altra llengua, o None."""
+    rel = page_path.relative_to(ROOT).as_posix()
+    return PAGE_MAP.get(rel) or EN_TO_CA.get(rel)
+
+
+def render_lang_switch(page_path, depth):
+    """Selector CA/EN de la topbar, amb l'enllaç a la pàgina equivalent."""
+    rel = page_path.relative_to(ROOT).as_posix()
+    lang = lang_for(page_path)
+    other = counterpart_for(page_path)
+
+    if lang == "ca":
+        ca_href, en_href = rel, other
+    else:
+        ca_href, en_href = other, rel
+    # Pàgines sense equivalent (blog): el salt d'idioma va a la portada de l'altra llengua
+    ca_href = ca_href or "index.html"
+    en_href = en_href or "en/index.html"
+
+    def link(code, href, is_current):
+        attrs = f' aria-current="true"' if is_current else ""
+        cls = " class=\"is-current\"" if is_current else ""
+        code_lang = "ca" if code == "CA" else "en"
+        return (f'<a href="{depth}{href}" hreflang="{code_lang}" lang="{code_lang}"'
+                f'{cls}{attrs}>{code}</a>')
+
+    label = "Idioma" if lang == "ca" else "Language"
+    return (
+        f'<div class="lang-switch" role="group" aria-label="{label}">'
+        + link("CA", ca_href, lang == "ca")
+        + '<span class="lang-sep" aria-hidden="true">/</span>'
+        + link("EN", en_href, lang == "en")
+        + "</div>"
+    )
+
+
+def find_topbar_block(html):
+    """Retorna (inici, fi) del bloc <div class="topbar">…</div> ja injectat, o None."""
+    start = html.find('<div class="topbar">')
+    if start == -1:
+        return None
+    # Recompte de <div>/</div> per trobar el tancament corresponent
+    i, level = start, 0
+    tag = re.compile(r"<(/?)div\b", re.I)
+    while True:
+        m = tag.search(html, i)
+        if not m:
+            return None
+        level += -1 if m.group(1) else 1
+        i = m.end()
+        if level == 0:
+            end = html.find(">", i) + 1
+            return start, end
+
+
+def inject_partials(html, depth, page_id, page_path):
     """Substitueix els marcadors <!-- @partial:X --> pel HTML del template."""
+    lang = lang_for(page_path)
+    topbar_name = "topbar.en" if lang == "en" else "topbar"
     templates = {
         "head": load_template("head"),
-        "topbar": load_template("topbar"),
+        "topbar": load_template(topbar_name),
         "ctd-rig": load_template("ctd-rig"),
         "side-promo": load_template("side-promo"),
     }
+    lang_switch = render_lang_switch(page_path, depth)
 
+    rendered_topbar = None
     for name, tmpl in templates.items():
         marker = f"<!-- @partial:{name} -->"
-        rendered = tmpl.replace("{DEPTH}", depth)
+        rendered = tmpl.replace("{DEPTH}", depth).replace("{LANG_SWITCH}", lang_switch)
+        if name == "topbar":
+            rendered_topbar = rendered
         html = html.replace(marker, rendered)
+
+    # Si la topbar ja estava injectada (sense marcador), la resincronitza amb el
+    # template: així els canvis a templates/ es propaguen a totes les pàgines.
+    if "<!-- @partial:topbar -->" not in html and rendered_topbar is not None:
+        span = find_topbar_block(html)
+        if span:
+            start, end = span
+            html = html[:start] + rendered_topbar.strip() + html[end:]
 
     # aria-current al nav link corresponent
     if page_id != "home":
@@ -82,12 +178,13 @@ def inject_partials(html, depth, page_id):
     return html
 
 
-def add_skip_link(html):
-    """Afegeix un skip-link just després de <body>."""
-    skip = '<a class="skip-link" href="#main">Salta al contingut</a>\n  '
-    # Si ja hi és, no el duplica
+def add_skip_link(html, lang="ca"):
+    """Afegeix un skip-link just després de <body>, en la llengua de la pàgina."""
+    skip = f'<a class="skip-link" href="#main">{SKIP_LINK_TEXT[lang]}</a>\n  '
+    # Si ja hi és, només en corregeix el text
     if 'class="skip-link"' in html:
-        return html
+        return re.sub(r'(<a class="skip-link" href="#main">)[^<]*(</a>)',
+                      r'\g<1>' + SKIP_LINK_TEXT[lang] + r'\g<2>', html, count=1)
     # Insereix just després de <body ...>
     html = re.sub(r'(<body[^>]*>\s*)', r'\1' + skip, html, count=1)
     return html
@@ -150,7 +247,7 @@ def add_hamburger_script(html):
         # Substitueix el script existent pel nou (amb suport de submenus)
         html = re.sub(
             r'<script id="hamburger-init">.*?</script>',
-            script,
+            lambda _m: script.rstrip(),
             html,
             flags=re.DOTALL,
         )
@@ -182,8 +279,8 @@ def process_page(page_path, dry_run=False):
     depth = depth_for(page_path)
     page_id = page_id_for(page_path)
 
-    html = inject_partials(html, depth, page_id)
-    html = add_skip_link(html)
+    html = inject_partials(html, depth, page_id, page_path)
+    html = add_skip_link(html, lang_for(page_path))
     html = add_main_id(html)
     html = add_ctd_script(html, depth)
     html = add_reveal_script(html, depth)

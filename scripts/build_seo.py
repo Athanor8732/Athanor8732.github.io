@@ -15,7 +15,11 @@ Afegeix:
 """
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_pages import PAGE_MAP  # noqa: E402  (correspondència CA↔EN)
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE_URL = "https://athanor8732.github.io"
@@ -94,18 +98,100 @@ PAGES = {
     },
 }
 
+# ---- Versió anglesa (/en/) ----
+# Les claus són les rutes de PAGE_MAP (build_pages.py), única font de veritat
+# de la correspondència CA↔EN.
+PAGES_EN = {
+    "en/index.html": {
+        "title": "Marc Cerdà i Domènech · Marine Geosciences",
+        "description": "Marine geoscientist and Assistant Professor at the University of Barcelona. Anthropogenic metals, coastal hydrogeology and ocean governance.",
+        "type": "website",
+        "image": "img/marc.png",
+        "jsonld": "person",
+    },
+    "en/about/index.html": {
+        "title": "About me · Marc Cerdà i Domènech",
+        "description": "Academic and professional career of Marc Cerdà i Domènech, marine geoscientist and Assistant Professor at the University of Barcelona.",
+        "type": "profile",
+        "image": "img/marc.png",
+    },
+    "en/research/index.html": {
+        "title": "Research · Marc Cerdà i Domènech",
+        "description": "Research lines, oceanographic campaigns and projects of Marc Cerdà i Domènech: anthropogenic metals, coastal hydrogeology and ocean governance.",
+        "type": "website",
+        "image": "img/marc.png",
+    },
+    "en/publications/index.html": {
+        "title": "Publications · Marc Cerdà i Domènech",
+        "description": "Peer-reviewed articles in indexed journals. 16 publications, 279 citations, h-index of 7. Metrics from OpenAlex and AQU Catalunya.",
+        "type": "article",
+        "image": "img/marc.png",
+        "jsonld": "publications",
+    },
+    "en/teaching/index.html": {
+        "title": "Teaching · Marc Cerdà i Domènech",
+        "description": "Teaching record of Marc Cerdà i Domènech at the University of Barcelona and Universitat Carlemany. 1,249 hours, 17 courses, 8 theses supervised.",
+        "type": "website",
+        "image": "img/marc.png",
+    },
+    "en/teaching/resources/index.html": {
+        "title": "Teaching resources · Marc Cerdà i Domènech",
+        "description": "Resources and materials for teaching marine sciences and marine geosciences: repositories, tools and references.",
+        "type": "website",
+        "image": "img/marc.png",
+    },
+    "en/media/index.html": {
+        "title": "Media · Marc Cerdà i Domènech",
+        "description": "Opinion pieces, interviews and talks on science, climate and environmental policy. Column in Línia Xarxa since 2019.",
+        "type": "website",
+        "image": "img/marc.png",
+    },
+    "en/contact/index.html": {
+        "title": "Contact · Marc Cerdà i Domènech",
+        "description": "Contact details for Marc Cerdà i Domènech, Assistant Professor at the Department of Earth and Ocean Dynamics, University of Barcelona.",
+        "type": "website",
+        "image": "img/marc.png",
+    },
+    "en/impas-garraf/index.html": {
+        "title": "IMPAS-Garraf · Marc Cerdà i Domènech",
+        "description": "Research project on the impacts of submarine groundwater discharge on the marine ecosystems of the Garraf. Funded by the Catalan Water Agency (2024–2027).",
+        "type": "website",
+        "image": "img/impas/hero-campanya.jpg",
+        "jsonld": "project_impas",
+    },
+    "en/emicreuer-bcn/index.html": {
+        "title": "EMICREUER-BCN · Marc Cerdà i Domènech",
+        "description": "Project on atmospheric emissions from cruise ships in the port of Barcelona. 2012–2025 inventory, Tier 3 EMEP/EEA methodology.",
+        "type": "website",
+        "image": "img/emicreuer/port-ciutat.jpg",
+        "jsonld": "project_emicreuer",
+    },
+}
+PAGES.update(PAGES_EN)
+
+# Correspondència CA↔EN per als enllaços hreflang
+CA_TO_EN = dict(PAGE_MAP)
+EN_TO_CA = {v: k for k, v in CA_TO_EN.items()}
+
+
+def page_url(page_rel):
+    """URL absoluta d'una pàgina (la home és l'arrel)."""
+    return f"{BASE_URL}/" if page_rel == "index.html" else f"{BASE_URL}/{page_rel}"
+
+
 # ---- JSON-LD ----
-def jsonld_person():
+def jsonld_person(lang="ca"):
     return {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Marc Cerdà i Domènech",
-        "jobTitle": "Professor Lector en Geociències Marines",
+        "jobTitle": ("Assistant Professor in Marine Geosciences" if lang == "en"
+                     else "Professor Lector en Geociències Marines"),
         "worksFor": {
             "@type": "CollegeOrUniversity",
-            "name": "Universitat de Barcelona",
+            "name": "University of Barcelona" if lang == "en" else "Universitat de Barcelona",
         },
-        "url": BASE_URL + "/",
+        "url": BASE_URL + ("/en/" if lang == "en" else "/"),
         "image": BASE_URL + "/img/marc.png",
         "sameAs": [
             "https://orcid.org/0000-0001-5053-755X",
@@ -151,29 +237,33 @@ def jsonld_publications():
     }
 
 
-def jsonld_project(project_key):
+def jsonld_project(project_key, lang="ca"):
     if project_key == "project_impas":
         return {
             "@context": "https://schema.org",
             "@type": "ResearchProject",
             "name": "IMPAS-Garraf",
-            "description": "IMPactes de la descàrrega d'Aigua Subterrània als ecosistemes mediterranis marins: identificació i quantificació dels fluxos de contaminants a les aigües costaneres del Garraf.",
-            "funder": {"@type": "Organization", "name": "Agència Catalana de l'Aigua"},
+            "description": ("Impacts of submarine groundwater discharge on Mediterranean marine ecosystems: identifying and quantifying contaminant fluxes in the coastal waters of the Garraf." if lang == "en"
+                            else "IMPactes de la descàrrega d'Aigua Subterrània als ecosistemes mediterranis marins: identificació i quantificació dels fluxos de contaminants a les aigües costaneres del Garraf."),
+            "funder": {"@type": "Organization",
+                       "name": "Catalan Water Agency" if lang == "en" else "Agència Catalana de l'Aigua"},
             "funding": "RDI001/24/000039",
             "startDate": "2024",
             "endDate": "2027",
-            "url": BASE_URL + "/impas-garraf/",
+            "url": BASE_URL + ("/en/impas-garraf/" if lang == "en" else "/impas-garraf/"),
         }
     elif project_key == "project_emicreuer":
         return {
             "@context": "https://schema.org",
             "@type": "ResearchProject",
             "name": "EMICREUER-BCN",
-            "description": "EMIssions atmosfèriques dels CREUERs al port de Barcelona. Inventari 2012–2025 amb metodologia Tier 3 EMEP/EEA.",
-            "funder": {"@type": "Organization", "name": "GMAR-UB (projecte propi)"},
+            "description": ("Atmospheric emissions from cruise ships in the port of Barcelona. 2012–2025 inventory using the Tier 3 EMEP/EEA methodology." if lang == "en"
+                            else "EMIssions atmosfèriques dels CREUERs al port de Barcelona. Inventari 2012–2025 amb metodologia Tier 3 EMEP/EEA."),
+            "funder": {"@type": "Organization",
+                       "name": "GMAR-UB (in-house project)" if lang == "en" else "GMAR-UB (projecte propi)"},
             "startDate": "2012",
             "endDate": "2025",
-            "url": BASE_URL + "/emicreuer-bcn/",
+            "url": BASE_URL + ("/en/emicreuer-bcn/" if lang == "en" else "/emicreuer-bcn/"),
         }
     return None
 
@@ -188,9 +278,18 @@ def build_meta_tags(page_path, meta):
     image_url = BASE_URL + "/" + meta["image"]
     prefix_img = prefix if depth > 0 else ""
 
+    lang = "en" if url_path.startswith("en/") else "ca"
+    ca_rel = EN_TO_CA.get(url_path, url_path) if lang == "en" else url_path
+    en_rel = url_path if lang == "en" else CA_TO_EN.get(url_path)
+
     tags = []
     tags.append(f'<meta name="description" content="{meta["description"]}" />')
     tags.append(f'<link rel="canonical" href="{canonical}" />')
+    # Alternatives de llengua (només si la pàgina té equivalent a l'altra llengua)
+    if en_rel and ca_rel:
+        tags.append(f'<link rel="alternate" hreflang="ca" href="{page_url(ca_rel)}" />')
+        tags.append(f'<link rel="alternate" hreflang="en" href="{page_url(en_rel)}" />')
+        tags.append(f'<link rel="alternate" hreflang="x-default" href="{page_url(ca_rel)}" />')
     # Open Graph
     tags.append('<meta property="og:site_name" content="Marc Cerdà i Domènech" />')
     tags.append(f'<meta property="og:title" content="{meta["title"]}" />')
@@ -198,7 +297,9 @@ def build_meta_tags(page_path, meta):
     tags.append(f'<meta property="og:url" content="{canonical}" />')
     tags.append(f'<meta property="og:image" content="{image_url}" />')
     tags.append(f'<meta property="og:type" content="{meta["type"]}" />')
-    tags.append('<meta property="og:locale" content="ca_ES" />')
+    tags.append(f'<meta property="og:locale" content="{"en_GB" if lang == "en" else "ca_ES"}" />')
+    if en_rel and ca_rel:
+        tags.append(f'<meta property="og:locale:alternate" content="{"ca_ES" if lang == "en" else "en_GB"}" />')
     # Twitter Card
     tags.append('<meta name="twitter:card" content="summary_large_image" />')
     tags.append(f'<meta name="twitter:title" content="{meta["title"]}" />')
@@ -208,17 +309,17 @@ def build_meta_tags(page_path, meta):
     return "\n  ".join(tags)
 
 
-def build_jsonld(meta):
+def build_jsonld(meta, lang="ca"):
     """Construeix el bloc JSON-LD per a una pàgina."""
     key = meta.get("jsonld")
     if not key:
         return None
     if key == "person":
-        return jsonld_person()
+        return jsonld_person(lang)
     elif key == "publications":
         return jsonld_publications()
     elif key.startswith("project_"):
-        return jsonld_project(key)
+        return jsonld_project(key, lang)
     return None
 
 
@@ -230,17 +331,19 @@ def process_page(page_path, meta):
         # Eliminar tags SEO existents per reinsertar-los (idempotent)
         html = re.sub(r'\s*<meta name="description"[^>]*/>', '', html)
         html = re.sub(r'\s*<link rel="canonical"[^>]*/>', '', html)
+        html = re.sub(r'\s*<link rel="alternate" hreflang="[^"]*"[^>]*/>', '', html)
         html = re.sub(r'\s*<meta property="og:[^>]*/>', '', html)
         html = re.sub(r'\s*<meta name="twitter:[^>]*/>', '', html)
         html = re.sub(r'\s*<script type="application/ld\+json">.*?</script>', '', html, flags=re.DOTALL)
 
+    lang = "en" if str(page_path.relative_to(ROOT)).replace("\\", "/").startswith("en/") else "ca"
     meta_tags = build_meta_tags(page_path, meta)
 
     # Inserir abans de </head>
     insert = "\n  " + meta_tags + "\n  "
 
     # JSON-LD
-    jsonld = build_jsonld(meta)
+    jsonld = build_jsonld(meta, lang)
     if jsonld:
         jsonld_str = json.dumps(jsonld, ensure_ascii=False, indent=2)
         insert += f'<script type="application/ld+json">\n{jsonld_str}\n  </script>\n  '
@@ -262,9 +365,7 @@ def main():
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>']
     sitemap.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
     for page_rel in PAGES:
-        path = page_rel if page_rel != "index.html" else ""
-        url = f"{BASE_URL}/{path}" if path else f"{BASE_URL}/"
-        sitemap.append(f"  <url><loc>{url}</loc></url>")
+        sitemap.append(f"  <url><loc>{page_url(page_rel)}</loc></url>")
     sitemap.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(sitemap), encoding="utf-8")
     print("  OK: sitemap.xml")

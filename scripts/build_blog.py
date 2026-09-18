@@ -84,6 +84,16 @@ def topbar(depth):
     template_path = ROOT / "templates" / "topbar.html"
     tmpl = template_path.read_text(encoding="utf-8")
     tmpl = tmpl.replace("{DEPTH}", prefix)
+    # Selector d'idioma: el bloc només existeix en català, així que EN va a la
+    # portada anglesa (mateixa convenció que build_pages.render_lang_switch).
+    lang_switch = (
+        '<div class="lang-switch" role="group" aria-label="Idioma">'
+        f'<a href="index.html" hreflang="ca" lang="ca" class="is-current" aria-current="true">CA</a>'
+        '<span class="lang-sep" aria-hidden="true">/</span>'
+        f'<a href="{prefix}en/index.html" hreflang="en" lang="en">EN</a>'
+        '</div>'
+    )
+    tmpl = tmpl.replace("{LANG_SWITCH}", lang_switch)
     # Marca el link del bloc com a pàgina actual
     tmpl = tmpl.replace(
         f'<a href="{prefix}blog/index.html" data-nav="blog">',

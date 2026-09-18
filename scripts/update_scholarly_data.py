@@ -46,6 +46,8 @@ PUBS_PATH = os.path.join(ROOT, "data", "publications.json")
 MANUAL_STATS = {
     "projects", "campaigns", "campaignsDetailed", "seaDays",
     "intlCoauthorship", "researchLines", "researchLinesLabel", "citeScoreTop",
+    # Variants angleses (les fan servir les pàgines de /en/); vegeu stats_for_lang()
+    "researchLinesLabel_en", "source_en",
 }
 
 
@@ -165,6 +167,10 @@ def pages_str(biblio):
 # a partir del JSON, perquè la pàgina es vegi correcta fins i tot sense JS
 # (o si falla el fetch). El format replica exactament el que pinta js/publications.js.
 PUBS_HTML = os.path.join(ROOT, "publicacions", "index.html")
+PUBS_HTML_PAGES = [
+    (PUBS_HTML, "ca"),
+    (os.path.join(ROOT, "en", "publications", "index.html"), "en"),
+]
 
 
 def hesc(s):
@@ -173,7 +179,7 @@ def hesc(s):
         .replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
-def render_static_card(p):
+def render_static_card(p, lang="ca"):
     journal = hesc(p.get("journal", ""))
     vol = p.get("volume", "") or ""
     issue = p.get("issue", "") or ""
@@ -187,6 +193,8 @@ def render_static_card(p):
         jline += ", " + hesc(pages)
     year = hesc(p.get("year", ""))
     jif = p.get("jif", "") or ""
+    if lang == "en":
+        jif = jif.replace(",", ".")
     quartile = p.get("quartile", "") or ""
     q = ""
     if jif and quartile:
@@ -205,7 +213,8 @@ def render_static_card(p):
         '          <span>' + jline + '</span>',
     ]
     qspan = '<span>' + q + '</span>' if q else ''
-    out.append('          <span>' + year + '</span>' + qspan + '<span>cites: ' + cites + '</span>')
+    cited_label = "cited by: " if lang == "en" else "cites: "
+    out.append('          <span>' + year + '</span>' + qspan + '<span>' + cited_label + cites + '</span>')
     if doi:
         out.append('          <a class="doi" href="https://doi.org/' + hesc(doi) +
                    '" target="_blank" rel="noopener">DOI →</a>')
@@ -214,30 +223,50 @@ def render_static_card(p):
     return "\n".join(out)
 
 
+def stats_for_lang(stats, lang):
+    """Stats per a una llengua: aplica les claus X_en i passa la coma decimal a punt."""
+    out = {k: v for k, v in stats.items() if not k.endswith("_en")}
+    if lang != "en":
+        return out
+    for k, v in stats.items():
+        if k.endswith("_en"):
+            out[k[:-3]] = v
+    # 55,6% → 55.6% (separador decimal anglès)
+    for k, v in list(out.items()):
+        if isinstance(v, str) and re.fullmatch(r"\d+,\d+%?", v):
+            out[k] = v.replace(",", ".")
+    return out
+
+
 def update_publications_html(pubs):
-    """Torna a generar el bloc .pub-list dins publicacions/index.html."""
-    if not os.path.exists(PUBS_HTML):
-        return
-    with open(PUBS_HTML, encoding="utf-8") as f:
-        html = f.read()
-    cards = "\n\n".join(render_static_card(p) for p in pubs)
-    block = '<div class="pub-list">\n\n' + cards + '\n\n    </div>'
-    pattern = re.compile(r'<div class="pub-list">.*?\n    </div>', re.DOTALL)
-    new_html, n = pattern.subn(lambda m: block, html, count=1)
-    if n != 1:
-        print("  AVÍS: no s'ha trobat el bloc .pub-list a publicacions/index.html "
-              "(no s'ha modificat el HTML).", file=sys.stderr)
-        return
-    with open(PUBS_HTML, "w", encoding="utf-8") as f:
-        f.write(new_html)
-    print(f"    HTML: regenerades {len(pubs)} targetes a publicacions/index.html")
+    """Torna a generar el bloc .pub-list de la pàgina catalana i de l'anglesa."""
+    for path, lang in PUBS_HTML_PAGES:
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8") as f:
+            html = f.read()
+        cards = "\n\n".join(render_static_card(p, lang) for p in pubs)
+        block = '<div class="pub-list">\n\n' + cards + '\n\n    </div>'
+        pattern = re.compile(r'<div class="pub-list">.*?\n    </div>', re.DOTALL)
+        new_html, n = pattern.subn(lambda m: block, html, count=1)
+        rel = os.path.relpath(path, ROOT)
+        if n != 1:
+            print(f"  AVÍS: no s'ha trobat el bloc .pub-list a {rel} "
+                  "(no s'ha modificat el HTML).", file=sys.stderr)
+            continue
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(new_html)
+        print(f"    HTML: regenerades {len(pubs)} targetes a {rel}")
 
 
 # Pàgines amb gauge de stats: s'hi refresquen els valors de fallback (sense JS).
 GAUGE_HTML = [
-    os.path.join(ROOT, "index.html"),
-    os.path.join(ROOT, "recerca", "index.html"),
-    os.path.join(ROOT, "publicacions", "index.html"),
+    (os.path.join(ROOT, "index.html"), "ca"),
+    (os.path.join(ROOT, "recerca", "index.html"), "ca"),
+    (os.path.join(ROOT, "publicacions", "index.html"), "ca"),
+    (os.path.join(ROOT, "en", "index.html"), "en"),
+    (os.path.join(ROOT, "en", "research", "index.html"), "en"),
+    (os.path.join(ROOT, "en", "publications", "index.html"), "en"),
 ]
 # Camps automàtics que apareixen com a fallback numèric al gauge.
 GAUGE_KEYS = ("publications", "citations", "hIndex")
@@ -246,22 +275,23 @@ GAUGE_KEYS = ("publications", "citations", "hIndex")
 def update_gauge_fallbacks(stats):
     """Actualitza els valors de fallback del gauge i el bloc inline de stats a les 3 pàgines."""
     changed = 0
-    for path in GAUGE_HTML:
+    for path, lang in GAUGE_HTML:
         if not os.path.exists(path):
             continue
         with open(path, encoding="utf-8") as f:
             html = f.read()
+        lang_stats = stats_for_lang(stats, lang)
 
-        def repl(m):
+        def repl(m, lang_stats=lang_stats):
             key = m.group(1)
-            val = stats.get(key, m.group(2))
+            val = lang_stats.get(key, m.group(2))
             return f'data-stat="{key}">{val}<'
 
         new_html, n = re.subn(
             r'data-stat="(publications|citations|hIndex)">([^<]*)<', repl, html)
 
         # Bloc inline únic: JSON + codi JS en un sol <script>
-        stats_json = json.dumps(stats, ensure_ascii=False)
+        stats_json = json.dumps(lang_stats, ensure_ascii=False)
         inline_block = (
             '<script id="stats-inline">\n'
             '  (function () {\n'

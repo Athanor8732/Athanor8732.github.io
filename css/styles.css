@@ -146,6 +146,30 @@ body{
 .topbar-nav a:hover{ color:var(--cyan); background:rgba(var(--cyan-rgb),0.08); }
 .topbar-nav a[aria-current="page"]{ color:var(--cyan); background:rgba(var(--cyan-rgb),0.12); }
 
+/* Selector d'idioma CA/EN (topbar) */
+.lang-switch{
+  position:absolute;
+  right:0;
+  display:flex;
+  align-items:center;
+  gap:2px;
+  font-family:var(--sans);
+}
+.lang-switch a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:0.7rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  padding:4px 7px;
+  border-radius:999px;
+  opacity:0.85;
+  transition:color .15s ease, background .15s ease, opacity .15s ease;
+}
+.lang-switch a:hover{ color:var(--cyan); background:rgba(var(--cyan-rgb),0.08); opacity:1; }
+.lang-switch a.is-current{ color:var(--cyan); background:rgba(var(--cyan-rgb),0.12); opacity:1; }
+.lang-sep{ color:var(--muted); opacity:0.4; font-size:0.7rem; }
+
 /* Hamburger (mòbil) */
 .topbar-toggle{
   display:none;
@@ -229,6 +253,7 @@ body{
   .topbar-nav.open{ display:flex; }
   .topbar-nav a{ padding:10px 14px; font-size:0.88rem; }
   .topbar-toggle{ display:flex; align-items:center; justify-content:center; }
+  .lang-switch{ right:auto; left:0; }
   .nav-item{ position:static; }
   .nav-item.has-submenu > a{ display:flex; justify-content:space-between; }
   
@@ -627,7 +652,7 @@ html{ scrollbar-color:rgba(var(--cyan-rgb),0.25) var(--bg-deep); scrollbar-width
 /* ---- Print ---- */
 @media print{
   body{ background:#fff; color:#000; }
-  .ctd-rig, .ctd-depth-mobile, .side-promo, .topbar-nav, .topbar-toggle,
+  .ctd-rig, .ctd-depth-mobile, .side-promo, .topbar-nav, .topbar-toggle, .lang-switch,
   .das-rig, .liner-rig, .section-nav{ display:none !important; }
   .topbar{ position:static; background:none; border:none; }
   .prose, .card, .award, .gauge{ background:#fff; border:1px solid #ccc; box-shadow:none; }

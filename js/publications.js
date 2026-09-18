@@ -2,6 +2,14 @@
   var list = document.querySelector('.pub-list');
   if (!list) return;
   var path = (document.currentScript.getAttribute('data-path') || 'data/publications.json');
+  // Les pàgines angleses (/en/) porten lang="en": etiqueta i separador decimal propis.
+  var isEn = (document.documentElement.getAttribute('lang') || 'ca').indexOf('en') === 0;
+  var citedLabel = isEn ? 'cited by: ' : 'cites: ';
+
+  function num(v) {
+    // El JSON guarda els JIF amb coma decimal (format del CV); en anglès, punt.
+    return isEn ? String(v).replace(',', '.') : String(v);
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -18,11 +26,11 @@
     meta += '<span>' + jline + '</span>';
     meta += '<span>' + esc(p.year) + '</span>';
     var q = '';
-    if (p.jif && p.quartile) q = 'JIF ' + esc(p.jif) + ' · ' + esc(p.quartile);
+    if (p.jif && p.quartile) q = 'JIF ' + esc(num(p.jif)) + ' · ' + esc(p.quartile);
     else if (p.quartile) q = esc(p.quartile);
-    else if (p.jif) q = 'JIF ' + esc(p.jif);
+    else if (p.jif) q = 'JIF ' + esc(num(p.jif));
     if (q) meta += '<span>' + q + '</span>';
-    meta += '<span>cites: ' + esc(p.citations) + '</span>';
+    meta += '<span>' + citedLabel + esc(p.citations) + '</span>';
     if (p.doi) {
       meta += '<a class="doi" href="https://doi.org/' + esc(p.doi) +
         '" target="_blank" rel="noopener">DOI →</a>';

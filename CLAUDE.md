@@ -24,6 +24,19 @@ La web abans tenia tot el CSS i JS inline duplicat a cada pàgina (~260 línies 
 - **Submenus**: Recerca i Docència tenen submenus desplegables (hover a escriptori, tap a mòbil). Estructura: `<div class="nav-item has-submenu"><a>…</a><div class="submenu">…</div></div>`. El JS `hamburger-init` (injectat per `build_pages.py`/`build_blog.py`) gestiona el toggle mòbil amb la classe `.mobile-open`.
 - El link de la pàgina actual es marca amb `aria-current="page"` (`build_pages.py` comprova si ja existeix abans d'injectar-lo — mai duplicar).
 
+### Versió anglesa (`/en/`, setembre 2026)
+Tota la web existeix en dues llengües: el català a l'arrel i l'anglès sota **`/en/`** (10 pàgines, amb els slugs traduïts: `en/about/`, `en/research/`, `en/publications/`, `en/teaching/`, `en/teaching/resources/`, `en/media/`, `en/contact/`, `en/impas-garraf/`, `en/emicreuer-bcn/`). El **bloc no es tradueix** (articles d'opinió en català): la nav anglesa hi enllaça amb `hreflang="ca"` i un `title` que ho avisa.
+
+- **Font de veritat de la correspondència**: `PAGE_MAP` a `scripts/build_pages.py`. `build_seo.py` l'importa — no duplicar el mapa enlloc.
+- **Template**: `templates/topbar.en.html` (nav i slugs en anglès). `build_pages.py` tria el template segons si la ruta comença per `en/`.
+- **Selector CA/EN**: marcador `{LANG_SWITCH}` als dos templates; `render_lang_switch()` el pinta amb l'enllaç a la pàgina equivalent (les pàgines sense equivalent van a la portada de l'altra llengua). Estils `.lang-switch` a `styles.css`: a la dreta de la fila del nom, i a l'esquerra en mòbil (el hamburger ocupa la dreta).
+- **Àncores traduïdes**: `#research-lines`, `#campaigns`, `#projects`, `#courses`, i a les pàgines de projecte `#overview`, `#scope`, `#methods|#methodology`, `#work-packages`, `#consortium`, `#results`, `#fieldwork`, `#origin`, `#team`.
+- **Convencions de traducció**: noms d'institucions en anglès (University of Barcelona, Catalan Water Agency, Institute for Catalan Studies); «professor lector» → *Assistant Professor*; PT→WP, IP→PI, DAS→SGD. **No es tradueixen**: títols reals d'articles, de TFG ni de peces de premsa (a `mitjans`/`media` es mantenen en la llengua original, avisat al subtítol).
+- **Números**: en anglès, separador decimal amb punt i milers amb coma (55.6%, 1,249, €199,630). `stats_for_lang()` a `update_scholarly_data.py` fa la conversió automàtica dels camps de stats.
+
+### La topbar es resincronitza (no només s'injecta)
+`build_pages.py` ja no depèn dels marcadors `<!-- @partial:topbar -->` (es consumeixen a la primera passada). Si la pàgina ja té una topbar injectada, `find_topbar_block()` la localitza per recompte de `<div>`/`</div>` i la **substitueix** pel template renderitzat. Per tant, editar `templates/topbar*.html` + executar `build_pages.py` ara sí que propaga el canvi a totes les pàgines. L'script és idempotent (executar-lo dos cops no canvia res).
+
 ### Footer unificat
 Totes les pàgines comparteixen el mateix footer: logos UB/GMAR + "← Torna al perfil" + llicència CC BY-NC-SA 4.0. Els estils són globals a `styles.css` (`footer .affil`, `.footer-mark`, `.cc-notice`). No afegir text de font per pàgina.
 
@@ -70,7 +83,7 @@ Actualitzar dades científiques des d'OpenAlex (es pot executar a mà; el workfl
 python3 scripts/update_scholarly_data.py   # opcional: MAILTO=correu@example.org
 ```
 
-Reinjectar partials HTML a les pàgines (després d'editar `templates/`):
+Reinjectar/resincronitzar partials HTML a totes les pàgines, catalanes i angleses (després d'editar `templates/`):
 ```bash
 python3 scripts/build_pages.py            # processa totes les pàgines
 python3 scripts/build_pages.py --check    # dry-run
@@ -84,18 +97,18 @@ No hi ha build global, ni tests, ni linter. Els scripts són stdlib-only (cap `p
 Cada secció és un directori amb `index.html`: `index.html` (home), `sobre-mi/`, `recerca/`, `publicacions/`, `docencia/`, `docencia/recursos-docents/`, `mitjans/`, `contacte/`, `blog/` (generat), `impas-garraf/`, `emicreuer-bcn/`. Tots comparteixen el tema submarí (fons negre, accent `#39ffb0`, tipografia Inter) definit a `css/styles.css`. El CSS específic de cada pàgina es manté inline al seu `<style>`.
 
 ### Stats data-driven (bloc inline `#stats-inline` + `update_scholarly_data.py`)
-Qualsevol element `<... data-stat="KEY">` s'omple en runtime des d'un bloc JS inline (`<script id="stats-inline">`) que `update_scholarly_data.py` escriu directament al HTML de les 3 pàgines amb gauge (home, recerca, publicacions). El valor que hi ha a l'HTML entre les etiquetes és el **fallback estàtic** (es mostra sense JS). Convenció: el fallback ha de ser un valor realista, no un placeholder.
+Qualsevol element `<... data-stat="KEY">` s'omple en runtime des d'un bloc JS inline (`<script id="stats-inline">`) que `update_scholarly_data.py` escriu directament al HTML de les 6 pàgines amb gauge (home, recerca i publicacions, i les tres equivalents angleses). El valor que hi ha a l'HTML entre les etiquetes és el **fallback estàtic** (es mostra sense JS). Convenció: el fallback ha de ser un valor realista, no un placeholder.
 
 No hi ha `fetch` ni fitxer extern `stats.js` — tot el codi i les dades van inline al HTML, de manera que el navegador no pot cachar cap fitxer per separat. `data/stats.json` es manté al repo com a font de dades pel workflow, però no es consumeix al runtime.
 
 `stats.json` barreja dos origens:
 - **Camps automàtics** (els escriu `update_scholarly_data.py`): `publications`, `citations`, `hIndex`, `updated`, `source`.
-- **Camps manuals** (del CV, l'script **no els toca** — definit a `MANUAL_STATS`): `projects`, `campaigns`, `campaignsDetailed`, `seaDays`, `intlCoauthorship`, `researchLines`, `researchLinesLabel`, `citeScoreTop`. Aquests s'editen a mà.
+- **Camps manuals** (del CV, l'script **no els toca** — definit a `MANUAL_STATS`): `projects`, `campaigns`, `campaignsDetailed`, `seaDays`, `intlCoauthorship`, `researchLines`, `researchLinesLabel`, `citeScoreTop`, i les variants angleses `researchLinesLabel_en` i `source_en`. Aquests s'editen a mà.
 
-El bloc `#stats-inline` s'inclou a `index.html`, `recerca/index.html` i `publicacions/index.html` (les pàgines amb gauge). Tot el codi i les dades van inline — no hi ha `fetch` ni fitxer extern.
+El bloc `#stats-inline` s'inclou a les **6 pàgines amb gauge**: `index.html`, `recerca/index.html`, `publicacions/index.html` i les tres equivalents de `/en/`. Tot el codi i les dades van inline — no hi ha `fetch` ni fitxer extern. A les pàgines angleses el bloc porta els valors passats per `stats_for_lang()`: les claus amb sufix `_en` de `stats.json` (`researchLinesLabel_en`, `source_en`) substitueixen les catalanes i la coma decimal passa a punt.
 
 ### Publicacions data-driven (`data/publications.json` + `js/publications.js`)
-`publicacions/index.html` té una llista `<div class="pub-list">` que `js/publications.js` substitueix en runtime per les targetes del JSON. El bloc `.pub-list` del HTML és **fallback estàtic** i, a diferència dels stats, **és regenerat automàticament per `update_scholarly_data.py`** (mateix format que el JS). No l'editis a mà: els canvis van a `publications.json` i es propaguen executant l'script.
+`publicacions/index.html` i `en/publications/index.html` tenen una llista `<div class="pub-list">` que `js/publications.js` substitueix en runtime per les targetes del JSON. El JS mira `document.documentElement.lang`: en anglès, etiqueta «cited by:» (en comptes de «cites:») i JIF amb punt decimal. El bloc `.pub-list` del HTML és **fallback estàtic** i, a diferència dels stats, **és regenerat automàticament per `update_scholarly_data.py`** (mateix format que el JS). No l'editis a mà: els canvis van a `publications.json` i es propaguen executant l'script.
 
 ### Bloc (`content/posts/*.md` → `scripts/build_blog.py`)
 Els articles viuen com a Markdown amb frontmatter a `content/posts/YYYY-MM-DD-slug.md`. Camps del frontmatter: `title`, `slug`, `date`, `date_display`, `excerpt`, `image`, `image_alt`, `source_url`, `source_note`. Al cos, els paràgrafs separats per línia en blanc esdevenen `<p>`; una línia que comenci per `> ` es renderitza com a `<blockquote>`. `build_blog.py` regenera `blog/index.html` i `blog/<slug>/index.html`. No hi ha fallback estàtic del bloc — cal executar l'script per veure els canvis.
@@ -117,7 +130,7 @@ Després d'escriure el JSON, l'script també:
 1. Regenera el bloc `.pub-list` de `publicacions/index.html` (`update_publications_html`).
 2. Refresca els fallbacks del gauge `data-stat="publications|citations|hIndex"` a `index.html`, `recerca/index.html`, `publicacions/index.html` (`update_gauge_fallbacks`).
 
-El workflow fa commit dels 5 fitxers (bot `github-actions[bot]`) i és **idempotent** (no commita si no hi ha diff).
+El workflow fa commit de 8 fitxers —`data/stats.json`, `data/publications.json` i les 6 pàgines amb gauge (3 catalanes + 3 angleses)— amb el bot `github-actions[bot]`, i és **idempotent** (no commita si no hi ha diff).
 
 ### Convenis i gotchas
 - `norm(s)` translitera diacritics via `unicodedata.normalize("NFKD")` + eliminar combining marks, perquè `Cerdà`→`cerda` (no `cerd`). No fer servir un regex directe sobre la cadena accentuada.
@@ -134,7 +147,8 @@ El workflow fa commit dels 5 fitxers (bot `github-actions[bot]`) i és **idempot
 - Twitter Card (`summary_large_image`)
 - `<link rel="canonical">` (URL base: `https://athanor8732.github.io`)
 - JSON-LD structured data: `Person` a la home, `ItemList`+`ScholarlyArticle` a publicacions, `ResearchProject` a les pàgines de projecte
-- `sitemap.xml` i `robots.txt` a l'arrel
+- `<link rel="alternate" hreflang="ca|en|x-default">` a cada parella CA/EN i `og:locale:alternate`
+- `sitemap.xml` (21 URLs: 11 catalanes + 10 angleses) i `robots.txt` a l'arrel
 
 El script és **idempotent** (neteja els tags SEO existents abans d'inserir-los). Per actualitzar les metadades, editar la dict `PAGES` al script i executar-lo.
 
