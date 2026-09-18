@@ -9,7 +9,6 @@ Marcadors suportats dins del HTML de cada pàgina:
   <!-- @partial:head -->          → <link> a css/fonts.css + css/styles.css
   <!-- @partial:topbar -->        → topbar amb logo + nav horitzontal
   <!-- @partial:ctd-rig -->       → SVG del CTD rosette + depth display
-  <!-- @partial:side-promo -->    → side-promo d'IMPAS-Garraf
   <!-- @partial:footer -->        → footer genèric (no usat per ara)
 
 Ús:
@@ -174,7 +173,6 @@ def inject_partials(html, depth, page_id, page_path):
         "head": load_template("head"),
         "topbar": load_template(topbar_name),
         "ctd-rig": load_template("ctd-rig"),
-        "side-promo": load_template("side-promo"),
     }
     lang_switch = render_lang_switch(page_path, depth)
 
@@ -300,7 +298,7 @@ def process_page(page_path, dry_run=False):
 
     # Processar si té marcadors de partial, elements .reveal, o topbar
     has_markers = any(f"<!-- @partial:{m} -->" in html for m in
-                      ["head", "topbar", "ctd-rig", "side-promo", "footer"])
+                      ["head", "topbar", "ctd-rig", "footer"])
     has_reveal = bool(re.search(r'class="[^"]*\breveal\b', html))
     has_topbar = "topbar-toggle" in html
     if not (has_markers or has_reveal or has_topbar):

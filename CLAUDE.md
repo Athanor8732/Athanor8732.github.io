@@ -43,8 +43,8 @@ GitHub Pages serveix `css/` i `js/` amb `cache-control: max-age=600`: sense res 
 ### Footer unificat
 Totes les pàgines comparteixen el mateix footer: logos UB/GMAR + "← Torna al perfil" + llicència CC BY-NC-SA 4.0. Els estils són globals a `styles.css` (`footer .affil`, `.footer-mark`, `.cc-notice`). No afegir text de font per pàgina.
 
-### Side-promos (bàners de projectes)
-Els bàners laterals de projectes (IMPAS-Garraf i EMICREUER-BCN) **només surten a la home** (`index.html`). Van SEMPRE dins del contenidor `.side-promos` (fixat a l'esquerra, `flex-direction:column`). Sense wrapper, el `.side-promo` surt al flux normal damunt la topbar. La home té IMPAS-Garraf (tag "Projecte actiu") i EMICREUER-BCN (tag `.alt` "Nou projecte"). ❌ No afegir side-promos a cap altra pàgina.
+### Graella de targetes de la portada (substitueix els side-promos)
+El 18-09-2026 es van **eliminar els bàners laterals** (`.side-promos`, fixats a l'esquerra) de les dues portades, i amb ells el template `side-promo.html`, el seu partial a `build_pages.py` i tot el CSS `.side-promo*`. Al seu lloc, la portada porta una graella `.cards.grid-2` amb quatre targetes: **IMPAS-Garraf**, **EMICREUER-BCN**, **ORCID** i **GitHub**. Reutilitza el component `.card` global (mateix que «Perfil a bases de dades» a sobre-mi); `.grid-2` és la variant en dues columnes, que col·lapsa a una per sota de 640px. Els projectes conserven l'etiqueta «Projecte actiu»/«Nou projecte» dins de `.desc`. La graella és **curada a propòsit**: no repeteix seccions de la topbar, només projectes i perfils externs.
 
 ### Skip-link i accessibilitat
 Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="main">`. Focus-visible global. `prefers-reduced-motion` desactiva totes les animacions (inclosos rigs DAS/liner dels projectes). `@media print` amaga rigs, side-promos i nav vertical.
@@ -53,7 +53,7 @@ Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="m
 
 Decisions estructurals aplicades — no reintroduir els blocs eliminats:
 
-- **Home**: només portal d'entrada (profile+porthole, gauge data-driven, bio, quote, últim article, subscribe). ❌ SENSE franja de fotos ni llista d'articles secundaris: es van provar el 18-09-2026 i es van descartar. ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer) ni la secció de cards "Seccions" (redundant amb la topbar).
+- **Home**: portal d'entrada (profile+porthole amb la frase `.pitch`, gauge data-driven, bio, quote, graella `.cards.grid-2` «Projectes i perfils», últim article, subscribe). ❌ SENSE franja de fotos ni llista d'articles secundaris: es van provar el 18-09-2026 i es van descartar. ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer) ni la secció de cards "Seccions" (redundant amb la topbar).
 - **Sobre mi**: bio llarga, award Premi Carmina Virgili, timelines Formació/Trajectòria, i secció **"Perfil a bases de dades"** (ORCID, ResearchGate, Scopus, GitHub). ❌ SENSE secció "Docència" (duplicava la pàgina; l'enllaç va al cta-row).
 - **Docència**: stats amb el patró global **`.gauge`** (mai `.teach-stats`, eliminat).
 - **Projectes** (impas-garraf, emicreuer-bcn): estructura pròpia rica (hero, nav vertical scroll-spy, mapes Leaflet); footer unificat sense logos duplicats (la banda `.affil-title` temàtica ja els porta).
