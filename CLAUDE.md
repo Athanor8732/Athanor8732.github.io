@@ -127,6 +127,9 @@ El bloc `#stats-inline` s'inclou a les **6 pàgines amb gauge**: `index.html`, `
 ### Portada: el darrer article es genera
 El bloc de l'últim article viu entre els marcadors `<!-- @blog-highlights:start|end -->` de `index.html` i `en/index.html` i el genera **`build_blog.py`** a partir dels Markdown (`HIGHLIGHT_EXTRA` articles compactes addicionals; **0** = només el destacat, que és com ha de quedar). Abans estava escrit a mà i calia recordar-se'n a cada article nou. **No editar-lo a mà**: es regenera.
 
+### Dependències de `cerdadomenech.blog` (caduca cap a l'abril del 2027)
+El bloc antic de WordPress i el seu domini desapareixen cap a l'abril del 2027. La web **ja no en carrega cap imatge** (les quatre de recerca es van baixar a `img/recerca/` el 18-09-2026) i els cinc articles hi són tots. Només hi queden **3 enllaços de cortesia** («llegeix l'original a…») als `source_url` de `recuperar-sobiranies`, `salvador-illa-politiques-climatiques` i `empremta-climatica-ia`. Quan el domini caduqui, cal repuntar-los al mitjà original (Espai Fàbrica, Línia Xarxa) o treure'ls del frontmatter. `render_post()` treu el nom del mitjà de la pròpia URL, així que canviar el `source_url` ja canvia l'etiqueta.
+
 ### Feed RSS (`feed.xml`)
 `build_blog.py` genera `feed.xml` a l'arrel a partir dels mateixos Markdown (RSS 2.0, `SITE_URL` al mateix script). És **la via de subscripció del lloc**: el bloc de WordPress (`cerdadomenech.blog`) i la seva llista de correu desapareixen amb aquell domini, així que la portada ja no promet correu — ofereix llegir el bloc i subscriure-s'hi per RSS. L'enllaç `<link rel="alternate" type="application/rss+xml">` del `<head>` el manté `ensure_feed_link()` de `build_pages.py` a les 24 pàgines (el template `head.html` sol no bastaria: els marcadors `@partial:head` es van consumir fa temps).
 

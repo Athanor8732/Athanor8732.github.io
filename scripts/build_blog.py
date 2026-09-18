@@ -18,6 +18,7 @@ import html
 import sys
 from pathlib import Path
 from datetime import datetime
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 POSTS_DIR = ROOT / "content" / "posts"
@@ -190,7 +191,7 @@ def render_index(posts):
 {chr(10).join(cards)}
     </div>
     <footer>
-      <a href="../index.html">← Torna al perfil</a> · Basat en <a href="https://cerdadomenech.blog/bloc/" target="_blank" rel="noopener">cerdadomenech.blog</a>
+      <a href="../index.html">← Torna al perfil</a> · <a href="../feed.xml">Subscriu-t'hi per RSS</a>
     </footer>
   </div>
   {HAMBURGER_SCRIPT}
@@ -202,8 +203,11 @@ def render_index(posts):
 def render_post(p):
     source_html = ""
     if p.get("source_url"):
+        # El domini surt de la pròpia URL: els articles es van publicar a mitjans
+        # diferents i alguns enllaços al blog de WordPress moriran amb el domini.
+        host = urlparse(p["source_url"]).netloc.replace("www.", "")
         source_html = f"""<p class="source-note">{html.escape(p.get('source_note',''))} —
-      <a href="{p['source_url']}" target="_blank" rel="noopener">llegeix l'original a cerdadomenech.blog</a></p>"""
+      <a href="{p['source_url']}" target="_blank" rel="noopener">llegeix l'original a {html.escape(host)}</a></p>"""
     return f"""<!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -227,7 +231,7 @@ def render_post(p):
     </div>
     {source_html}
     <footer>
-      <a href="../../index.html">← Torna al perfil</a> · Basat en <a href="https://cerdadomenech.blog/" target="_blank" rel="noopener">cerdadomenech.blog</a>
+      <a href="../../index.html">← Torna al perfil</a> · <a href="../../feed.xml">Subscriu-t'hi per RSS</a>
     </footer>
   </div>
   {HAMBURGER_SCRIPT}

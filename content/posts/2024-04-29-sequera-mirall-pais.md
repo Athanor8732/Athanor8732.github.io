@@ -8,8 +8,8 @@ excerpt_en: It is not raining, and there is little sign it will rain much in the
 excerpt: No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. El nivell dels embassaments de les conques internes està sota mínims i arrosseguem més de trenta-un mesos de sequera. La situació no és per llençar coets… però potser el causant de la sequera es troba a les nostres llars.
 image: img/posts/sequera.jpg
 image_alt: Llera d'un riu o embassament amb el nivell d'aigua molt baix
-source_url: https://cerdadomenech.blog/2024/04/29/la-sequera-com-a-mirall-dun-pais/
-source_note: Publicat el 22/12/2023 al portal Setembre
+source_url: https://www.elsetembre.cat/noticia/1421/sequera-mirall-pais
+source_note: Publicat a El Setembre el 22/12/2023
 ---
 No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. Per aquest motiu, el conseller d'Acció Climàtica, David Mascort, va alertar, fa uns dies, que si no canvien prou les coses el sistema Ter-Llobregat entraria en fase d'emergència. La situació no és per llençar coets. El nivell dels embassaments de les conques internes està sota mínims, arrosseguem més de trenta-un mesos de sequera i fins ara, el que l'executiu de Pere Aragonès ha fet són crides a reduir el consum a les cases. És una vella estratègia comunicativa i està justificat fer-ho, però això no fa que moltes ens preguntem si el causant de la sequera es troba a les nostres llars.
 
