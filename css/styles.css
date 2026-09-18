@@ -709,6 +709,76 @@ a{ transition:color .15s ease; }
   .lang-switch a{ font-size:0.64rem; padding:4px 5px; }
 }
 
+/* ---- Franja de fotos de camp (portada CA i EN) ---- */
+.field-strip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:18px;
+}
+.field-strip a{
+  display:block;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--panel-border);
+  background:var(--surface);
+  text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.field-strip a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px -12px rgba(var(--cyan-rgb),0.55);
+  border-color:rgba(var(--cyan-rgb),0.35);
+}
+.field-strip img{ width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+.field-strip .fs-cap{
+  display:block;
+  padding:8px 10px;
+  font-size:0.7rem;
+  line-height:1.35;
+  color:var(--muted);
+}
+.field-strip a:hover .fs-cap{ color:var(--text); }
+
+/* ---- Articles secundaris del bloc a la portada ---- */
+.post-more{ list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:2px; }
+.post-more a{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:14px;
+  padding:10px 14px;
+  border:1px solid transparent;
+  border-radius:10px;
+  color:var(--muted);
+  text-decoration:none;
+  transition:color .15s ease, background .15s ease, border-color .15s ease;
+}
+.post-more a:hover{
+  color:var(--text);
+  background:rgba(var(--cyan-rgb),0.06);
+  border-color:var(--panel-border);
+}
+.post-more .pm-title{ font-weight:600; font-size:0.9rem; }
+.post-more .pm-date{ font-size:0.72rem; white-space:nowrap; opacity:0.9; }
+.all-posts{
+  display:inline-block;
+  margin-top:12px;
+  color:var(--cyan);
+  font-size:0.78rem;
+  font-weight:700;
+  text-decoration:none;
+}
+.all-posts:hover{ text-decoration:underline; }
+
+@media (max-width:680px){
+  .field-strip{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:420px){
+  .field-strip{ grid-template-columns:1fr; }
+  .post-more a{ flex-direction:column; gap:2px; align-items:flex-start; }
+}
+
 /* ---- Pàgines de projecte: millores ---- */
 .section-divider{ margin:48px 0; }
 

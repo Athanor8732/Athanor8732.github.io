@@ -3,6 +3,8 @@ title: La sequera com a mirall d'un país
 slug: sequera-mirall-pais
 date: 2024-04-29
 date_display: 29 d'abril de 2024
+title_en: The drought as a mirror of a country
+excerpt_en: The drought is not only a weather event: it reflects how a country plans, manages and governs its water.
 excerpt: No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. La situació no és per llençar coets... però potser el causant de la sequera es troba a les nostres llars.
 image: img/posts/sequera.jpg
 image_alt: Llera d'un riu o embassament amb el nivell d'aigua molt baix

@@ -3,6 +3,8 @@ title: Salvador Illa i el futur de les polítiques climàtiques a Catalunya
 slug: salvador-illa-politiques-climatiques
 date: 2024-08-13
 date_display: 13 d'agost de 2024
+title_en: Salvador Illa and the future of climate policy in Catalonia
+excerpt_en: What the new Catalan government must deliver: a 6% annual cut in emissions, structural change in transport and energy, and a productive model less dependent on tourism.
 excerpt: Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant.
 image: img/posts/salvador-illa.jpg
 image_alt: Imatge simbòlica de política institucional

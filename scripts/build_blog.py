@@ -231,6 +231,87 @@ def render_post(p):
 """
 
 
+# ---- Bloc d'articles de la portada (CA i EN) ----
+# La portada mostrava el darrer article escrit a mà, i calia recordar-se
+# d'actualitzar-lo a cada article nou. Ara es genera des dels Markdown,
+# entre els marcadors <!-- @blog-highlights:start|end -->.
+HOME_PAGES = [("index.html", "ca", ""), ("en/index.html", "en", "../")]
+MONTHS_EN = ["January", "February", "March", "April", "May", "June",
+             "July", "August", "September", "October", "November", "December"]
+MONTHS_CA = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny",
+             "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"]
+HIGHLIGHT_STRINGS = {
+    "ca": {"heading": "Últim article del bloc", "read": "Llegeix l'article →",
+           "all": "Tots els articles →",
+           "tag": lambda p: f'{MONTHS_CA[p["date"].month - 1]} {p["date"].year}'},
+    "en": {"heading": "Latest blog post", "read": "Read the post (Catalan) →",
+           "all": "All posts (in Catalan) →",
+           "tag": lambda p: f'{MONTHS_EN[p["date"].month - 1]} {p["date"].year} · in Catalan'},
+}
+HIGHLIGHT_EXTRA = 2  # articles compactes sota el destacat
+
+
+def field(post, key, lang):
+    """Valor del camp en la llengua demanada; si no hi ha variant _en, el català.
+
+    Els articles s'escriuen en català; title_en/excerpt_en al frontmatter són
+    opcionals i serveixen perquè la portada anglesa expliqui de què va l'article.
+    """
+    if lang == "en" and post.get(key + "_en"):
+        return post[key + "_en"]
+    return post[key]
+
+
+def esc(text):
+    """Escapa per a text (no per a atributs): manté els apòstrofs tal qual."""
+    return html.escape(str(text), quote=False)
+
+
+def render_home_highlights(posts, lang, prefix):
+    t = HIGHLIGHT_STRINGS[lang]
+    if not posts:
+        return ""
+    first, rest = posts[0], posts[1:1 + HIGHLIGHT_EXTRA]
+    out = [f'    <h2 class="section reveal">{t["heading"]}</h2>',
+           '    <div class="posts">',
+           f'      <a class="featured-post reveal" href="{prefix}blog/{first["slug"]}/index.html">',
+           f'        <p class="tag">{esc(t["tag"](first))}</p>',
+           f'        <h3>{esc(field(first, "title", lang))}</h3>',
+           f'        <p>{esc(field(first, "excerpt", lang))}</p>',
+           f'        <span class="read-more">{t["read"]}</span>',
+           '      </a>']
+    if rest:
+        out.append('      <ul class="post-more reveal">')
+        for p in rest:
+            out.append(f'        <li><a href="{prefix}blog/{p["slug"]}/index.html">'
+                       f'<span class="pm-title">{esc(field(p, "title", lang))}</span>'
+                       f'<span class="pm-date">{esc(t["tag"](p))}</span></a></li>')
+        out.append('      </ul>')
+    out.append(f'      <a class="all-posts" href="{prefix}blog/index.html">{t["all"]}</a>')
+    out.append('    </div>')
+    return "\n".join(out) + "\n"
+
+
+def update_home_highlights(posts):
+    """Regenera el bloc d'articles destacats de les dues portades."""
+    for rel, lang, prefix in HOME_PAGES:
+        path = ROOT / rel
+        if not path.exists():
+            continue
+        page = path.read_text(encoding="utf-8")
+        block = render_home_highlights(posts, lang, prefix)
+        new, n = re.subn(
+            r"(<!-- @blog-highlights:start -->\n).*?(    <!-- @blog-highlights:end -->)",
+            lambda m: m.group(1) + block + m.group(2),
+            page, count=1, flags=re.S)
+        if n != 1:
+            print(f"  AVÍS: no hi ha marcadors @blog-highlights a {rel}", file=sys.stderr)
+            continue
+        if new != page:
+            path.write_text(new, encoding="utf-8")
+        print(f"  portada actualitzada: {rel}")
+
+
 def main():
     posts = sorted(
         (parse_post(f) for f in POSTS_DIR.glob("*.md")),
@@ -245,6 +326,8 @@ def main():
         post_dir = BLOG_DIR / p["slug"]
         post_dir.mkdir(exist_ok=True)
         (post_dir / "index.html").write_text(render_post(p), encoding="utf-8")
+
+    update_home_highlights(posts)
 
     print(f"Generats {len(posts)} articles a {BLOG_DIR}")
     for p in posts:
