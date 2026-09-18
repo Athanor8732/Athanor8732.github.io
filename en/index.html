@@ -65,12 +65,10 @@
     position:absolute;
     inset:7px;
     border-radius:50%;
-    padding:5px;
-    background:conic-gradient(from 200deg, var(--metal-3), var(--metal-2) 20%, var(--metal-1) 40%, var(--metal-2) 60%, var(--metal-3) 80%, var(--metal-2) 100%);
-    box-shadow:
-      0 0 0 2px #02100a,
-      0 10px 24px rgba(0,0,0,0.65),
-      inset 0 0 8px rgba(0,0,0,0.5);
+    padding:0;
+    border:3px solid rgba(255,255,255,0.92);
+    background:none;
+    box-shadow:0 8px 22px rgba(0,0,0,0.55);
   }
   .porthole-inner{
     position:relative;
@@ -79,30 +77,12 @@
     border-radius:50%;
     overflow:hidden;
     background:#0c0c0c;
-    box-shadow:inset 0 0 0 2px rgba(0,0,0,0.5);
   }
   .porthole-inner img{
     width:100%;
     height:100%;
     object-fit:cover;
     filter:contrast(1.06) saturate(1.08);
-  }
-  .glare{
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle at 32% 26%, rgba(255,255,255,0.55), transparent 42%);
-    mix-blend-mode:overlay;
-    pointer-events:none;
-  }
-  .rivet{
-    position:absolute;
-    width:5px;
-    height:5px;
-    border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #f2f4f6, #6b7178 70%);
-    box-shadow:0 1px 2px rgba(0,0,0,0.6);
-    top:50%; left:50%;
-    margin:-2.5px 0 0 -2.5px;
   }
   .seal-badge{
     position:absolute;
@@ -512,16 +492,7 @@
         <div class="porthole">
           <div class="porthole-inner">
             <img loading="lazy" decoding="async" src="../img/marc.png" alt="Marc Cerdà i Domènech" />
-            <div class="glare"></div>
           </div>
-          <span class="rivet" style="transform:rotate(0deg) translate(49px) rotate(0deg);"></span>
-          <span class="rivet" style="transform:rotate(45deg) translate(49px) rotate(-45deg);"></span>
-          <span class="rivet" style="transform:rotate(90deg) translate(49px) rotate(-90deg);"></span>
-          <span class="rivet" style="transform:rotate(135deg) translate(49px) rotate(-135deg);"></span>
-          <span class="rivet" style="transform:rotate(180deg) translate(49px) rotate(-180deg);"></span>
-          <span class="rivet" style="transform:rotate(225deg) translate(49px) rotate(-225deg);"></span>
-          <span class="rivet" style="transform:rotate(270deg) translate(49px) rotate(-270deg);"></span>
-          <span class="rivet" style="transform:rotate(315deg) translate(49px) rotate(-315deg);"></span>
           <div class="seal-badge">
             <svg viewBox="0 0 40 40" fill="none" stroke="currentColor">
               <circle cx="20" cy="20" r="17" stroke-width="1.1" opacity="0.7"/>
