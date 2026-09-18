@@ -23,6 +23,7 @@ També afegeix:
   - aria-current="page" automàtic al link de la nav corresponent
 """
 import argparse
+import hashlib
 import os
 import re
 from pathlib import Path
@@ -48,6 +49,35 @@ PAGE_MAP = {
 EN_TO_CA = {v: k for k, v in PAGE_MAP.items()}
 
 SKIP_LINK_TEXT = {"ca": "Salta al contingut", "en": "Skip to content"}
+
+# Actius amb ?v=<hash> perquè un canvi de CSS/JS arribi als navegadors a l'instant.
+# GitHub Pages serveix aquests fitxers amb cache-control: max-age=600, i sense
+# el paràmetre els visitants recurrents veuen la versió antiga fins a 10 minuts.
+VERSIONED_ASSETS = ("css/fonts.css", "css/styles.css",
+                    "js/ctd-rig.js", "js/reveal.js", "js/publications.js")
+
+
+def asset_version(rel_path):
+    """Hash curt del contingut d'un actiu, per fer de número de versió."""
+    p = ROOT / rel_path
+    if not p.exists():
+        return None
+    return hashlib.md5(p.read_bytes()).hexdigest()[:8]
+
+
+def version_assets(html, depth):
+    """Posa (o refresca) ?v=<hash> als enllaços de CSS i JS de la pàgina."""
+    for rel in VERSIONED_ASSETS:
+        v = asset_version(rel)
+        if not v:
+            continue
+        attr = "href" if rel.endswith(".css") else "src"
+        html = re.sub(
+            rf'{attr}="{re.escape(depth)}{re.escape(rel)}(?:\?v=[0-9a-f]+)?"',
+            f'{attr}="{depth}{rel}?v={v}"',
+            html,
+        )
+    return html
 
 # ---- Partials ----
 def load_template(name):
@@ -285,6 +315,7 @@ def process_page(page_path, dry_run=False):
     html = add_ctd_script(html, depth)
     html = add_reveal_script(html, depth)
     html = add_hamburger_script(html)
+    html = version_assets(html, depth)
 
     if dry_run:
         return True

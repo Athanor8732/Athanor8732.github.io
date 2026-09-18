@@ -11,6 +11,7 @@ Com afegir un article nou:
 """
 import re
 import html
+import sys
 from pathlib import Path
 from datetime import datetime
 
@@ -102,7 +103,13 @@ def topbar(depth):
     return tmpl
 
 
-HEAD_LINKS = '<link rel="stylesheet" href="{prefix}css/fonts.css" />\n<link rel="stylesheet" href="{prefix}css/styles.css" />'
+# ?v=<hash> igual que a build_pages.py, perquè els canvis de CSS no quedin
+# encallats als 10 minuts de cache de GitHub Pages.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_pages import asset_version  # noqa: E402
+
+HEAD_LINKS = ('<link rel="stylesheet" href="{prefix}css/fonts.css?v=' + (asset_version("css/fonts.css") or "") + '" />\n'
+              '<link rel="stylesheet" href="{prefix}css/styles.css?v=' + (asset_version("css/styles.css") or "") + '" />')
 
 HAMBURGER_SCRIPT = """<script id="hamburger-init">
     (function(){

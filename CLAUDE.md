@@ -34,6 +34,9 @@ Tota la web existeix en dues llengües: el català a l'arrel i l'anglès sota **
 - **Convencions de traducció**: noms d'institucions en anglès (University of Barcelona, Catalan Water Agency, Institute for Catalan Studies); «professor lector» → *Assistant Professor*; PT→WP, IP→PI, DAS→SGD. **No es tradueixen**: títols reals d'articles, de TFG ni de peces de premsa (a `mitjans`/`media` es mantenen en la llengua original, avisat al subtítol).
 - **Números**: en anglès, separador decimal amb punt i milers amb coma (55.6%, 1,249, €199,630). `stats_for_lang()` a `update_scholarly_data.py` fa la conversió automàtica dels camps de stats.
 
+### Cache-busting dels actius
+GitHub Pages serveix `css/` i `js/` amb `cache-control: max-age=600`: sense res més, un canvi de CSS no arriba als visitants recurrents (ni a tu mateix mentre revises) fins a 10 minuts després. `build_pages.py` afegeix `?v=<hash md5 curt del fitxer>` als enllaços de `css/fonts.css`, `css/styles.css`, `js/ctd-rig.js`, `js/reveal.js` i `js/publications.js` (`VERSIONED_ASSETS` + `version_assets()`), i `build_blog.py` fa el mateix amb `asset_version()`, que importa de `build_pages`. Si canvies un d'aquests fitxers, **executa `build_pages.py`** perquè el hash es refresqui a totes les pàgines.
+
 ### La topbar es resincronitza (no només s'injecta)
 `build_pages.py` ja no depèn dels marcadors `<!-- @partial:topbar -->` (es consumeixen a la primera passada). Si la pàgina ja té una topbar injectada, `find_topbar_block()` la localitza per recompte de `<div>`/`</div>` i la **substitueix** pel template renderitzat. Per tant, editar `templates/topbar*.html` + executar `build_pages.py` ara sí que propaga el canvi a totes les pàgines. L'script és idempotent (executar-lo dos cops no canvia res).
 
