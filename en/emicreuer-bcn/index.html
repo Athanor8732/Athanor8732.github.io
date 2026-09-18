@@ -14,7 +14,7 @@
   <meta name="theme-color" content="#000705" />
   <link rel="stylesheet" href="../../vendor/leaflet/leaflet.css" />
 <link rel="stylesheet" href="../../css/fonts.css?v=ae9387a9" />
-  <link rel="stylesheet" href="../../css/styles.css?v=755596e6" />
+  <link rel="stylesheet" href="../../css/styles.css?v=e79c5bf7" />
   <link rel="alternate" type="application/rss+xml" title="Bloc · Marc Cerdà i Domènech" href="../../feed.xml" />
   <style>
 .hero{
@@ -65,6 +65,7 @@
 .map-panel h3{ margin:0 0 4px; font-family:var(--sans); font-size:1rem; color:#fff; text-align:center; }
 .map-panel .map-note{ text-align:center; color:var(--muted); font-size:0.72rem; margin:0 0 14px; }
 #study-map{ width:100%; height:360px; border-radius:10px; background:var(--surface-map); }
+@media (max-width:640px){ #study-map{ height:300px; } }
 .term-label{ background:var(--surface-popup); color:var(--karst); border:1px solid rgba(var(--karst-rgb),0.55); border-radius:6px; padding:1px 6px; font-family:var(--sans); font-weight:700; font-size:0.74rem; box-shadow:0 2px 8px rgba(0,0,0,0.5); }
 .term-label::before{ display:none; }
 .leaflet-container{ font-family:var(--sans); }
@@ -514,7 +515,7 @@
     (function () {
       var el = document.getElementById('study-map');
       if (!el || typeof L === 'undefined') return;
-      var map = L.map('study-map', { scrollWheelZoom: false });
+      var map = L.map('study-map', { scrollWheelZoom: false, dragging: !L.Browser.mobile, tap: false });
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics | Map data via OpenStreetMap/Leaflet',
         maxZoom: 18

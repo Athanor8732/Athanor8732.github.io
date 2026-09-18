@@ -38,6 +38,11 @@
 
 /* ---- Reset ---- */
 *{box-sizing:border-box;}
+
+/* Cap imatge pot ser més ampla que el seu contenidor. Sense aquesta regla,
+   qualsevol <img> sense amplada pròpia al CSS es dibuixa a mida real i
+   desborda la pantalla del mòbil. */
+img{max-width:100%;height:auto;}
 html,body{margin:0;padding:0;}
 
 body{

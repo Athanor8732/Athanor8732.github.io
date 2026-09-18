@@ -14,7 +14,7 @@
   <meta name="theme-color" content="#000705" />
   <link rel="stylesheet" href="../vendor/leaflet/leaflet.css" />
 <link rel="stylesheet" href="../css/fonts.css?v=ae9387a9" />
-  <link rel="stylesheet" href="../css/styles.css?v=755596e6" />
+  <link rel="stylesheet" href="../css/styles.css?v=e79c5bf7" />
   <link rel="alternate" type="application/rss+xml" title="Bloc · Marc Cerdà i Domènech" href="../feed.xml" />
   <style>
 .lines{ display:flex; flex-direction:column; gap:18px; margin-bottom:8px; }
@@ -46,6 +46,7 @@
 .map-panel h3{ margin:0 0 4px; font-family:var(--sans); font-size:1rem; color:#fff; text-align:center; }
 .map-panel .map-note{ text-align:center; color:var(--muted); font-size:0.72rem; margin:0 0 14px; }
 #campaign-map{ width:100%; height:440px; border-radius:8px; background:var(--surface-map); }
+@media (max-width:640px){ #campaign-map{ height:300px; } }
 .campaign-table{ width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px; }
 .campaign-table th{ text-align:left; color:var(--cyan); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px; border-bottom:1px solid var(--panel-border); }
 .campaign-table td{ padding:9px 10px; border-bottom:1px solid var(--panel-border); color:#dbe6e8; }
@@ -392,7 +393,7 @@ p.table-footnote{ color:var(--muted); font-size:0.76rem; text-align:center; marg
       { name: "Marge ibèric (Esp.-Port.)", lat: 36.2, lon: -7.2, info: "TRANSMOW · 27/04/21–16/05/21 · B/O Hespérides" },
       { name: "Badia de Portmán, Múrcia", lat: 37.58, lon: -0.84, info: "NUREIEV-1 (2015), NUREIEV-2 (2015), NUREIEV-3 (2016), NUREIEVA (2018) · R/V Ángeles Alvariño" }
     ];
-    var map = L.map('campaign-map', { scrollWheelZoom: false }).setView([30, -15], 2);
+    var map = L.map('campaign-map', { scrollWheelZoom: false, dragging: !L.Browser.mobile, tap: false }).setView([30, -15], 2);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics | Map data via OpenStreetMap/Leaflet',
       maxZoom: 12

@@ -14,7 +14,7 @@
   <meta name="theme-color" content="#000705" />
   <link rel="stylesheet" href="../../vendor/leaflet/leaflet.css" />
 <link rel="stylesheet" href="../../css/fonts.css?v=ae9387a9" />
-  <link rel="stylesheet" href="../../css/styles.css?v=755596e6" />
+  <link rel="stylesheet" href="../../css/styles.css?v=e79c5bf7" />
   <link rel="alternate" type="application/rss+xml" title="Bloc · Marc Cerdà i Domènech" href="../../feed.xml" />
   <style>
 .hero{
@@ -131,6 +131,7 @@
 .map-panel h3{ margin:0 0 4px; font-family:var(--sans); font-size:1rem; color:#fff; text-align:center; }
 .map-panel .map-note{ text-align:center; color:var(--muted); font-size:0.72rem; margin:0 0 14px; }
 #garraf-map{ width:100%; height:400px; border-radius:8px; background:var(--surface-map); }
+@media (max-width:640px){ #garraf-map{ height:300px; } }
 .section-nav{
   position:fixed; left:34px; top:50%; transform:translateY(-50%);
   z-index:6; display:flex; flex-direction:column; gap:2px;
@@ -537,7 +538,7 @@
       { name: "Vallcarca industrial port", lat: 41.2385, lon: 1.8688, info: "South-western limit of the seabed mapping study area." },
       { name: "Vall d'en Joan landfill", lat: 41.3005, lon: 1.8670, info: "Closed since 2006. The main identified source of leachate into the Garraf aquifer." }
     ];
-    var map = L.map('garraf-map', { scrollWheelZoom: false }).setView([41.258, 1.865], 13);
+    var map = L.map('garraf-map', { scrollWheelZoom: false, dragging: !L.Browser.mobile, tap: false }).setView([41.258, 1.865], 13);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics | Map data via OpenStreetMap/Leaflet',
       maxZoom: 16
