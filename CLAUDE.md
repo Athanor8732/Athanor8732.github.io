@@ -175,6 +175,9 @@ El workflow fa commit de 8 fitxers —`data/stats.json`, `data/publications.json
 
 El script és **idempotent** (neteja els tags SEO existents abans d'inserir-los). Per actualitzar les metadades, editar la dict `PAGES` al script i executar-lo.
 
+### Pes de les imatges (optimització 18-09-2026)
+Les fotografies es guarden **a 1300px d'ample com a màxim** (la columna de contingut fa 648px, el doble per a pantalles retina) i en JPEG de qualitat 82; les d'article, a 1000px. `img/marc.jpg` (400×400, 19 KB) és la foto del perfil que carrega la portada — es mostra a 112px; `img/marc.png` (900×900) es conserva **només** com a `og:image` per a les previsualitzacions socials, i cap pàgina no la carrega. Amb això la portada va de 508 KB a **125 KB**. Si hi afegeixes fotos noves, passa-les per la mateixa mida i qualitat.
+
 ### Favicons i PWA (Fase 5)
 - `img/favicon.svg` — logo SVG (font de veritat)
 - `img/favicon.ico` — multi-resolució (16, 32, 48)
