@@ -92,6 +92,12 @@ python3 scripts/build_pages.py            # processa totes les pàgines
 python3 scripts/build_pages.py --check    # dry-run
 ```
 
+**Ordre dels scripts.** `build_blog.py` regenera `blog/index.html` des de zero i, en fer-ho, n'esborra els tags SEO; `build_pages.py` versiona els actius i resincronitza topbars. Quan n'executis més d'un, fes-ho sempre en aquest ordre:
+
+```bash
+python3 scripts/build_blog.py && python3 scripts/build_pages.py && python3 scripts/build_seo.py
+```
+
 No hi ha build global, ni tests, ni linter. Els scripts són stdlib-only (cap `pip install`).
 
 ## Arquitectura

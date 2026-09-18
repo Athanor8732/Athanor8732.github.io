@@ -8,6 +8,10 @@ Com afegir un article nou:
      Una línia que comença per "> " es renderitza com a cita destacada.
   3. Executa: python3 scripts/build_blog.py
      Això regenera blog/index.html i blog/<slug>/index.html
+
+ORDRE DELS SCRIPTS: aquest regenera blog/index.html des de zero, així que
+esborra els tags SEO que hi posa build_seo.py. Executa sempre:
+    build_blog.py  →  build_pages.py  →  build_seo.py
 """
 import re
 import html
@@ -327,6 +331,7 @@ def main():
     update_home_highlights(posts)
 
     print(f"Generats {len(posts)} articles a {BLOG_DIR}")
+    print("  (blog/index.html s'ha regenerat sense SEO: executa build_seo.py després)")
     for p in posts:
         print(f"  - blog/{p['slug']}/index.html  ({p['date_display']})")
 
