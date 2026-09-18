@@ -118,7 +118,13 @@ body{
   gap:12px;
   width:100%;
   position:relative;
+  /* Zona segura: el nom mai no pot arribar sota el selector CA/EN (dreta,
+     escriptori) ni sota el hamburger (dreta, mòbil). Simètrica perquè el
+     nom quedi centrat de debò. */
+  padding:0 60px;
 }
+.topbar a.brand{ min-width:0; }
+.topbar .brand-tag{ white-space:nowrap; }
 .topbar-toggle{
   position:absolute;
   right:0;
@@ -152,23 +158,23 @@ body{
   right:0;
   display:flex;
   align-items:center;
-  gap:2px;
+  gap:0;
   font-family:var(--sans);
 }
 .lang-switch a{
   color:var(--muted);
   text-decoration:none;
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:700;
-  letter-spacing:0.08em;
-  padding:4px 7px;
+  letter-spacing:0.05em;
+  padding:4px 6px;
   border-radius:999px;
   opacity:0.85;
   transition:color .15s ease, background .15s ease, opacity .15s ease;
 }
 .lang-switch a:hover{ color:var(--cyan); background:rgba(var(--cyan-rgb),0.08); opacity:1; }
 .lang-switch a.is-current{ color:var(--cyan); background:rgba(var(--cyan-rgb),0.12); opacity:1; }
-.lang-sep{ color:var(--muted); opacity:0.4; font-size:0.7rem; }
+.lang-sep{ color:var(--muted); opacity:0.35; font-size:0.62rem; }
 
 /* Hamburger (mòbil) */
 .topbar-toggle{
@@ -254,6 +260,7 @@ body{
   .topbar-nav a{ padding:10px 14px; font-size:0.88rem; }
   .topbar-toggle{ display:flex; align-items:center; justify-content:center; }
   .lang-switch{ right:auto; left:0; }
+  .topbar-brand-row{ padding:0 56px; }
   .nav-item{ position:static; }
   .nav-item.has-submenu > a{ display:flex; justify-content:space-between; }
   
@@ -695,6 +702,13 @@ a{ transition:color .15s ease; }
 .prose a{ color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(var(--cyan-rgb),0.3); }
 .prose a:hover{ border-bottom-color:var(--cyan); }
 
+/* Pantalles molt estretes: el nom competeix amb el selector i el hamburger */
+@media (max-width:520px){
+  .topbar-brand-row{ padding:0 46px; }
+  .topbar .brand-text{ font-size:0.72rem; }
+  .lang-switch a{ font-size:0.64rem; padding:4px 5px; }
+}
+
 /* ---- Pàgines de projecte: millores ---- */
 .section-divider{ margin:48px 0; }
 
@@ -703,6 +717,7 @@ a{ transition:color .15s ease; }
   .wrap{ padding:0 18px 70px; }
   .topbar{ padding:14px 0; }
   .topbar-inner{ padding:0 18px; }
+  .brand-tag{ display:none; }
   h1.page-title{ font-size:1.7rem; }
   h2.section{ font-size:1.25rem; margin-top:44px; }
   .prose{ padding:22px 20px; }
