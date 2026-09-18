@@ -4,8 +4,8 @@ slug: sequera-mirall-pais
 date: 2024-04-29
 date_display: 29 d'abril de 2024
 title_en: The drought as a mirror of a country
-excerpt_en: The drought is not only a weather event: it reflects how a country plans, manages and governs its water.
-excerpt: No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. La situació no és per llençar coets... però potser el causant de la sequera es troba a les nostres llars.
+excerpt_en: It is not raining, and there is little sign it will rain much in the months ahead. Reservoir levels in the internal basins are at rock bottom after more than thirty-one months of drought. Hardly cause for celebration — but the culprit may be closer to home than we think.
+excerpt: No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. El nivell dels embassaments de les conques internes està sota mínims i arrosseguem més de trenta-un mesos de sequera. La situació no és per llençar coets… però potser el causant de la sequera es troba a les nostres llars.
 image: img/posts/sequera.jpg
 image_alt: Llera d'un riu o embassament amb el nivell d'aigua molt baix
 source_url: https://cerdadomenech.blog/2024/04/29/la-sequera-com-a-mirall-dun-pais/

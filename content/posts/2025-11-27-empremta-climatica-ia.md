@@ -4,8 +4,8 @@ slug: empremta-climatica-ia
 date: 2025-11-27
 date_display: 27 de novembre de 2025
 title_en: The climate footprint of artificial intelligence
-excerpt_en: The sweeping arrival of artificial intelligence has brought a genuine revolution. Today everything carries the label… but it is undeniable that it also leaves a mark on the climate.
-excerpt: Arran de la irrupció massiva de la intel·ligència artificial, hem viscut una autèntica revolució. Avui, tot incorpora aquest segell... però és innegable que també deixa empremta en el clima.
+excerpt_en: The sweeping arrival of artificial intelligence has brought a genuine revolution. Today everything carries the label: apps, devices, home appliances, cars… Not embedding it is almost a synonym for missing the future, even where it is entirely unnecessary. But it is undeniable that it also leaves a mark on the climate.
+excerpt: Arran de la irrupció massiva de la intel·ligència artificial, hem viscut una autèntica revolució. Avui, tot incorpora aquest segell: aplicacions, dispositius, electrodomèstics, vehicles… No integrar-la és gairebé sinònim de perdre el tren del futur, encara que en molts casos sigui del tot innecessària. Però és innegable que també deixa empremta en el clima.
 image: img/posts/empremta-ia.jpg
 image_alt: Circuit imprès amb la paraula IA gravada en un microxip
 source_url: https://cerdadomenech.blog/2025/11/27/lempremta-climatica-de-la-intel%c2%b7ligencia-artificial/

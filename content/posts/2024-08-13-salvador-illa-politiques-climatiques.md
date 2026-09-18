@@ -4,8 +4,8 @@ slug: salvador-illa-politiques-climatiques
 date: 2024-08-13
 date_display: 13 d'agost de 2024
 title_en: Salvador Illa and the future of climate policy in Catalonia
-excerpt_en: What the new Catalan government must deliver: a 6% annual cut in emissions, structural change in transport and energy, and a productive model less dependent on tourism.
-excerpt: Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant.
+excerpt_en: A new Catalan government under Salvador Illa takes office — and, with it, what looks like a Copernican turn in climate and environmental policy. It is too early to know its programme, but the Socialist Party's positions in recent years give a fair idea of the strategic lines to come.
+excerpt: Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant. Encara és massa d'hora per saber quin serà el seu programa, però el posicionament del Partit Socialista dels darrers anys ens permet fer-nos una idea de per on aniran les línies estratègiques.
 image: img/posts/salvador-illa.jpg
 image_alt: Imatge simbòlica de política institucional
 source_url: https://cerdadomenech.blog/2024/08/13/salvador-illa-i-el-futur-de-les-politiques-climatiques-a-catalunya/
