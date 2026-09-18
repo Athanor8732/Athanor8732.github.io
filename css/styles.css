@@ -398,10 +398,6 @@ p.section-sub{
 
 /* ---- Cards (home) ---- */
 .cards{ display:flex; flex-direction:column; gap:12px; max-width:600px; margin:0 auto; }
-/* Variant en graella (portada): dues columnes que col·lapsen a una */
-.cards.grid-2{ display:grid; grid-template-columns:repeat(2,1fr); align-items:stretch; }
-.cards.grid-2 .card{ align-items:flex-start; }
-@media (max-width:640px){ .cards.grid-2{ grid-template-columns:1fr; } }
 .card{
   display:flex;
   align-items:center;

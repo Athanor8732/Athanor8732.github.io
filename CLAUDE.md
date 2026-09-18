@@ -43,8 +43,13 @@ GitHub Pages serveix `css/` i `js/` amb `cache-control: max-age=600`: sense res 
 ### Footer unificat
 Totes les pàgines comparteixen el mateix footer: logos UB/GMAR + "← Torna al perfil" + llicència CC BY-NC-SA 4.0. Els estils són globals a `styles.css` (`footer .affil`, `.footer-mark`, `.cc-notice`). No afegir text de font per pàgina.
 
-### Graella de targetes de la portada (substitueix els side-promos)
-El 18-09-2026 es van **eliminar els bàners laterals** (`.side-promos`, fixats a l'esquerra) de les dues portades, i amb ells el template `side-promo.html`, el seu partial a `build_pages.py` i tot el CSS `.side-promo*`. Al seu lloc, la portada porta una graella `.cards.grid-2` amb sis targetes: **IMPAS-Garraf**, **EMICREUER-BCN**, **ORCID**, **Scopus**, **ResearchGate** i **GitHub** (cadascuna amb el seu modificador de color; `c-gold` es va afegir per a ResearchGate). Reutilitza el component `.card` global (mateix que «Perfil a bases de dades» a sobre-mi); `.grid-2` és la variant en dues columnes, que col·lapsa a una per sota de 640px. Els projectes conserven l'etiqueta «Projecte actiu»/«Nou projecte» dins de `.desc`. La graella és **curada a propòsit**: no repeteix seccions de la topbar, només projectes i perfils externs.
+### Targetes de la portada (substitueixen els side-promos)
+El 18-09-2026 es van **eliminar els bàners laterals** (`.side-promos`, fixats a l'esquerra) de les dues portades, i amb ells el template `side-promo.html`, el seu partial a `build_pages.py` i tot el CSS `.side-promo*`. Al seu lloc, la portada porta **dos blocs de targetes en una sola columna** (`.cards`, sense variant en graella):
+
+- **Projectes** — IMPAS-Garraf i EMICREUER-BCN, amb l'etiqueta «Projecte actiu»/«Nou projecte» dins de `.desc`.
+- **Perfils** — Sobre mi, ORCID, Scopus, ResearchGate i GitHub.
+
+Reutilitza el component `.card` global (el mateix de «Perfil a bases de dades» a sobre-mi), amb un modificador de color per targeta (`c-gold` es va afegir per a ResearchGate). Una columna, mai dues: es va provar `.cards.grid-2` el 18-09-2026 i es va descartar. La selecció és **curada a propòsit**: no repeteix seccions de la topbar més enllà de Sobre mi.
 
 ### Skip-link i accessibilitat
 Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="main">`. Focus-visible global. `prefers-reduced-motion` desactiva totes les animacions (inclosos rigs DAS/liner dels projectes). `@media print` amaga rigs, side-promos i nav vertical.
