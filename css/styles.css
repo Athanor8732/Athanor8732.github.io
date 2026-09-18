@@ -6,6 +6,7 @@
 
 /* ---- Variables ---- */
 :root{
+  color-scheme:dark;
   --bg-deep:#000705;
   --bg-mid:#04140f;
   --surface:#04140f;
@@ -48,6 +49,7 @@ body{
   color:var(--text);
   font-family:var(--sans);
   min-height:100vh;
+  min-height:100svh;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
@@ -482,6 +484,7 @@ footer .cc-notice{ max-width:380px; margin:0 auto 6px; line-height:1.5; }
   left:calc(50% + 306px);
   top:0;
   height:100vh;
+  height:100svh;
   width:56px;
   pointer-events:none;
   z-index:3;
@@ -670,15 +673,38 @@ a{ transition:color .15s ease; }
 
 /* Pantalles molt estretes: el nom competeix amb el selector i el hamburger */
 @media (max-width:520px){
-  .topbar-brand-row{ padding:0 46px; }
-  .topbar .brand-text{ font-size:0.72rem; }
+  /* Fins aquí, el selector CA/EN i el hamburger van posicionats en absolut i el
+     nom queda centrat entre tots dos. En pantalles estretes això només funciona
+     si el nom hi cap: amb la lletra del sistema ampliada (molt habitual a
+     Android) creixia fins a passar per sota dels botons. Aquí els tres elements
+     passen a compartir la fila, de manera que el solapament és impossible
+     sigui quina sigui la mida de lletra; si cal, el nom salta de línia. */
+  .topbar-brand-row{ padding:0; gap:8px; justify-content:space-between; }
+  .lang-switch{ position:static; order:0; flex:0 0 auto; }
+  .topbar-toggle{ position:static; order:2; flex:0 0 auto; }
+  .topbar a.brand{ order:1; flex:1 1 auto; min-width:0; justify-content:center; }
+  .topbar .brand-text{ font-size:0.68rem; }
   .lang-switch a{ font-size:0.64rem; padding:4px 5px; }
+}
+
+@media (max-width:400px){
+  /* Galaxy S24 i companyia fan 360px: el nom hi cap en una línia amb un punt
+     menys de lletra. */
+  .topbar .brand-text{ font-size:0.62rem; letter-spacing:0.09em; }
+  .gauge .stat b{ font-size:1.35rem; }
 }
 
 /* ---- Pàgines de projecte: millores ---- */
 .section-divider{ margin:48px 0; }
 
 /* ---- Mòbil: espaiat més còmode ---- */
+@media (max-width:880px){
+  /* Chrome i Samsung Internet a Android ignoren background-attachment:fixed i,
+     amb la barra d'adreces retràctil, el fons de la topbar enganxada
+     parpelleja o es repinta malament. Millor que es desplaci amb la pàgina. */
+  body, .topbar{ background-attachment:scroll; }
+}
+
 @media (max-width:640px){
   .wrap{ padding:0 18px 70px; }
   .topbar{ padding:14px 0; }

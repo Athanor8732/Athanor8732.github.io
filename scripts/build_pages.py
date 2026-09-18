@@ -64,6 +64,17 @@ def asset_version(rel_path):
     return hashlib.md5(p.read_bytes()).hexdigest()[:8]
 
 
+def ensure_color_scheme(html):
+    """<meta name="color-scheme" content="dark">: diu al navegador que la web ja
+    és fosca. Sense això, el mode fosc de Samsung Internet i de Chrome Android
+    li torna a invertir els colors i el text queda il·legible."""
+    if 'name="color-scheme"' in html:
+        return html
+    return re.sub(r'(<meta name="viewport"[^>]*/>)',
+                  lambda m: m.group(1) + '\n<meta name="color-scheme" content="dark" />',
+                  html, count=1)
+
+
 def ensure_feed_link(html, depth):
     """Garanteix l'enllaç al feed RSS al <head> (els marcadors @partial:head ja
     es van consumir fa temps, així que no n'hi ha prou d'editar el template)."""
@@ -325,6 +336,7 @@ def process_page(page_path, dry_run=False):
     html = add_ctd_script(html, depth)
     html = add_reveal_script(html, depth)
     html = add_hamburger_script(html)
+    html = ensure_color_scheme(html)
     html = ensure_feed_link(html, depth)
     html = version_assets(html, depth)
 

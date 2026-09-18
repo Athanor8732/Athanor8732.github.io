@@ -176,6 +176,7 @@ def render_index(posts):
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
 <title>Bloc · Marc Cerdà i Domènech</title>
 {favicon_tags(1)}
 {HEAD_LINKS.format(prefix='../')}
@@ -213,6 +214,7 @@ def render_post(p):
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
 <title>{html.escape(p['title'])} · Marc Cerdà i Domènech</title>
 {favicon_tags(2)}
 {HEAD_LINKS.format(prefix='../../')}
