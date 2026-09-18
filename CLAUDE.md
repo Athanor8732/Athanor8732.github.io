@@ -59,7 +59,7 @@ Cada pàgina té `<a class="skip-link" href="#main">` i `<div class="wrap" id="m
 Decisions estructurals aplicades — no reintroduir els blocs eliminats:
 
 - **Home**: portal d'entrada (profile+porthole amb la frase `.pitch`, gauge data-driven, bio, quote, graella `.cards.grid-2` «Projectes i perfils», últim article, subscribe). ❌ SENSE franja de fotos ni llista d'articles secundaris: es van provar el 18-09-2026 i es van descartar. ❌ SENSE "Perfil investigador" (mogut a sobre-mi) ni "Contacte i detalls" (duplicava contacte) ni "Afiliació" (al footer) ni la secció de cards "Seccions" (redundant amb la topbar).
-- **Sobre mi**: bio llarga, award Premi Carmina Virgili, timelines Formació/Trajectòria, i secció **"Perfil a bases de dades"** (ORCID, ResearchGate, Scopus, GitHub). ❌ SENSE secció "Docència" (duplicava la pàgina; l'enllaç va al cta-row).
+- **Sobre mi**: bio llarga (el Premi Carmina Virgili s'hi explica dins del tercer paràgraf; ❌ **sense bàner `.award`**, que només va a recerca), timelines Formació/Trajectòria, i secció **"Perfil a bases de dades"** (ORCID, ResearchGate, Scopus, GitHub). ❌ SENSE secció "Docència" (duplicava la pàgina; l'enllaç va al cta-row).
 - **Docència**: stats amb el patró global **`.gauge`** (mai `.teach-stats`, eliminat).
 - **Projectes** (impas-garraf, emicreuer-bcn): estructura pròpia rica (hero, nav vertical scroll-spy, mapes Leaflet); footer unificat sense logos duplicats (la banda `.affil-title` temàtica ja els porta).
 
@@ -126,6 +126,9 @@ El bloc `#stats-inline` s'inclou a les **6 pàgines amb gauge**: `index.html`, `
 
 ### Portada: el darrer article es genera
 El bloc de l'últim article viu entre els marcadors `<!-- @blog-highlights:start|end -->` de `index.html` i `en/index.html` i el genera **`build_blog.py`** a partir dels Markdown (`HIGHLIGHT_EXTRA` articles compactes addicionals; **0** = només el destacat, que és com ha de quedar). Abans estava escrit a mà i calia recordar-se'n a cada article nou. **No editar-lo a mà**: es regenera.
+
+### Feed RSS (`feed.xml`)
+`build_blog.py` genera `feed.xml` a l'arrel a partir dels mateixos Markdown (RSS 2.0, `SITE_URL` al mateix script). És **la via de subscripció del lloc**: el bloc de WordPress (`cerdadomenech.blog`) i la seva llista de correu desapareixen amb aquell domini, així que la portada ja no promet correu — ofereix llegir el bloc i subscriure-s'hi per RSS. L'enllaç `<link rel="alternate" type="application/rss+xml">` del `<head>` el manté `ensure_feed_link()` de `build_pages.py` a les 24 pàgines (el template `head.html` sol no bastaria: els marcadors `@partial:head` es van consumir fa temps).
 
 ### Bloc (`content/posts/*.md` → `scripts/build_blog.py`)
 Els articles viuen com a Markdown amb frontmatter a `content/posts/YYYY-MM-DD-slug.md`. Camps del frontmatter: `title`, `slug`, `date`, `date_display`, `excerpt`, `image`, `image_alt`, `source_url`, `source_note`, i els **opcionals `title_en` i `excerpt_en`**, que només fa servir la portada anglesa per explicar de què va l'article (els articles no es tradueixen). Si no hi són, la portada anglesa cau al títol i l'entradeta en català. Al cos, els paràgrafs separats per línia en blanc esdevenen `<p>`; una línia que comenci per `> ` es renderitza com a `<blockquote>`. `build_blog.py` regenera `blog/index.html` i `blog/<slug>/index.html`. No hi ha fallback estàtic del bloc — cal executar l'script per veure els canvis.

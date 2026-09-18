@@ -113,7 +113,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_pages import asset_version  # noqa: E402
 
 HEAD_LINKS = ('<link rel="stylesheet" href="{prefix}css/fonts.css?v=' + (asset_version("css/fonts.css") or "") + '" />\n'
-              '<link rel="stylesheet" href="{prefix}css/styles.css?v=' + (asset_version("css/styles.css") or "") + '" />')
+              '<link rel="stylesheet" href="{prefix}css/styles.css?v=' + (asset_version("css/styles.css") or "") + '" />\n'
+              '<link rel="alternate" type="application/rss+xml" title="Bloc · Marc Cerdà i Domènech" href="{prefix}feed.xml" />')
 
 HAMBURGER_SCRIPT = """<script id="hamburger-init">
     (function(){
@@ -235,6 +236,51 @@ def render_post(p):
 """
 
 
+# ---- Feed RSS ----
+# El bloc de WordPress (cerdadomenech.blog) desapareix amb el seu domini, i amb
+# ell la subscripció per correu. El feed és la via de subscripció pròpia: no
+# depèn de cap servei i el llegeixen els agregadors i els lectors acadèmics.
+SITE_URL = "https://cerdadomenech.cat"
+FEED_PATH = ROOT / "feed.xml"
+
+
+def rfc822(d):
+    """Data en el format que demana RSS 2.0 (sempre en anglès, per norma)."""
+    dies = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    mesos = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    return (f"{dies[d.weekday()]}, {d.day:02d} {mesos[d.month - 1]} {d.year} "
+            "00:00:00 +0000")
+
+
+def render_feed(posts):
+    items = []
+    for p in posts:
+        url = f"{SITE_URL}/blog/{p['slug']}/"
+        items.append(
+            "    <item>\n"
+            f"      <title>{html.escape(p['title'])}</title>\n"
+            f"      <link>{url}</link>\n"
+            f"      <guid isPermaLink=\"true\">{url}</guid>\n"
+            f"      <pubDate>{rfc822(p['date'])}</pubDate>\n"
+            f"      <description>{html.escape(p['excerpt'])}</description>\n"
+            "    </item>"
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
+        "  <channel>\n"
+        "    <title>Bloc · Marc Cerdà i Domènech</title>\n"
+        f"    <link>{SITE_URL}/blog/</link>\n"
+        "    <description>Reflexions sobre ciència marina, clima i polítiques ambientals.</description>\n"
+        "    <language>ca</language>\n"
+        f'    <atom:link href="{SITE_URL}/feed.xml" rel="self" type="application/rss+xml" />\n'
+        + "\n".join(items) + "\n"
+        "  </channel>\n"
+        "</rss>\n"
+    )
+
+
 # ---- Bloc d'articles de la portada (CA i EN) ----
 # La portada mostrava el darrer article escrit a mà, i calia recordar-se
 # d'actualitzar-lo a cada article nou. Ara es genera des dels Markdown,
@@ -329,6 +375,9 @@ def main():
         (post_dir / "index.html").write_text(render_post(p), encoding="utf-8")
 
     update_home_highlights(posts)
+
+    FEED_PATH.write_text(render_feed(posts), encoding="utf-8")
+    print(f"  feed.xml generat amb {len(posts)} articles")
 
     print(f"Generats {len(posts)} articles a {BLOG_DIR}")
     print("  (blog/index.html s'ha regenerat sense SEO: executa build_seo.py després)")

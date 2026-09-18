@@ -64,6 +64,18 @@ def asset_version(rel_path):
     return hashlib.md5(p.read_bytes()).hexdigest()[:8]
 
 
+def ensure_feed_link(html, depth):
+    """Garanteix l'enllaç al feed RSS al <head> (els marcadors @partial:head ja
+    es van consumir fa temps, així que no n'hi ha prou d'editar el template)."""
+    if 'type="application/rss+xml"' in html:
+        return re.sub(r'(<link rel="alternate" type="application/rss\+xml"[^>]*href=")[^"]*(")',
+                      lambda m: m.group(1) + depth + "feed.xml" + m.group(2), html)
+    tag = (f'\n  <link rel="alternate" type="application/rss+xml" '
+           f'title="Bloc · Marc Cerdà i Domènech" href="{depth}feed.xml" />')
+    return re.sub(rf'(<link rel="stylesheet" href="{re.escape(depth)}css/styles\.css[^>]*/>)',
+                  lambda m: m.group(1) + tag, html, count=1)
+
+
 def version_assets(html, depth):
     """Posa (o refresca) ?v=<hash> als enllaços de CSS i JS de la pàgina."""
     for rel in VERSIONED_ASSETS:
@@ -313,6 +325,7 @@ def process_page(page_path, dry_run=False):
     html = add_ctd_script(html, depth)
     html = add_reveal_script(html, depth)
     html = add_hamburger_script(html)
+    html = ensure_feed_link(html, depth)
     html = version_assets(html, depth)
 
     if dry_run:

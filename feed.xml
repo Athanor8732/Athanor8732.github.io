@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bloc · Marc Cerdà i Domènech</title>
+    <link>https://cerdadomenech.cat/blog/</link>
+    <description>Reflexions sobre ciència marina, clima i polítiques ambientals.</description>
+    <language>ca</language>
+    <atom:link href="https://cerdadomenech.cat/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>L&#x27;empremta climàtica de la intel·ligència artificial</title>
+      <link>https://cerdadomenech.cat/blog/empremta-climatica-ia/</link>
+      <guid isPermaLink="true">https://cerdadomenech.cat/blog/empremta-climatica-ia/</guid>
+      <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
+      <description>Arran de la irrupció massiva de la intel·ligència artificial, hem viscut una autèntica revolució. Avui, tot incorpora aquest segell: aplicacions, dispositius, electrodomèstics, vehicles… No integrar-la és gairebé sinònim de perdre el tren del futur, encara que en molts casos sigui del tot innecessària. Però és innegable que també deixa empremta en el clima.</description>
+    </item>
+    <item>
+      <title>Salvador Illa i el futur de les polítiques climàtiques a Catalunya</title>
+      <link>https://cerdadomenech.cat/blog/salvador-illa-politiques-climatiques/</link>
+      <guid isPermaLink="true">https://cerdadomenech.cat/blog/salvador-illa-politiques-climatiques/</guid>
+      <pubDate>Tue, 13 Aug 2024 00:00:00 +0000</pubDate>
+      <description>Tret de sortida al nou govern de Salvador Illa i, també, gir copernicà de les polítiques climàtiques i ambientals. O, això, és el que sembla que acabarà passant. Encara és massa d&#x27;hora per saber quin serà el seu programa, però el posicionament del Partit Socialista dels darrers anys ens permet fer-nos una idea de per on aniran les línies estratègiques.</description>
+    </item>
+    <item>
+      <title>La sequera com a mirall d&#x27;un país</title>
+      <link>https://cerdadomenech.cat/blog/sequera-mirall-pais/</link>
+      <guid isPermaLink="true">https://cerdadomenech.cat/blog/sequera-mirall-pais/</guid>
+      <pubDate>Mon, 29 Apr 2024 00:00:00 +0000</pubDate>
+      <description>No plou i no sembla que ho vulgui fer abundantment en els mesos vinents. El nivell dels embassaments de les conques internes està sota mínims i arrosseguem més de trenta-un mesos de sequera. La situació no és per llençar coets… però potser el causant de la sequera es troba a les nostres llars.</description>
+    </item>
+  </channel>
+</rss>

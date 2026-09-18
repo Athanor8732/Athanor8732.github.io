@@ -13,6 +13,7 @@
   <meta name="theme-color" content="#000705" />
   <link rel="stylesheet" href="../css/fonts.css?v=ae9387a9" />
   <link rel="stylesheet" href="../css/styles.css?v=eb207f0f" />
+  <link rel="alternate" type="application/rss+xml" title="Bloc · Marc Cerdà i Domènech" href="../feed.xml" />
   <style>
 .profile{
     display:flex;
@@ -276,6 +277,17 @@
     font-size:0.92rem;
   }
   .subscribe a.btn:hover{ opacity:0.88; }
+  .subscribe a.btn.alt{
+    background:transparent;
+    color:var(--cyan);
+    border:1px solid rgba(var(--cyan-rgb),0.45);
+    margin-left:10px;
+  }
+  .subscribe a.btn.alt:hover{ background:rgba(var(--cyan-rgb),0.1); opacity:1; }
+  @media (max-width:520px){
+    .subscribe a.btn{ display:block; }
+    .subscribe a.btn.alt{ margin:10px 0 0; }
+  }
   .project-banner{
     position:relative; display:flex; align-items:flex-end;
     margin:40px 0 0; max-width:600px; margin-left:auto; margin-right:auto;
@@ -639,9 +651,10 @@
     <!-- @blog-highlights:end -->
 
     <div class="subscribe reveal">
-      <h2>Subscribe to the blog</h2>
-      <p>Get new posts on marine science, climate and environmental policy straight to your inbox. Posts are written in Catalan.</p>
-      <a class="btn" href="https://cerdadomenech.blog/bloc/" target="_blank" rel="noopener">Subscribe</a>
+      <h2>Follow the blog</h2>
+      <p>Posts on marine science, climate and environmental policy, written in Catalan. Read them here or get them in your news reader.</p>
+      <a class="btn" href="../blog/index.html">Read the blog</a>
+      <a class="btn alt" href="../feed.xml"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:15px;height:15px;vertical-align:-2px;margin-right:6px;"><path d="M4 11a9 9 0 0 1 9 9h-2.6A6.4 6.4 0 0 0 4 13.6V11zm0-7a16 16 0 0 1 16 16h-2.6A13.4 13.4 0 0 0 4 6.6V4zm2.5 13a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/></svg>Subscribe via RSS</a>
     </div>
 
     <footer>
