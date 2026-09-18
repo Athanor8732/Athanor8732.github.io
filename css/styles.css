@@ -441,6 +441,7 @@ p.section-sub{
 .card.c-sand{ --accent:var(--sand); }
 .card.c-indigo{ --accent:var(--indigo); }
 .card.c-seafoam{ --accent:var(--seafoam); }
+.card.c-gold{ --accent:var(--gold); }
 
 /* ---- CTA row ---- */
 .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:40px; }
