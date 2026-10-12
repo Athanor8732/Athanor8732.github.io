@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-05",
+  "updated": "2026-10-12",
   "publications": [
     {
       "doi": "10.1371/journal.pone.0350484",
@@ -29,7 +29,7 @@
       "year": 2025,
       "jif": "3,5",
       "quartile": "Q1",
-      "citations": 0,
+      "citations": 1,
       "openalexId": "W4414743374",
       "scopusId": "",
       "issn": "",
@@ -80,7 +80,7 @@
       "year": 2025,
       "jif": "5,1",
       "quartile": "Q1",
-      "citations": 9,
+      "citations": 10,
       "openalexId": "",
       "scopusId": "",
       "issn": "",
@@ -233,7 +233,7 @@
       "year": 2019,
       "jif": "6,55",
       "quartile": "Q1",
-      "citations": 45,
+      "citations": 43,
       "openalexId": "",
       "scopusId": "",
       "issn": "",
